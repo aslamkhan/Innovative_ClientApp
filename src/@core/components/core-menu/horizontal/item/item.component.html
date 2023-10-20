@@ -1,0 +1,16 @@
+<ng-container *ngIf="!item.hidden">
+    <!-- item.url -->
+    <a class="dropdown-item d-flex align-items-center" [ngClass]="item.classes" *ngIf="item.url && !item.externalUrl" [routerLink]="[item.url]" [target]="item.openInNewTab ? '_blank' : '_self'">
+        <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a>
+
+    <!-- item.externalUrl -->
+    <a class="dropdown-item d-flex align-items-center" [ngClass]="item.classes" *ngIf="item.url && item.externalUrl" [href]="item.url" [target]="item.openInNewTab ? '_blank' : '_self'">
+        <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a>
+
+    <ng-template #itemContent>
+        <div class="{{ item.icon  }}_img_icon mr-50" *ngIf="item.icon"></div>
+        <span [translate]="item.translate">{{ item.title }}</span>
+    </ng-template>
+</ng-container>

@@ -1,0 +1,183 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-5 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            Sub Categories
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-7 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button"
+                            class="ml-50 btn btn-outline-secondary round waves-effect disable-filed">Import
+                            CSV</button>
+                        <a *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'"
+                            routerLink="/reference/sub_category/add" class="ml-50 btn btn-primary round waves-effect"><i
+                                data-feather="plus" class="mr-2"></i>Add Sub Category</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <section id="ngx-datatable-kitchen-sink">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <label class="d-flex align-items-center">Show
+                                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption"
+                                        style="width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 d-flex justify-content-md-end">
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                <label class="d-flex align-items-center"><input type="search" placeholder="Search..."
+                                        class="form-control ml-25" (keyup)="filterUpdate($event)"
+                                        (search)="filterUpdate($event)" /></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-12 text-xl-right text-md-right text-center">
+                            <div class="btn-group">
+                                <div ngbDropdown style="width:200px">
+                                    <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                        id="dropdownMenuButton" rippleEffect>
+                                        Actions
+                                    </button>
+                                    <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                        <a ngbDropdownItem onclick="js:window.print()"><i data-feather="printer"
+                                                class="mr-50"></i>Print
+                                            Document</a>
+                                        <a ngbDropdownItem (click)="exportCSVFile()"><i data-feather="file-text"
+                                                class="mr-50"></i>Export to CSV</a>
+                                        <a ngbDropdownItem class="disable-filed"><i data-feather="file-text"
+                                                class="mr-50"></i>Export to
+                                            PDF</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-datatable [rows]="kitchenSinkRows" [rowHeight]="60"
+                        class="bootstrap core-bootstrap custom_datatable img_datatable" [limit]="10"
+                        [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="60" [scrollbarH]="true"
+                        [limit]="basicSelectedOption">
+                        <ngx-datatable-column name="" [width]="90" [sortable]="false">
+                            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                <div class="d-flex align-items-center"
+                                    *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant';else readOnly">
+                                    <a href="javascript:void(0)" (click)="modalOpenLG(modalLG,row.id)" class="mr-1"><img
+                                            style="height:12px" src="assets/images/icon/eye.png" alt=""></a>|
+                                    <a routerLink="/reference/sub_category/edit/{{ row.id }}" class="ml-1"><img
+                                            style="height:12px" src="assets/images/icon/edit.png" alt=""></a>
+                                </div>
+                                <ng-template #readOnly>
+                                    <a href="javascript:void(0)" (click)="modalOpenLG(modalLG,row.id)" class="mr-1">
+                                        <img style="height:12px" src="assets/images/icon/eye.png" alt=""></a>
+                                </ng-template>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Sub Category Name" prop="subCategoryName"
+                            [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Category Name" prop="categoryName"
+                            [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Status" prop="statusId" [width]="120">
+                            <ng-template let-status="value" ngx-datatable-cell-template>
+                                <div class="badge badge-pill" style="width: 90px;" [ngClass]="{
+                                                        'badge-success': status == '1',
+                                                        'badge-danger': status == '2'
+                                                    }">
+                                    {{ status == 1 ? 'Available' : 'Not Active' }}
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Added by" prop="addedby" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Date Added" prop="dateAdded" [width]="120"><ng-template
+                                let-row="row" ngx-datatable-cell-template>
+                                {{row.dateAdded | date:'dd/MM/yyyy'}}
+                            </ng-template></ngx-datatable-column>
+                        <ngx-datatable-column name="Last Updated by" prop="lastUpdatedby"
+                            [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Date Last Updated" prop="lastDateUpdated" [width]="120"><ng-template
+                                let-row="row" ngx-datatable-cell-template>
+                                {{row.lastDateUpdated | date:'dd/MM/yyyy'}}
+                            </ng-template></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </section>
+    </div>
+    <ng-template #modalLG let-modal>
+        <div class="modal-body p-0" tabindex="0" ngbAutofocus>
+            <div class="row px-3 pt-2 pb-0">
+                <div class="col-md-12">
+                    <h2 class="content-header-title font-weight-bolder float-left mb-0">
+                        Sub Category Detail
+                    </h2>
+                    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <hr>
+            <div class="row  p-2 p-xl-3">
+                <div class="col-md-8">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Sub Category Name</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder"
+                            for="">{{model.subCategoryName}}</label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Category Name</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">{{answer.categoryName}}</label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Status</label>
+                        <div class="col-md-8">
+                            <div class="badge badge-pill badge-success" [ngClass]="TempModel.statusClass">{{
+                                TempModel.status}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Added by</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">{{TempModel.addedby}}</label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Date Added</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">{{ model.dateAdded |
+                            date:'yyyy-MM-dd' }}</label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Last Updated by</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder"
+                            for="">{{TempModel.lastUpdatedby}}</label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Date Last Updated</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">{{TempModel.lastDateUpdated |
+                            date:'yyyy-MM-dd'}}</label>
+                    </div>
+                </div>
+                <div class="col-md-12 text-center mt-2">
+                    <button type="button" rippleeffect="" (click)="modal.close('Accept click')"
+                        class="mr-1 btn btn-outline-danger round waves-effect" style="width:200px">Close</button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

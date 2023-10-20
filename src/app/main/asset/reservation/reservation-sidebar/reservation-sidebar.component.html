@@ -1,0 +1,117 @@
+<!-- Calendar Add/Update/Delete event modal-->
+<div class="modal-dialog sidebar-lg" *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+    <div class="modal-content p-0">
+        <div class="modal-body flex-grow-1 pb-sm-0 pb-3">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="toggleEventSidebar()">
+                ×
+            </button>
+            <div class="row ">
+                <div class="col-md-12 mt-4">
+                    <h3 class="text-left font-weight-bolder">{{ isDataEmpty === true ? 'Add' : 'Update' }} Reservation
+                    </h3>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="breadcrumb-wrapper d-flex ">
+                        <ol class="breadcrumb align-items-center">
+                            <li class="breadcrumb-item ng-star-inserted">
+                                <a routerLink="/asset/detail/{{barcodeId}}">
+                                    <span class="text-primary font-weight-bolder">{{assetName}}
+                                        &nbsp;&nbsp;</span>
+                                </a><span>|</span>
+                            </li>
+                            <li class="breadcrumb-item ng-star-inserted">
+                                <a routerLink="/asset/detail/{{barcodeId}}">
+                                    <span class="text-primary font-weight-bolder">
+                                        <span *ngIf="item_type =='asset'">Asset ID</span>
+                                        <span *ngIf="item_type =='inventory'">Inventory ID</span> {{barcodeId}}
+                                        &nbsp;&nbsp;</span></a><span></span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <form class="event-form needs-validation" (ngSubmit)="(eventForm.form.valid); eventForm.reset()"
+                #eventForm="ngForm">
+                <div class="form-group">
+                    <label for="title" class="form-label">Customer<span class="req-red strong">*</span></label>
+                    <select name="customerId" id="customerId" class="form-control" required
+                        [(ngModel)]="event.customerId" #formNameRef="ngModel">
+                        <option value="0">Select Customer</option>
+                        <option *ngFor="let web of customerList" [value]="web.value">{{web.text}}</option>
+                    </select>
+                    <span *ngIf="formNameRef.invalid && formNameRef.touched && formNameRef.errors.required"
+                        class="help-block text-danger">Customer is
+                        required.
+                    </span>
+                </div>
+                <div class="form-group position-relative">
+                    <label for="start-date" class="form-label">Start Date<span class="req-red strong">*</span></label>
+                    <ng2-flatpickr [config]="startDateOptions" name="startDate" [(ngModel)]="event.start"
+                        [setDate]="event.start" #startDatePicker required
+                        [class.error]="eventForm.submitted"></ng2-flatpickr>
+                    <span class="help-block text-danger"
+                        *ngIf="startDatePicker.touched && startDatePicker.invalid && startDatePicker.errors.required">
+                        Start Date is required
+                    </span>
+                    <span class="help-block text-danger" id="error-message"></span>
+                </div>
+                <div class="form-group position-relative">
+                    <label for="end-date" class="form-label">End<span class="req-red strong">*</span></label>
+                    <ng2-flatpickr [config]="endDateOptions" name="endDate" [(ngModel)]="event.end"
+                        [setDate]="event.end" #endDatePicker required (change)="endDateOnChangeEvent($event)"
+                        [class.error]="eventForm.submitted"></ng2-flatpickr>
+                    <span class="help-block text-danger"
+                        *ngIf="endDatePicker.touched && endDatePicker.invalid && endDatePicker.errors.required">
+                        End Date is required
+                    </span>
+                    <span class="help-block text-danger" [hidden]="!endDateInvalid">
+                        End Date should be greater than start date.
+                    </span>
+                    <span class="help-block text-danger" id="error-end-message"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Event Description<span class="req-red strong">*</span></label>
+                    <textarea id="description" class="form-control" [(ngModel)]="event.description"
+                        #description="ngModel" name="description" required></textarea>
+                    <span class="help-block text-danger"
+                        *ngIf="description.touched && description.invalid && description.errors.required">
+                        Event description is required
+                    </span>
+                </div>
+                <div class="form-group ">
+                    <button type="submit" class="btn btn-primary btn-block round add-event-btn mt-4 mb-2 "
+                        [disabled]="invalid || eventForm.invalid" *ngIf="isDataEmpty !== false; else addEventRef"
+                        (click)="addEvent(event)" rippleEffect>
+                        <i data-feather="save" class="mr-1"></i>Add
+                    </button>
+                </div>
+                <div class="form-group">
+                    <ng-template #addEventRef>
+                        <button type="submit" class="btn btn-primary btn-block round update-event-btn mt-4 mb-2"
+                            [disabled]="invalid || eventForm.invalid" (click)="updateEvent(event)" rippleEffect>
+                            <i data-feather="save" class="mr-1"></i>Update
+                        </button>
+                    </ng-template>
+                </div>
+                <div class="form-group">
+                    <ng-template #deleteEventRef>
+                        <button class="btn btn-outline-danger btn-block round btn-delete-event my-2"
+                            (click)="deleteEvent(event)" rippleEffect><i data-feather="trash-2"
+                                class="mr-1"></i>Delete</button>
+                    </ng-template>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-outline-secondary round btn-block btn-cancel my-2"
+                        data-dismiss="modal" (click)="toggleEventSidebar()"
+                        *ngIf="isDataEmpty !== false; else deleteEventRef" rippleEffect>
+                        <i data-feather="x" class="mr-1"></i>Cancel
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!--/ Calendar Add/Update/Delete event modal-->

@@ -1,0 +1,430 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <div class="content-header row">
+            <div class="content-header-left col-md-7 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/asset/lists" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>Add Asset
+                        </h1>
+                    </div>
+                    <div *ngIf="message">{{ simpleAlert() }} </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <form class="" #r="ngForm">
+            <div class="row match-height align-items-center">
+                <div class="col-md-8">
+                    <h4>ASSET ID# {{modelForm.id}}</h4>
+                </div>
+                <div class="col-md-4 text-right disable-field">
+                    <div class="btn-group float-right ml-auto">
+                        <div ngbDropdown style="width:200px">
+                            <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                id="dropdownMenuButton" rippleEffect>
+                                Actions
+                            </button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                <a ngbDropdownItem href="javascript:void(0)"><i data-feather="printer"
+                                        class="mr-50"></i>Print Labels/Barcode</a>
+                                <a ngbDropdownItem href="javascript:void(0)"><i data-feather="box"
+                                        class="mr-50"></i>Export
+                                    to CSV</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xl-7">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="row match-height align-items-center">
+                                        <div class="col-md-2" *ngFor="let src of modelForm.assetPictures">
+                                            <div class="card border-primary mb-0">
+                                                <div>
+                                                    <img class="assetpic"
+                                                        src="{{envPath}}/images/AssetImage/{{src.picturePath}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" *ngFor="let src of images">
+                                            <div class="card border-primary mb-0">
+                                                <div>
+                                                    <img class="assetpic" src="{{src}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 text-center">
+                                            <label for="upload-picture" class="" style="width:100%">
+                                                <span class="d-none d-sm-block">Upload Asset Image <i
+                                                        data-feather="upload" class="font-medium-5 mr-1"></i></span>
+                                                <input type="file" id="upload-picture" name="upload-picture" multiple
+                                                    hidden="" (change)="UploadImage($event)"
+                                                    accept="image/png, image/jpeg, image/jpg" class="form-control">
+                                                <span class="req-red">{{fileUploadError}}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Item Name<span
+                                class="req-red strong">*</span></label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" placeholder="Enter Item Name" name="assetName"
+                                required [(ngModel)]="modelForm.assetName" (keypress)="keyPressText($event)"
+                                #assetsname="ngModel">
+                            <span class="help-block text-danger" *ngIf="assetsname.touched && assetsname.invalid">
+                                Item Name is Required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Item Type<span
+                                class="req-red strong">*</span></label>
+                        <div class="col-md-8">
+                            <select name="itemType" id="itemType" class="form-control" [(ngModel)]="modelForm.itemType"
+                                [attr.disabled]="true">
+                                <option value="">Item Type</option>
+                                <option value="1">Asset</option>
+                                <option value="2">Inventory</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Item Category<span
+                                class="req-red strong">*</span></label>
+                        <div class="col-md-7">
+                            <select name="itemcategory" id="" class="form-control" [(ngModel)]="modelForm.categoryID"
+                                (change)="selectsubcategory($event)" required #category="ngModel">
+                                <option value="">Select Item Category</option>
+                                <option [value]="obj.value" *ngFor="let obj of model.assetCategoryList">
+                                    {{obj.text}}
+                                </option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="category.touched && category.invalid">
+                                Item Category is Required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Different Barcode<span
+                                class="req-red strong">*</span></label>
+                        <div class="col-md-8">
+                            <select name="shareBarCode" id="shareBarCode" [(ngModel)]="modelForm.shareBarCode"
+                                [attr.disabled]="true" class="form-control" required #shareBarCode="ngModel">
+                                <option value="">Select Different Barcode</option>
+                                <option value="0">False</option>
+                                <option value="1">True</option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="shareBarCode.touched && shareBarCode.invalid">
+                                Different Barcode is required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Sub level<span
+                                class="req-red strong">*</span></label>
+                        <div class="col-md-7">
+                            <select name="subLevelID" id="subLevelID" class="form-control"
+                                [(ngModel)]="modelForm.subLevelID">
+                                <option value="">Select Sub level</option>
+                                <option [value]="obj.value" *ngFor="let obj of model.subCategoryList">{{obj.text}}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Max rental time allowed </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" placeholder="" name="maxrental"
+                                [(ngModel)]="modelForm.maxRentalDays" (keypress)="keyPressNumber($event)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Item Location</label>
+                        <div class="col-md-7">
+                            <select name="location" id="" class="form-control"
+                                [(ngModel)]="modelForm.subAssets.locationID" [attr.disabled]="true">
+                                <option value="">Select Item Location</option>
+                                <option [value]="obj.value" *ngFor="let obj of model.assetLocationList">{{obj.text}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Status</label>
+                        <div class="col-md-8">
+                            <select name="Status" id="" class="form-control" [(ngModel)]="modelForm.statusID">
+                                <option value="">Select Status</option>
+                                <option [value]="obj.value" *ngFor="let obj of model.assetStatusList">{{obj.text}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Description</label>
+                        <div class="col-md-7">
+                            <textarea name="description" id="" cols="30" rows="4" class="form-control"
+                                placeholder="Enter Desctiption" [(ngModel)]="modelForm.description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Asset Quantity<span
+                                class="req-red strong">*</span></label>
+                        <div class="col-md-7">
+                            <input type="text" name="quantity" class="form-control" placeholder="Enter Item Quantity"
+                                [(ngModel)]="modelForm.subAssets.quantity" (keypress)="keyPressNumber($event)" required
+                                #quantity="ngModel">
+                            <span class="help-block text-danger" *ngIf="quantity.touched && quantity.invalid">
+                                Asset Quantity is Required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Serial Number</label>
+                        <div class="col-md-8">
+                            <input type="text" name="serialnumber" class="form-control"
+                                placeholder="Enter Serial Number" [(ngModel)]="modelForm.subAssets.serialNumber"
+                                [attr.disabled]="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Vendor</label>
+                        <div class="col-md-7">
+                            <select name="vendor" id="" class="form-control" [(ngModel)]="modelForm.subAssets.vendorID"
+                                [attr.disabled]="true" #subCategory="ngModel">
+                                <option value="">Select Vendor</option>
+                                <option [value]="obj.value" *ngFor="let obj of model.assetVendorList">{{obj.text}}
+                                </option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="subCategory.touched && subCategory.invalid">
+                                Sub Category is Required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Color</label>
+                        <div class="col-md-8">
+                            <select name="color" id="" class="form-control" [(ngModel)]="modelForm.subAssets.colorID"
+                                [attr.disabled]="true">
+                                <option value="">Select Color</option>
+                                <option [value]="obj.value" *ngFor="let obj of model.assetColorList">{{obj.text}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Weight</label>
+                        <div class="col-md-5">
+                            <input type="text" name="weight" class="form-control" placeholder=""
+                                [(ngModel)]="modelForm.subAssets.weight" (keypress)="keyPressNumber($event)"
+                                [attr.disabled]="true">
+                        </div>
+                        <div class="col-md-2">
+                            <select name="unitid" id="" class="form-control" [(ngModel)]="modelForm.subAssets.unitID"
+                                [attr.disabled]="true">
+                                <option value="">Select Unit</option>
+                                <option [value]="obj.value" *ngFor="let obj of model.unitList">{{obj.text}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Upload documents</label>
+                        <div class="col-md-8">
+                            <!-- <label>{{}}</label> -->
+                            <label for="change-picture" class="btn btn-outline-primary round mr-75 mb-0 change-width">
+                                <span class=" d-sm-block"><i data-feather="plus" class="mr-2"></i>Add Files
+                                    <input type="file" id="change-document" hidden
+                                        accept="image/png, image/jpeg, image/jpg,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                        class="form-control change-document">
+                                    <span class="file-name">{{documentFile}}</span>
+                                    <span class="req-red">{{docFileUploadError}}</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Date Purchased</label>
+                        <div class="col-md-7 datepicker">
+                            <ng2-flatpickr [config]="birthDateOptions" placeholder="Select Date"
+                                [setDate]="modelForm.subAssets.datePurchased"
+                                [(ngModel)]="modelForm.subAssets.datePurchased" name="datepurchased"
+                                [attr.disabled]="true"></ng2-flatpickr>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Notes</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="notes" placeholder="Enter Notes"
+                                [(ngModel)]="modelForm.subAssets.notes" [attr.disabled]="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Inspected by</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="inspectedby" placeholder="Enter Inspected by"
+                                [(ngModel)]="modelForm.subAssets.inspectedby" (keypress)="keyPressText($event)"
+                                [attr.disabled]="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Last Inspection Date</label>
+                        <div class="col-sm-8 datepicker">
+                            <ng2-flatpickr [config]="birthDateOptions" name="lastinspectiondate"
+                                placeholder="Select Date" [setDate]="modelForm.subAssets.lastInspectionDate"
+                                [(ngModel)]="modelForm.subAssets.lastInspectionDate"
+                                [attr.disabled]="true"></ng2-flatpickr>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Next Inspection Date</label>
+                        <div class="col-sm-7 datepicker">
+                            <ng2-flatpickr [config]="birthDateOptions" name="nextinspectiondate"
+                                placeholder="Select Date" [setDate]="modelForm.subAssets.nextInspectionDate"
+                                [(ngModel)]="modelForm.subAssets.nextInspectionDate"
+                                [attr.disabled]="true"></ng2-flatpickr>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Next Maintenance Date</label>
+                        <div class="col-sm-8 datepicker">
+                            <ng2-flatpickr [config]="birthDateOptions" name="nextmaintenancedate"
+                                placeholder="Select Date" [setDate]="modelForm.subAssets.nextMaintenanceDate"
+                                [(ngModel)]="modelForm.subAssets.nextMaintenanceDate"
+                                [attr.disabled]="true"></ng2-flatpickr>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">End of Life Date</label>
+                        <div class="col-sm-7 datepicker">
+                            <ng2-flatpickr [config]="birthDateOptions" name="endoflife" placeholder="Select Date"
+                                [(ngModel)]="modelForm.subAssets.endOfLifeDate"
+                                [setDate]="modelForm.subAssets.endOfLifeDate" [attr.disabled]="true"></ng2-flatpickr>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Replacement Cost</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="replacementcost" placeholder="0000"
+                                [(ngModel)]="modelForm.subAssets.replacementCost" (keypress)="keyPressNumber($event)"
+                                [attr.disabled]="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Warranty Expiry Date</label>
+                        <div class="col-md-7 datepicker">
+                            <ng2-flatpickr [config]="birthDateOptions" placeholder="Select Date"
+                                [setDate]="modelForm.subAssets.warrantyExpiryDate"
+                                [(ngModel)]="modelForm.subAssets.warrantyExpiryDate" name="warrantyExpiryDate"
+                                [attr.disabled]="true"></ng2-flatpickr>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 disable-field">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Location</label>
+                        <div class="col-md-8">
+                            <select name="locationID" id="" class="form-control"
+                                [(ngModel)]="modelForm.subAssets.locationID" [attr.disabled]="true">
+                                <option value="">Select Location</option>
+                                <option [value]="obj.value" *ngFor="let obj of model.assetLocationList">{{obj.text}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-1 pb-3">
+                <div class="col-md-12">
+                    <a routerLink="/asset/lists" rippleeffect=""
+                        class="mr-1 btn btn-outline-secondary round waves-effect" style="width:150px">Cancel</a>
+                    <button type="button" rippleeffect="" (click)="Save()" class="btn btn-primary round waves-effect"
+                        style="width:150px" id="btnSave" [disabled]="!r.valid || !isFileValid">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

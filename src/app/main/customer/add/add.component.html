@@ -1,0 +1,177 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/customer/list" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>Add Customer
+                        </h1>
+                    </div>
+                    <div *ngIf="message">{{ simpleAlert() }} </div>
+                </div>
+            </div>
+        </div>
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body p-2 p-xl-3">
+                <form class="form" #r="ngForm" (ngSubmit)="Save(r)">
+                    <div class="row">
+                        <div class="col-md-12 mb-1">
+                            <p>Enter Details to add customer to make order</p>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">First Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-9">
+                                    <input ngModel name="firstName" required #firstname="ngModel" type="text"
+                                        id="firstname" placeholder="Enter First Name" class="form-control">
+                                    <span class="help-block text-danger" *ngIf="firstname.touched && firstname.invalid">
+                                        First Name is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Last Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-9">
+                                    <input ngModel name="lastName" required #lastname="ngModel" type="text"
+                                        id="lastname" placeholder="Enter Last Name" class="form-control">
+                                    <span class="help-block text-danger" *ngIf="lastname.touched && lastname.invalid">
+                                        Last Name is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Email Address<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-9">
+                                    <input ngModel name="email" required #email="ngModel" type="email" id="email"
+                                        placeholder="Enter Email Address" class="form-control"
+                                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                        (keyup)="getEmail($event.target.value)">
+                                    <div *ngIf="(email.invalid && email.touched) || email.dirty">
+                                        <span class="help-block text-danger">{{checkEmailError}}</span>
+                                        <span class="help-block text-danger" *ngIf="email.errors?.required">
+                                            Email Address is required
+                                        </span>
+                                        <span class="help-block text-danger" *ngIf="email.errors?.pattern">
+                                            Email Address is not valid
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Phone Number</label>
+                                <div class="col-md-9">
+                                    <input ngModel name="phoneNumber" #phone="ngModel" type="number" id="phone"
+                                        placeholder="Enter Phone No." maxlength="15" class="form-control"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
+                                        pattern=".{7,15}" (keyup)="getPhoneNumber($event.target.value)">
+                                    <span class="help-block text-danger" *ngIf="phone.errors?.pattern">
+                                        Minimum 7 Digit Required
+                                    </span>
+                                    <span class="help-block text-danger">{{checkPhonenumber}}</span>
+                                    <div *ngIf="model.phoneNumber > 0 && model.phoneNumber< 15"
+                                        class="alert alert-danger">
+                                        Contact number must be 15 digits
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Department Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-9">
+                                    <select ngModel required #Department="ngModel" name="departmentId" id="Department"
+                                        class="form-control">
+                                        <option value="">Select</option>
+                                        <option *ngFor="let web of departmentList" [value]="web.value">{{web.text}}
+                                        </option>
+                                    </select>
+                                    <span class="help-block text-danger"
+                                        *ngIf="Department.touched && Department.invalid">
+                                        Department is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Item Location</label>
+                                <div class="col-md-9">
+                                    <select ngModel #Location="ngModel" name="locationId" id="Location"
+                                        class="form-control">
+                                        <option value="">Select</option>
+                                        <option [value]="web.value" *ngFor="let web of locationList">{{web.text}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Status<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select required ngModel name="statusId" id="statuss" #statuss="ngModel"
+                                        class="form-control">
+                                        <option value="">Select Status</option>
+                                        <option *ngFor="let web of statuslist" [value]="web.value">{{web.text}}</option>
+                                    </select>
+                                    <span class="help-block text-danger" *ngIf="statuss.touched && statuss.invalid">
+                                        Status is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Comments</label>
+                                <div class="col-md-9">
+                                    <textarea ngModel name="comments" cols="30" rows="4"
+                                        class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body text-center upload-img">
+                                            <div class="row match-height align-items-center">
+                                                <div class="col-md-12" *ngFor="let src of images">
+                                                    <div class="card mb-2">
+                                                        <div>
+                                                            <img class="assetpic" src="{{src}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 text-center">
+                                                    <label for="upload-picture" class="" style="width:100%">
+                                                        <span class="d-none d-sm-block">Drag or Upload Customer Image
+                                                            here<i data-feather="upload"
+                                                                class="font-medium-5 mr-1"></i></span>
+                                                        <input ngModel name="customerImage" hidden type="file"
+                                                            id="upload-picture" multiple hidden=""
+                                                            (change)="UploadImage($event)"
+                                                            accept="image/png, image/jpeg, image/jpg"
+                                                            class="form-control">
+                                                            <span class="req-red">{{fileUploadError}}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2 mb-0">
+                            <a href="/customer/list" class="mr-1 btn btn-outline-secondary round waves-effect"
+                                style="width:120px">Cancel</a>
+                            <button type="submit" [disabled]="!r.valid || emailExists || noExists || !isFileValid" rippleeffect=""
+                                class="btn btn-primary round waves-effect" style="width:120px" id="btnSave">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

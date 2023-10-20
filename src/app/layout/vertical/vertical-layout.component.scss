@@ -1,0 +1,32 @@
+@import '@core/scss/base/core/menu/menu-types/vertical-menu.scss';
+@import '@core/scss/base/core/menu/menu-types/vertical-overlay-menu.scss';
+.vertical-layout.vertical-menu-modern.menu-expanded .main-menu {
+    margin-top: 20px;
+    margin-left: 20px;
+    border-radius: 15px;
+}
+
+html .content {
+    margin-left: 280px;
+}
+
+.header-navbar.floating-nav {
+    width: calc(100vw - (100vw - 100%) - calc(2rem * 2) - 280px);
+}
+
+.header-navbar.fixed-top,
+.header-navbar.floating-nav {
+    left: 280px;
+    border-radius: 15px;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+html .content .content-wrapper .content-header-title {
+    font-weight: bold;
+    color: #000000;
+    padding-right: 1rem;
+    border-right: none;
+}

@@ -1,0 +1,29 @@
+// .vertical-menu {
+//   &.main-menu {
+//     margin: 0;
+//     padding: 0;
+//   }
+// }
+.main-menu.menu-light .navigation>li>ul li:not(.has-sub) {
+    margin: 0 15px;
+    margin-right: 0px;
+    border-radius: 15px 0px 0px 15px !important;
+}
+
+.main-menu.menu-light .navigation>li>a {
+    margin: 15px 15px;
+    margin-right: 0px;
+    border-radius: 15px 0px 0px 15px !important;
+}
+
+.main-menu.menu-dark .navigation>li>ul li:not(.has-sub) {
+    margin: 0 15px;
+    margin-right: 0px;
+    border-radius: 15px 0px 0px 15px !important;
+}
+
+.main-menu.menu-dark .navigation>li>a {
+    margin: 15px 15px;
+    margin-right: 0px;
+    border-radius: 15px 0px 0px 15px !important;
+}

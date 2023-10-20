@@ -1,0 +1,431 @@
+<div class="content-wrapper container-xxl p-0 onPrint">
+    <div class="content-body">
+        <div class="content-header row">
+            <div class="content-header-left col-md-6 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/asset/lists" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>{{model.assetName}}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-6 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <div class="btns disable-field">
+
+                            <div ngbDropdown style="width:200px; " class="d-inline-block  ">
+                                <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                    id="dropdownMenuButton" rippleEffect>
+                                    Actions <i data-feather="chevron-down" class="ml-2"></i>
+                                </button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="printer"
+                                            class="mr-50"></i>Print Document</a>
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="file-text"
+                                            class="mr-50"></i>Export to CSV</a>
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="file-text"
+                                            class="mr-50"></i>Export to PDF</a>
+                                </div>
+                            </div>
+                            <button type="button" (click)="openRentalHistory(model.assetId)" rippleeffect=""
+                                class="btn btn-primary round waves-effect ml-1 ">Rental
+                                History</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body p-xl-3 p-2">
+                <div class="row" *ngIf="item_type =='asset'">
+                    <div class="col-md-12 col-xl-3 img-height-min">
+                        <img src="{{model.assetImage ? model.assetImage : 'assets/images/no_img.png'}}" alt=""
+                            class="img-responsive order_img assetpic">
+                    </div>
+                    <div class="col-md-9 mt-2">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>{{model.assetName}}</h4>
+                            </div>
+                            <div class="col-md-12 disable-field">
+                                <div class="badge badge-light-secondary" style="width: 90px;">Machinery</div>
+                            </div>
+                            <div class="col-md-12">
+                                <p class="mt-1">{{model.describe}}</p>
+                            </div>
+                            <div class="d-flex justify-content-start flex-wrap color-box">
+                                <div style="background:#00CC66"
+                                    class="text-center colors-container rounded text-white  height-100 d-flex align-items-center justify-content-center mr-1 ml-50 my-1 shadow disable-field">
+                                    <div class="d-block">
+                                        <p class="mb-50">Active</p>
+                                        <h4 class="text-white">25</h4>
+                                    </div>
+                                </div>
+                                <div style="background:#4B9AE2"
+                                    class="text-center  colors-container rounded text-white  height-100 d-flex align-items-center justify-content-center mr-1 ml-50 my-1 shadow">
+                                    <div class="d-block">
+                                        <p class="mb-50">Available</p>
+                                        <h4 class="text-white">{{statusCount.availableCount}}</h4>
+                                    </div>
+                                </div>
+                                <div style="background:#FF8050"
+                                    class="text-center  colors-container rounded text-white  height-100 d-flex align-items-center justify-content-center mr-1 ml-50 my-1 shadow">
+                                    <div class="d-block">
+                                        <p class="mb-50">Check out</p>
+                                        <h4 class="text-white">{{statusCount.checkOutCount}}</h4>
+                                    </div>
+                                </div>
+                                <div style="background:#DCB61F"
+                                    class="text-center  colors-container rounded text-white  height-100 d-flex align-items-center justify-content-center mr-1 ml-50 my-1 shadow disable-field">
+                                    <div class="d-block">
+                                        <p class="mb-50">Reserved</p>
+                                        <h4 class="text-white">10</h4>
+                                    </div>
+                                </div>
+                                <div style="background:#BC7CBC"
+                                    class="text-center colors-container rounded text-white  height-100 d-flex align-items-center justify-content-center mr-1 ml-50 my-1 shadow">
+                                    <div class="d-block">
+                                        <p class="mb-50">Maintenance</p>
+                                        <h4 class="text-white">{{statusCount.maintenanceCount}}</h4>
+                                    </div>
+                                </div>
+                                <div style="background:#997FCE"
+                                    class="text-center colors-container rounded text-white  height-100 d-flex align-items-center justify-content-center my-1 ml-50 shadow">
+                                    <div class="d-block">
+                                        <p class="mb-50">Inspection</p>
+                                        <h4 class="text-white">{{statusCount.inspectionCount}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row match-height" *ngIf="item_type =='asset'">
+                    <div class="col-md-6 mt-2">
+                        <div class="card border " style="box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%) !important;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 mb-2">
+                                        <h4>Select Assets</h4>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-4 col-form-label" for="">Start Asset ID</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="startAssetId"
+                                                    [(ngModel)]="assetModel.startAssetIndex" placeholder="Enter ID"
+                                                    id="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-4 col-form-label" for="">End Asset ID</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="endAssetId"
+                                                    [(ngModel)]="assetModel.endAssetIndex" placeholder="Enter ID">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-6 text-right btn-add">
+                                        <div class="form-group mb-2 mr-1">
+                                            <button type="button" rippleeffect=""
+                                                class="btn btn-primary round waves-effect"
+                                                (click)="submitAssetResult(assetModel)">Submit</button>
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <button type="button" rippleeffect=""
+                                                class="btn btn-primary round waves-effect"
+                                                (click)="printBarCode(assetModel, modalLG,$event)">Print</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-2" *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+                        <div class="card border" style="box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%) !important;">
+                            <div class="card-body p-5">
+                                <div class="row">
+                                    <div class="col-md-12 mb-2 text-center p-1">
+                                        <h4>Add Assets</h4>
+                                    </div>
+                                    <div class="col-md-6 disable-field">
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-6 col-form-label" for="">Condition of Asset</label>
+                                            <div class="col-md-6">
+                                                <select name="" id="" class="form-control">
+                                                    <option value="">select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 disable-field">
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-6 col-form-label" for="">Quantity</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 disable-field">
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-6 col-form-label" for="">Date Purchased</label>
+                                            <div class="col-md-6 datepicker">
+                                                <ng2-flatpickr [config]="birthDateOptions"
+                                                    placeholder="Select Date"></ng2-flatpickr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-2 text-center">
+                                            <button type="button" (click)="openEditQuantity(model)"
+                                                class="btn btn-primary round ">Add Assets</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row match-height" *ngIf="item_type =='inventory'">
+                    <div class="col-md-4 text-left"
+                        *ngIf="role=='admin'|| role=='supervisor' || role=='shop attendant'">
+                        <div class="card border" style="box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%) !important;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 mb-2">
+                                        <h4>Add Inventory</h4>
+                                    </div>
+                                    <div class="col-md-12 disable-field">
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-6 col-form-label" for="">Quantity</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 disable-field">
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-6 col-form-label" for="">Date Purchased</label>
+                                            <div class="col-md-6">
+                                                <ng2-flatpickr [config]="birthDateOptions"
+                                                    placeholder="Select Date"></ng2-flatpickr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 disable-field">
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-6 col-form-label" for="">Vendor</label>
+                                            <div class="col-md-6">
+                                                <select name="" id="" class="form-control">
+                                                    <option value="">Select Vendor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 ">
+                                        <div class="form-group mb-2 ">
+                                            <button type="button" class="btn btn-primary round"
+                                                (click)="openEditQuantity(model)">Add Inventory</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" *ngIf="model.assetImage==''">
+                        <img src="assets/images/no_img.png" alt="" class="img-responsive order_img">
+                    </div>
+                    <div class="col-md-4" *ngIf="model.assetImage!=''">
+                        <img src=" {{model.assetImage}}" alt="" class="img-responsive order_img">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>{{model.assetName}}</h4>
+                            </div>
+                            <div class="col-md-12 disable-field">
+                                <div class="badge badge-light-secondary" style="width: 90px;">Machinery</div>
+                            </div>
+                            <div class="col-md-12">
+                                <p class="mt-1">{{model.describe}}</p>
+                            </div>
+                            <div class="d-flex justify-content-start flex-wrap">
+                                <div style="background:#00CC66"
+                                    class="text-center colors-container rounded text-white width-100 height-100 d-flex align-items-center justify-content-center mr-1 ml-50 my-1 shadow disable-field">
+                                    <div class="d-block">
+                                        <p class="mb-50">Available</p>
+                                        <h4 class="text-white">25</h4>
+                                    </div>
+                                </div>
+                                <div style="background:#4B9AE2"
+                                    class="text-center  colors-container rounded text-white width-100 height-100 d-flex align-items-center justify-content-center mr-1 ml-50 my-1 shadow">
+                                    <div class="d-block">
+                                        <p class="mb-50">Available</p>
+                                        <h4 class="text-white">{{inventoryQuantity}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section id="ngx-datatable-kitchen-sink">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <label class="d-flex align-items-center">Show
+                                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption"
+                                        style="width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    Entries
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 d-flex justify-content-md-end">
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                <label class="d-flex align-items-center"><input type="search" placeholder="Search..."
+                                        class="form-control ml-25" (keyup)="filterUpdate($event)"
+                                        (search)="filterUpdate($event)" /></label>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                <button type="button" data-toggle="modal" data-target="#asset-view-filter"
+                                    (click)="toggleSidebar('asset-view-filter')" rippleeffect=""
+                                    class="btn btn-outline-primary round waves-effect">Apply Filter <i
+                                        data-feather="chevron-right" class="ml-2"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <img id="ItemPreview" src="{{imagesrc}}"> -->
+                    <ngx-datatable [rows]="kitchenSinkRows" [rowHeight]="50"
+                        class="bootstrap core-bootstrap custom_datatable img_datatable" [limit]="10"
+                        [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="50" [scrollbarH]="true"
+                        [selectionType]="SelectionType.checkbox" [limit]="basicSelectedOption">
+                        <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false"
+                            [draggable]="false" [resizeable]="false" prop="assetID">
+                            <ng-template ngx-datatable-header-template let-value="value"
+                                let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" [checked]="allRowsSelected"
+                                        (change)="selectFn(!allRowsSelected)" id="headerChkbxRef" />
+                                    <label class="custom-control-label" for="headerChkbxRef"></label>
+                                </div>
+                            </ng-template>
+                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row"
+                                let-value="{{value}}" let-isSelected="isSelected"
+                                let-onCheckboxChangeFn="onCheckboxChangeFn">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" name="checkboxbar" class="custom-control-input"
+                                        [checked]="isSelected" (change)="onCheckboxChangeFn($event)"
+                                        id="rowChkbxRef{{ rowIndex }}" value="{{row.assetID}}" />
+                                    <label class="custom-control-label" for="rowChkbxRef{{ rowIndex }}"></label>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="" [width]="50" [sortable]="false">
+                            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                <div class="d-flex align-items-center">
+                                    <a (click)="ondetail(row)"><img style="height:12px" src="assets/images/icon/eye.png"
+                                            alt=""></a>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Asset ID" prop="assetID" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Serial Number" prop="serialNumber"
+                            [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Location" prop="location" [width]="100"></ngx-datatable-column>
+                        <ngx-datatable-column name="Assign to" prop="assignTo" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Check Out Date" prop="checkOutDate" [width]="120">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.checkOutDate | date:'dd-MM-yyyy'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Condition" prop="condition" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Return Due Date" prop="returnDueDate" [width]="120">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.returnDueDate | date:'dd-MM-yyyy'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Vendor" prop="vendor" [width]="100"></ngx-datatable-column>
+                        <ngx-datatable-column name="Status" prop="status" [width]="120">
+                            <ng-template let-status="value" ngx-datatable-cell-template let-row="row">
+                                <div ngbDropdown class="badge badge-pill" style="width: 90px;" [ngClass]="{
+                                                                                                    'badge-success': status == 'Available',
+                                                                                                    'badge-warning': status == 'Check Out',
+                                                                                                    'badge-pink': status == 'Reserved',
+                                                                                                    'badge-blue': status == 'Maintenance',
+                                                                                                    'badge-green': status == 'Inspection',
+                                                                                                    'badge-danger': status == 'Not Active' || status == 'Unavailable'
+                                                                                                }">
+
+                                    <div ngbDropdownToggle type="button" id="dropdownMenuButton"> {{ status ==
+                                        'Available' ? 'Available' : status == 'Check Out' ? 'Checked Out'
+                                        : status == 'Reserved' ?
+                                        'Reserved' : status == 'Maintenance' ? 'Maintenance'
+                                        : status == 'Inspection' ? 'Inspection' : status == 'Unavailable' ?
+                                        'Unavailable' : status
+                                        == 'Not Active' ? 'Not
+                                        Active' : 'Not Active' }} </div>
+
+                                    <div ngbDropdownMenu aria-labelledby="dropdownMenuButton"
+                                        [*ngIf]="status=='Available'">
+                                        <a ngbDropdownItem (click)="updateStatus($event)" data-id="{{row.assetID}}"
+                                            value="2">Not Active</a>
+                                        <a ngbDropdownItem (click)="updateStatus($event)" data-id="{{row.assetID}}"
+                                            value="3">Unavailable</a>
+                                    </div>
+
+                                </div>
+                            </ng-template>
+
+
+                            <!-- <ng-template let-status="value" ngx-datatable-cell-template>
+                                <div class="badge badge-pill" style="width: 90px;" [ngClass]="{
+                                'badge-success': status == 1,
+                                'badge-warning': status == 2,
+                                'badge-pink': status == 3,
+                                'badge-blue': status == 4,
+                                'badge-green': status == 5,
+                                'badge-danger': status == 6,
+                                'badge-danger': status == 7
+                            }">
+                                    {{ status == 1 ? 'Available' : status == 2 ? 'Checked Out' : status == 3 ?
+                                    'Reserved' : status == 4 ? 'Maintenance' : status == 5 ? 'Inspection' : status == 6
+                                    ? 'Unavailable' : status == 7 ? 'Not Active' : 'Not Active' }}
+                                </div>
+                            </ng-template> -->
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+
+                </section>
+            </div>
+        </div>
+    </div>
+    <core-sidebar class="modal modal-slide-in sidebar-todo-modal fade" name="asset-view-filter"
+        overlayClass="modal-backdrop" hideOnEsc="true">
+        <app-view-filter></app-view-filter>
+    </core-sidebar>
+</div>
+
+<ng-template #modalLG let-modal class="modal">
+    <div class="modal-body p-0 modal-dialog" tabindex="0" ngbAutofocus>
+        <app-asset-barcodeprint [barcodeImage]="barcodeImage"></app-asset-barcodeprint>
+    </div>
+    <div class="modal-footer onPrint ">
+        <button type="button" class="btn btn-primary round" (click)="printImages(barcodeImage)">Print</button>
+    </div>
+</ng-template>
+
+<!-- onclick="js:window.print()" -->

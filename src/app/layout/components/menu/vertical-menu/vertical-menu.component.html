@@ -1,0 +1,639 @@
+<!-- Menu header -->
+<div class="navbar-header">
+    <ul class="nav navbar-nav flex-row">
+        <li class="nav-item mr-auto">
+            <!-- App Branding -->
+            <a class="navbar-brand" [routerLink]="['/']">
+                <span class="brand-logo">
+                    <img src="assets/images/logo.png" alt="brand-logo" />
+                </span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!--/ Menu header -->
+
+<!-- Navbar shadow -->
+<div class="shadow-bottom" [ngClass]="{ 'd-block': isScrolled }"></div>
+
+<!-- Main menu -->
+<div class="main-menu-content" [perfectScrollbar] (scroll)="onSidebarScroll()">
+    <ul layout="vertical" class="navigation navigation-main" ng-reflect-layout="vertical" *ngIf="role == 'admin'">
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" [routerLink]="['/home']" (click)="toggleclose()">
+                <div class="dashboard_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Dashboard</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/order/list" (click)="toggleclose()">
+                <div class="mr-50 order_img_icon"></div>
+                <span class="menu-title text-truncate">Orders</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="item_type||asset_toggle?'open':''">
+            <a class="d-flex align-items-center" (click)="toggleOpen('asset_toggle')">
+                <div class="asset_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Assets</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/asset/lists">
+                        <span class="menu-title text-truncate">Item Summary</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/reservations">
+                        <span class="menu-title text-truncate">Reservations</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/reservation-history">
+                        <span class="menu-title text-truncate">Rental History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'"
+                    style="display: none;">
+                    <a class="d-flex align-items-center" routerLink="/asset/stock-history">
+                        <span class="menu-title text-truncate">Stock History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/comments">
+                        <span class="menu-title text-truncate">Comments</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/documents">
+                        <span class="menu-title text-truncate">Documents</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/maintenances">
+                        <span class="menu-title text-truncate">Maintenance</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/histories">
+                        <span class="menu-title text-truncate">Audit History</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/out_of_stock/logs" (click)="toggleclose()">
+                <div class="mr-50 stock_img_icon"></div>
+                <span class="menu-title text-truncate">Out of Stock Log</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/customer/list" (click)="toggleclose()">
+                <div class="customer_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Customers</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="{ 'open': user_toggle }">
+            <a class="d-flex align-items-center" (click)="toggleOpen('user_toggle')">
+                <div class="mr-50 users_img_icon"></div>
+                <span class="menu-title text-truncate">Users</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/user/list">
+                        <span class="menu-title text-truncate">Users</span>
+                    </a>
+                </li>
+                <!-- <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/user/history">
+                        <span class="menu-title text-truncate">User Aduit History</span>
+                    </a>
+                </li> -->
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/location/list" (click)="toggleclose()">
+                <div class="location_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Locations</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/reports" (click)="toggleclose()">
+                <div class="file_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Reports</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="{ 'open': reference_toggle }">
+            <a class="d-flex align-items-center" (click)="toggleOpen('reference_toggle')">
+                <div class="mr-50 setting_img_icon"></div>
+                <span class="menu-title text-truncate">References</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/vendors">
+                        <span class="menu-title text-truncate">Vendors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/categories">
+                        <span class="menu-title text-truncate">Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/sub_categories">
+                        <span class="menu-title text-truncate">Sub Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/asset_conditions">
+                        <span class="menu-title text-truncate">Asset Conditions</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/configuration">
+                        <span class="menu-title text-truncate">Configuration</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/color-list">
+                        <span class="menu-title text-truncate">Colors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/departments">
+                        <span class="menu-title text-truncate">Department</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="px-2">
+                <a href="javascript:void(0)" (click)="logout()" rippleeffect=""
+                    class="btn btn-primary round waves-effect mt-3" style="width:190px">
+                    <img src="assets/images/menu/logout.png" class="mr-2" alt=""> Logout
+                </a>
+            </div>
+
+        </li>
+    </ul>
+    <ul layout="vertical" class="navigation navigation-main" ng-reflect-layout="vertical" *ngIf="role == 'read only'">
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" [routerLink]="['/home']" (click)="toggleclose()">
+                <div class="dashboard_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Dashboard</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/order/list" (click)="toggleclose()">
+                <div class="mr-50 order_img_icon"></div>
+                <span class="menu-title text-truncate">Orders</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="item_type||asset_toggle?'open':''">
+            <a class="d-flex align-items-center" (click)="toggleOpen('asset_toggle')">
+                <div class="asset_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Assets</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/asset/lists">
+                        <span class="menu-title text-truncate">Item Summary</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/reservations">
+                        <span class="menu-title text-truncate">Reservations</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/reservation-history">
+                        <span class="menu-title text-truncate">Rental History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'"
+                    style="display: none;">
+                    <a class="d-flex align-items-center" routerLink="/asset/stock-history">
+                        <span class="menu-title text-truncate">Stock History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/comments">
+                        <span class="menu-title text-truncate">Comments</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/documents">
+                        <span class="menu-title text-truncate">Documents</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/maintenances">
+                        <span class="menu-title text-truncate">Maintenance</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/histories">
+                        <span class="menu-title text-truncate">Audit History</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/out_of_stock/logs" (click)="toggleclose()">
+                <div class="mr-50 stock_img_icon"></div>
+                <span class="menu-title text-truncate">Out of Stock Log</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/customer/list" (click)="toggleclose()">
+                <div class="customer_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Customers</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="{ 'open': user_toggle }">
+            <a class="d-flex align-items-center" (click)="toggleOpen('user_toggle')">
+                <div class="mr-50 users_img_icon"></div>
+                <span class="menu-title text-truncate">Users</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/user/list">
+                        <span class="menu-title text-truncate">Users</span>
+                    </a>
+                </li>
+                <!-- <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/user/history">
+                        <span class="menu-title text-truncate">User Aduit History</span>
+                    </a>
+                </li> -->
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/location/list" (click)="toggleclose()">
+                <div class="location_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Locations</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/reports" (click)="toggleclose()">
+                <div class="file_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Reports</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="{ 'open': reference_toggle }">
+            <a class="d-flex align-items-center" (click)="toggleOpen('reference_toggle')">
+                <div class="mr-50 setting_img_icon"></div>
+                <span class="menu-title text-truncate">References</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/vendors">
+                        <span class="menu-title text-truncate">Vendors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/categories">
+                        <span class="menu-title text-truncate">Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/sub_categories">
+                        <span class="menu-title text-truncate">Sub Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/asset_conditions">
+                        <span class="menu-title text-truncate">Asset Conditions</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/configuration">
+                        <span class="menu-title text-truncate">Configuration</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/color-list">
+                        <span class="menu-title text-truncate">Colors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/departments">
+                        <span class="menu-title text-truncate">Department</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="px-2">
+                <a href="javascript:void(0)" (click)="logout()" rippleeffect=""
+                    class="btn btn-primary round waves-effect mt-3" style="width:190px">
+                    <img src="assets/images/menu/logout.png" class="mr-2" alt=""> Logout
+                </a>
+            </div>
+
+        </li>
+    </ul>
+    <ul layout="vertical" class="navigation navigation-main" ng-reflect-layout="vertical" *ngIf="role =='supervisor'">
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" [routerLink]="['/home']" (click)="toggleclose()">
+                <div class="dashboard_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Dashboard</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/order/list" (click)="toggleclose()">
+                <div class="mr-50 order_img_icon"></div>
+                <span class="menu-title text-truncate">Orders</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="item_type||asset_toggle?'open':''">
+            <a class="d-flex align-items-center" (click)="toggleOpen('asset_toggle')">
+                <div class="asset_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Assets</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/asset/lists">
+                        <span class="menu-title text-truncate">Item Summary</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/reservations">
+                        <span class="menu-title text-truncate">Reservations</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/reservation-history">
+                        <span class="menu-title text-truncate">Rental History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'"
+                    style="display: none;">
+                    <a class="d-flex align-items-center" routerLink="/asset/stock-history">
+                        <span class="menu-title text-truncate">Stock History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/comments">
+                        <span class="menu-title text-truncate">Comments</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/documents">
+                        <span class="menu-title text-truncate">Documents</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/maintenances">
+                        <span class="menu-title text-truncate">Maintenance</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/histories">
+                        <span class="menu-title text-truncate">Audit History</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/out_of_stock/logs" (click)="toggleclose()">
+                <div class="mr-50 stock_img_icon"></div>
+                <span class="menu-title text-truncate">Out of Stock Log</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/customer/list" (click)="toggleclose()">
+                <div class="customer_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Customers</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="{ 'open': user_toggle }">
+            <a class="d-flex align-items-center" (click)="toggleOpen('user_toggle')">
+                <div class="mr-50 users_img_icon"></div>
+                <span class="menu-title text-truncate">Users</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/user/list">
+                        <span class="menu-title text-truncate">Users</span>
+                    </a>
+                </li>
+                <!-- <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/user/history">
+                        <span class="menu-title text-truncate">User Aduit History</span>
+                    </a>
+                </li> -->
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/reports" (click)="toggleclose()">
+                <div class="file_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Reports</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="{ 'open': reference_toggle }">
+            <a class="d-flex align-items-center" (click)="toggleOpen('reference_toggle')">
+                <div class="mr-50 setting_img_icon"></div>
+                <span class="menu-title text-truncate">References</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/vendors">
+                        <span class="menu-title text-truncate">Vendors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/categories">
+                        <span class="menu-title text-truncate">Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/sub_categories">
+                        <span class="menu-title text-truncate">Sub Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/asset_conditions">
+                        <span class="menu-title text-truncate">Asset Conditions</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/configuration">
+                        <span class="menu-title text-truncate">Configuration</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/color-list">
+                        <span class="menu-title text-truncate">Colors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/departments">
+                        <span class="menu-title text-truncate">Department</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="px-2">
+                <a href="javascript:void(0)" (click)="logout()" rippleeffect=""
+                    class="btn btn-primary round waves-effect mt-3" style="width:190px">
+                    <img src="assets/images/menu/logout.png" class="mr-2" alt=""> Logout
+                </a>
+            </div>
+
+        </li>
+    </ul>
+
+    <ul layout="vertical" class="navigation navigation-main" ng-reflect-layout="vertical"
+        *ngIf="role =='shop attendant'">
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" [routerLink]="['/home']" (click)="toggleclose()">
+                <div class="dashboard_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Dashboard</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/order/list" (click)="toggleclose()">
+                <div class="mr-50 order_img_icon"></div>
+                <span class="menu-title text-truncate">Orders</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="item_type||asset_toggle?'open':''">
+            <a class="d-flex align-items-center" (click)="toggleOpen('asset_toggle')">
+                <div class="asset_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Assets</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/asset/lists">
+                        <span class="menu-title text-truncate">Item Summary</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/reservations">
+                        <span class="menu-title text-truncate">Reservations</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/reservation-history">
+                        <span class="menu-title text-truncate">Rental History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'"
+                    style="display: none;">
+                    <a class="d-flex align-items-center" routerLink="/asset/stock-history">
+                        <span class="menu-title text-truncate">Stock History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/comments">
+                        <span class="menu-title text-truncate">Comments</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/documents">
+                        <span class="menu-title text-truncate">Documents</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/maintenances">
+                        <span class="menu-title text-truncate">Maintenance</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="d-flex align-items-center" routerLink="/asset/histories">
+                        <span class="menu-title text-truncate">Audit History</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/out_of_stock/logs" (click)="toggleclose()">
+                <div class="mr-50 stock_img_icon"></div>
+                <span class="menu-title text-truncate">Out of Stock Log</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/customer/list" (click)="toggleclose()">
+                <div class="customer_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Customers</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/location/list" (click)="toggleclose()">
+                <div class="location_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Locations</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="d-flex align-items-center" routerLink="/reports" (click)="toggleclose()">
+                <div class="file_img_icon mr-50"></div>
+                <span class="menu-title text-truncate">Reports</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" core-menu-vertical-collapsible="" class="nav-item has-sub"
+            [ngClass]="{ 'open': reference_toggle }">
+            <a class="d-flex align-items-center" (click)="toggleOpen('reference_toggle')">
+                <div class="mr-50 setting_img_icon"></div>
+                <span class="menu-title text-truncate">References</span>
+            </a>
+            <ul class="menu-content">
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/vendors">
+                        <span class="menu-title text-truncate">Vendors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/categories">
+                        <span class="menu-title text-truncate">Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/sub_categories">
+                        <span class="menu-title text-truncate">Sub Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/asset_conditions">
+                        <span class="menu-title text-truncate">Asset Conditions</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/configuration">
+                        <span class="menu-title text-truncate">Configuration</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/color-list">
+                        <span class="menu-title text-truncate">Colors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="d-flex align-items-center" routerLink="/reference/departments">
+                        <span class="menu-title text-truncate">Department</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="px-2">
+                <a href="javascript:void(0)" (click)="logout()" rippleeffect=""
+                    class="btn btn-primary round waves-effect mt-3" style="width:190px">
+                    <img src="assets/images/menu/logout.png" class="mr-2" alt=""> Logout
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!--/ Main menu -->

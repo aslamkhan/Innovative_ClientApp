@@ -1,0 +1,133 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+
+.datatable-scroll {
+    width: auto !important;
+}
+
+#dropdownMenuButton,
+#dropdownMenuButton1 {
+    width: 190px;
+    border-radius: 20px;
+    margin-right: 15px;
+}
+
+.order_img {
+    border-radius: 0px;
+    box-shadow: 0 4px 8px 0 rgb(34 41 47 / 12%);
+}
+
+.badge-pink {
+    background-color: #CD9A03;
+    color: #fff;
+}
+
+.badge-blue {
+    background-color: #D5A2D5;
+    color: #fff;
+}
+
+.badge-green {
+    background-color: #57555B;
+    color: #ffffff;
+}
+
+@import '@core/scss/angular/libs/flatpickr.component.scss';
+
+.dark-layout input.form-control,
+.dark-layout textarea.form-control {
+    background-color: #283046 !important;
+    color: #b4b7bd;
+}
+
+.form-control {
+    background-color: #fff !important;
+}
+
+.color-box .colors-container {
+    width: 120px;
+}
+
+@media screen and (max-width:640px) {
+    .color-box .colors-container {
+        width: 90%;
+        margin: 10px auto !important;
+    }
+}
+
+.disable-field {
+    display: none !important;
+}
+
+@media print {
+    .menu-expanded {
+        display: none;
+    }
+
+    .modal-dialog {
+        visibility: visible !important;
+        /**Remove scrollbar for printing.**/
+        overflow: visible !important;
+    }
+
+    .modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 0;
+        padding: 0;
+        min-height: 550px;
+        visibility: visible;
+        /**Remove scrollbar for printing.**/
+        overflow: visible !important;
+    }
+
+    .onPrint {
+        display: none;
+    }
+
+    body {
+        visibility: hidden;
+    }
+}
+
+.badge .dropdown-toggle {
+    max-width: 100% !important;
+    padding: 6px 0;
+}
+
+.badge .dropdown-menu {
+    visibility: hidden;
+
+}
+
+.badge.badge-success .dropdown-menu {
+    visibility: visible;
+
+}
+
+.badge.dropdown .dropdown-toggle::after {
+    display: none;
+
+}
+
+.badge.badge-success.dropdown .dropdown-toggle::after {
+    display: inline-block;
+    position: relative;
+    top: 2px;
+}
+
+.badge.dropdown .dropdown-toggle {
+    cursor: auto !important;
+}
+
+.badge.badge-success .dropdown-toggle {
+    cursor: pointer !important;
+}
+
+.order_img {
+    max-width: 100%;
+}
+
+.btn-add .form-group {
+    display: inline-block;
+}

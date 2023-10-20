@@ -1,0 +1,159 @@
+<!-- Main menu -->
+<div class="navbar-container main-menu-content">
+    <ul id="main-menu-navigation" layout="horizontal" class="nav navbar-nav">
+        <li [routerLinkActive]="['active']">
+            <a class="dropdown-item d-flex align-items-center" routerLink="/home">
+                <div class="dashboard_img_icon mr-50"></div>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="dropdown-item d-flex align-items-center" routerLink="/order/list">
+                <div class="mr-50 order_img_icon"></div>
+                <span>Orders</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" class="dropdown dropdown-submenu sidebar-group-active"
+            [ngClass]="{ 'open': user_toggle }" (mouseenter)="onmouseEnter('asset_toggle')"
+            (mouseleave)="onmouseLeave('asset_toggle')">
+            <a class="d-flex align-items-center dropdown-item dropdown-toggle">
+                <div class="asset_img_icon mr-50"></div>
+                <span>Assets</span>
+            </a>
+            <ul class="dropdown-menu" [ngClass]="{ 'show': asset_toggle }">
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/asset/lists">
+                        <span>Item Summary</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/asset/reservations">
+                        <span>Reservations</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/asset/reservation-history">
+                        <span>Rental History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'"
+                    style="display: none;">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/asset/stock-history">
+                        <span>Stock History</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/asset/comments">
+                        <span>Comments</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/asset/documents">
+                        <span>Documents</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/asset/maintenances">
+                        <span>Maintenance</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']" *ngIf="item_type=='asset' || item_type=='inventory'">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/asset/histories">
+                        <span>Audit History</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="dropdown-item d-flex align-items-center" routerLink="/out_of_stock/logs">
+                <div class="mr-50 stock_img_icon"></div>
+                <span>Out of Stock Log</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="dropdown-item d-flex align-items-center" routerLink="/customer/list">
+                <div class="customer_img_icon mr-50"></div>
+                <span>Customers</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" class="dropdown dropdown-submenu sidebar-group-active"
+            [ngClass]="{ 'open active': user_toggle }" (mouseenter)="onmouseEnter('user_toggle')"
+            (mouseleave)="onmouseLeave('user_toggle')">
+            <a class="d-flex align-items-center dropdown-item dropdown-toggle sidebar-group-active">
+                <div class="mr-50 users_img_icon"></div>
+                <span>Users</span>
+            </a>
+            <ul class="dropdown-menu" [ngClass]="{ 'show': user_toggle }">
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/user/list">
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/user/history">
+                        <span>User Aduit History</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="dropdown-item d-flex align-items-center" routerLink="/location/list">
+                <div class="location_img_icon mr-50"></div>
+                <span>Locations</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']">
+            <a class="dropdown-item d-flex align-items-center" routerLink="/reports">
+                <div class="file_img_icon mr-50"></div>
+                <span>Reports</span>
+            </a>
+        </li>
+        <li [routerLinkActive]="['active']" class="dropdown dropdown-submenu sidebar-group-active"
+            [ngClass]="{ 'open active': reference_toggle }" (mouseenter)="onmouseEnter('reference_toggle')"
+            (mouseleave)="onmouseLeave('reference_toggle')">
+            <a class="d-flex align-items-center dropdown-item dropdown-toggle sidebar-group-active">
+                <div class="mr-50 setting_img_icon"></div>
+                <span>References</span>
+            </a>
+            <ul class="dropdown-menu" [ngClass]="{ 'show': reference_toggle }">
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/reference/vendors">
+                        <span>Vendors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/reference/categories">
+                        <span>Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/reference/sub_categories">
+                        <span>Sub Categories</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/reference/asset_conditions">
+                        <span>Asset Conditions</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/reference/color-list">
+                        <span>Colors</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/reference/configuration">
+                        <span>Configuration</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['active']">
+                    <a class="dropdown-item d-flex align-items-center" routerLink="/reference/departments">
+                        <span>Department</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <!-- <ul class="nav navbar-nav" id="main-menu-navigation" layout="horizontal" core-menu></ul> -->
+</div>
+<!--/ Main menu -->

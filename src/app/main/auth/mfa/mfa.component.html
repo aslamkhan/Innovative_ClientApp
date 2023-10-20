@@ -1,0 +1,46 @@
+<div class="auth-wrapper auth-v2">
+    <div class="auth-inner row m-0">
+        <!-- Brand logo-->
+
+        <!-- /Brand logo-->
+        <!-- Left Text-->
+        <div class="d-none d-lg-flex col-lg-8 align-items-center">
+            <div class="w-100 d-lg-flex align-items-center justify-content-center px-10">
+                <img src="assets/images/warehours.jpg" class="img-responsive" />
+            </div>
+        </div>
+        <!-- /Left Text-->
+        <!-- Login-->
+        <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+                <div class="text-center mb-3">
+                    <img src="assets/images/logo.png" alt="brand-logo" height="150" />
+                </div>
+                <h2 class="font-weight-bold mb-1 text-left ">Confirmation Detail</h2>
+                <ngb-alert [type]="'danger'" [dismissible]="false" *ngIf="error">
+                    <div class="alert-body">
+                        <p>{{ error }}</p>
+                    </div>
+                </ngb-alert>
+                <form class="auth-login-form mt-2" autocomplete="off" [formGroup]="mfaForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group mb-2">
+                        <label class="form-label mb-2" for="login-email">Please enter the verification code was sent
+                            your
+                            email <span class="code-email">{{email}}</span></label>
+                        <input type="text" formControlName="otp" class="form-control ">
+                    </div>
+                    <div *ngIf="submitted && f.otp.errors" class="invalid-feedback"
+                        [ngClass]="{ 'd-block': submitted && f.otp.errors }">
+                        <div *ngIf="f.otp.errors.required">OTP is required</div>
+                    </div>
+
+                    <button [disabled]="loading" class="btn btn-primary round waves-effect btn-block btn-large mt-1"
+                        tabindex="4" rippleEffect>
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Verify
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- /Login-->
+    </div>
+</div>

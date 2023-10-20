@@ -1,0 +1,70 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/reference/departments" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>Edit Department
+                        </h1>
+                    </div>
+                    <div *ngIf="message">{{ simpleAlert() }} </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body  p-2 p-xl-3">
+                <form class="" #departmentEditForm="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group row mb-2">
+
+                                <label class="col-md-4 col-form-label" for="">Department Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="colFormLabel" placeholder="Enter Department Name"
+                                        [(ngModel)]="model.name" class="form-control" name="name" #name="ngModel" required  (keyup)="getDepartmentName($event.target.value)">
+                                        <span class="help-block text-danger">{{checkAssetId}}</span>
+                                        <span class="help-block text-danger"
+                                        *ngIf="name.touched && name.invalid">
+                                        Department name is required
+                                    </span>
+                                </div>
+                             </div>
+                                <div class="form-group row mb-2">
+                                    <label class="col-md-4 col-form-label" for="">Status<span
+                                            class="req-red strong">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select name="" [(ngModel)]="model.statusId" id=""  name="status" #status="ngModel" class="form-control"
+                                            required>
+                                            <option value="">Select Status</option>
+                                            <option *ngFor="let web of statuslist" [value]="web.value">{{web.text}}
+                                            </option>
+                                        </select>
+                                        <span class="help-block text-danger"
+                                        *ngIf="status.touched && status.invalid">
+                                        Status is required
+                                    </span>
+                                    </div>
+                                
+                                <div class="form-group mt-2 mb-0">
+                                    <button type="button" rippleeffect="" routerLink="/reference/departments"
+                                        class="mr-1 btn btn-outline-secondary round waves-effect"
+                                        style="width:150px">Cancel</button>
+                                    <button (click)="Save()" [disabled]="departmentEditForm.invalid || emailExists" rippleeffect=""
+                                        class="btn btn-primary round waves-effect" style="width:150px" id="btnSave">Update</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+               
+            </div>
+        </div>
+    </div>

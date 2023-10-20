@@ -1,0 +1,331 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-12 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            Configuration
+                        </h1>
+                    </div>
+                    <div *ngIf="message">{{ simpleAlert() }} </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <div class="card">
+                <div class="card-body">
+
+                </div>
+            </div> -->
+            <div class="card">
+                <div class="card-header border-bottom">
+                    <h3 class="card-title"><i data-feather="settings" class="mr-2 "></i>About</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mt-1">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Name of Company</label>
+                                <input type="text" name="companyName" [(ngModel)]="model.companyName"
+                                    placeholder="Enter name of company" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Company URL</label>
+                                <input type="url" [(ngModel)]="model.companyUrl" placeholder="Enter Company URL"
+                                    (blur)="validateUrl()" class="form-control">
+                                <div class="help-block text-danger" *ngIf="urlError && model.companyUrl ">Valid URL
+                                    Required</div>
+                                <!-- <div class="alert validmessgae" *ngIf="!urlError">Valid URL</div> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Email</label>
+                                <input type="email" [(ngModel)]="model.email" placeholder="Enter Email Address"
+                                    (blur)="validateEmail()" class="form-control">
+                                <div class="help-block text-danger" *ngIf="emailError && model.email ">Valid Email
+                                    Required</div>
+                                <!-- <div class="alert validmessgae" *ngIf="!emailError">Valid Email</div> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Country</label>
+                                <input type="text" [(ngModel)]="model.country" placeholder="Enter Country Name"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Contact Number</label>
+                                <input type="number" [(ngModel)]="model.contactNumber"
+                                    placeholder="Enter Contact Number" class="form-control" #phone="ngModel" required
+                                    pattern=".{7,15}"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
+                                    (input)="saveButton.disabled = phone.invalid || phone.pending">
+                                <span class="help-block text-danger" *ngIf="phone.touched && phone.invalid">
+                                    Minimum 7 digit Required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Registration Number</label>
+                                <input type="text" [(ngModel)]="model.registrationNumber"
+                                    placeholder="Enter Registration Number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Upload Company Logo</label>
+                                <div class="custom-file">
+                                    <input type="file" id="file-upload-single" name="file-upload-single"
+                                        (change)="UploadImage($event)" accept="image/png, image/jpeg, image/jpg"
+                                        class="custom-file-input">
+                                    <label class="custom-file-label">Choose file</label>
+                                    <span class="req-red">{{fileUploadError}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group border-img">
+                                <img alt="" class="img-responsive logo-img"
+                                    style="min-height: 100px; min-width: 100px; height: 100px; border: 1px dotted; border-radius: 5px;"
+                                    [src]="model.uploadLogo">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label hidden for="" class="col-form-label">ID</label>
+                                <input hidden type="text" [(ngModel)]="model.id" placeholder="Enter id"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button #saveButton type="button"
+                                [disabled]="emailError==true || urlError==true ||!isFileValid" (click)="Save()"
+                                class="btn btn-primary round waves-effect" style="width: 150px;"
+                                id="btnSave">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header border-bottom">
+
+                    <h3 class="card-title">
+                        <i data-feather="settings" class="mr-2 "></i>User Management
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mt-1">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Number of Days to Change Password</label>
+                                <input type="text" [(ngModel)]="manage.changePasswordDay"
+                                    placeholder="Enter Number of Days to Change Password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Account Login Attempts</label>
+                                <input type="text" [(ngModel)]="manage.loginAttempts"
+                                    placeholder="Enter Account Login Attempts" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Password Expiry Time</label>
+                                <input type="text" [(ngModel)]="manage.passwordExpiry"
+                                    placeholder="Enter Password Expiry Time" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Times count before password Reuse</label>
+                                <input type="text" [(ngModel)]="manage.timeCountPassword"
+                                    placeholder="Enter Times count before password Reuse" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Time to Session Timeout</label>
+                                <input type="text" [(ngModel)]="manage.sessionTimeout"
+                                    placeholder="Enter Time to Session Timeout" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">User Photo size</label>
+                                <input type="text" [(ngModel)]="manage.photoSize" placeholder="Enter User Photo size"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label hidden for="" class="col-form-label">ID</label>
+                                <input hidden type="text" [(ngModel)]="manage.id" placeholder="Enter id"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+                        <div class="col-md-12">
+                            <button type="button" (click)="SaveManagement()" class="btn btn-primary round waves-effect"
+                                style="width: 150px;" id="btnSaveManagement">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header border-bottom">
+                    <h3 class="card-title">
+                        <i data-feather="settings" class="mr-2 "></i>Application
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mt-1">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Beginning Order Number</label>
+                                <input type="text" [(ngModel)]="application.orderNumber"
+                                    placeholder="Enter Beginning Order Number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Beginning Item Number</label>
+                                <input type="text" [(ngModel)]="application.itemNumber"
+                                    placeholder="Enter Beginning Item Number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Max Attachment size</label>
+                                <input type="text" [(ngModel)]="application.maxAttachmentsize"
+                                    placeholder="Enter Max Attachment size" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Max Photo size</label>
+                                <input type="text" [(ngModel)]="application.photosize"
+                                    placeholder="Enter Max Photo size" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Allowable file extensions</label>
+                                <!-- <input type="text" [(ngModel)]="application.fileExtensions"
+                                    placeholder="allow multiple extensions eg .xls  .png  .jpeg" class="form-control"> -->
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                    [(ngModel)]="application.fileExtensions" name="fileExtensions">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Barcode Print Label size</label>
+                                <input type="text" [(ngModel)]="application.barcodeSize"
+                                    placeholder="Enter Barcode Print Label size" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Print Label Page size</label>
+                                <input type="text" [(ngModel)]="application.printPagesize"
+                                    placeholder="Enter Print Label Page size" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Print Label size Small</label>
+                                <input type="text" [(ngModel)]="application.printPagesizeSmall"
+                                    placeholder="Enter Print Label size Small" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Print Label size Medium</label>
+                                <input type="text" [(ngModel)]="application.printPagesizeMedium"
+                                    placeholder="Enter Print Label size  Medium" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Print Label size Large</label>
+                                <input type="text" [(ngModel)]="application.printPagesizeLarge"
+                                    placeholder="Enter Print Label size – Large" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label hidden for="" class="col-form-label">ID</label>
+                                <input hidden type="text" [(ngModel)]="application.id" placeholder="Enter id"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+                        <div class="col-md-12">
+                            <button type="button" (click)="SaveApplication()" class="btn btn-primary round waves-effect"
+                                style="width: 150px;" id="btnSaveApplication">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header border-bottom">
+                    <h3 class="card-title">
+                        <i data-feather="settings" class="mr-2 "></i>Configuration
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mt-1">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="" class="col-form-label">Last updated by</label>
+                                <input type="text" [(ngModel)]="config.userName" placeholder="Last updated by"
+                                    class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group datepicker">
+                                <label for="" class="col-form-label">Date Last Updated</label>
+                                <!-- <input [(ngModel)]="config.lastUpdatedDate" type="text" placeholder="Enter date requested" id="Date" onfocus="(this.type='date')" class="form-control ng-untouched ng-pristine ng-invalid" ng-reflect-required="" ng-reflect-model="" ng-reflect-name="DateRequested"> -->
+                                <!-- <ng2-flatpickr [config]="birthDateOptions" name="lastUpdatedDate"
+                                    placeholder="Select Date" [setDate]="config.lastUpdatedDate"
+                                    [(ngModel)]="config.lastUpdatedDate" allowInput></ng2-flatpickr> -->
+                                <input type="text" [(ngModel)]="config.lastLoginTime" placeholder="Last updated date"
+                                    class="form-control" readonly>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label hidden for="" class="col-form-label">ID</label>
+                                <input hidden type="text" [(ngModel)]="config.id" placeholder="Enter id"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+                        <div class="col-md-12">
+                            <button type="button" (click)="SaveConfiguration()"
+                                class="btn btn-primary round waves-effect" style="width: 150px;" hidden>Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

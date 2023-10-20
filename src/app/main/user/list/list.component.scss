@@ -1,0 +1,87 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+
+.datatable-scroll {
+    width: auto !important;
+}
+
+#dropdownMenuButton {
+    width: 190px;
+    border-radius: 20px;
+    margin-right: 15px;
+}
+
+.disable-filed {
+    display: none !important;
+}
+
+.c-margin {
+    margin: 0 4px;
+}
+
+.icon-width .datatable-body-row .datatable-row-center .datatable-body-cell:first-child {
+    width: 90px !important;
+}
+
+@media (min-width: 1200px) {
+    .p-xl-3 {
+        padding: 0rem !important;
+    }
+}
+
+.modal-body {
+    padding: 20px !important;
+
+    .content-header-title {
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    }
+
+    .text-center {
+        display: flex;
+
+        button {
+            margin: 5px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .modal-body {
+            padding: 10px !important;
+        }
+    }
+}
+
+
+@media (max-width: 576px) {
+    .modal {
+        padding-right: 5rem !important;
+        padding-left: 5rem !important;
+    }
+
+    .content-header-title {
+        font-size: 20px !important;
+    }
+}
+
+
+@media (max-width: 454px) {
+    .modal {
+        padding-right: 0rem !important;
+        padding-left: 0rem !important;
+    }
+}

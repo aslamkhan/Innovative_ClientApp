@@ -1,0 +1,110 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/asset/documents" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>Edit Document
+                        </h1>
+                        <div *ngIf="message">{{ simpleAlert() }} </div>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <span class="text-primary font-weight-bolder">{{assetName}}
+                                        &nbsp;&nbsp;</span><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <span class="text-primary font-weight-bolder">
+                                        <span *ngIf="item_type =='asset'">Asset ID</span>
+                                        <span *ngIf="item_type =='inventory'">Inventory ID</span> {{barcodeId}}
+                                        &nbsp;&nbsp;</span><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{serialNumber}}
+                                            &nbsp;&nbsp;</span></a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{assetLocation}}
+                                            &nbsp;&nbsp;</span></a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body  p-2 p-xl-3">
+                <form #r="ngForm" #rd="ngForm" (ngSubmit)="Save(rd)">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group row mb-2">
+                                <label hidden class="col-md-3 col-form-label" for="">ID</label>
+                                <div class="col-sm-9">
+                                    <input hidden type="text" id="colFormLabel" placeholder="Enter Category Name"
+                                        [(ngModel)]="mode.id" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Category<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" #categoryID="ngModel" name="categoryID" required
+                                        [(ngModel)]="mode.categoryID">
+                                        <option value="">Select Category</option>
+                                        <option *ngFor="let web of categoryList" [value]="web.value">{{web.text}}
+                                        </option>
+                                    </select>
+                                    <span class="help-block text-danger"
+                                        *ngIf="categoryID.touched && categoryID.invalid">
+                                        Category is Required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-4 col-form-label" for="">Upload documents<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-8">
+                                    <label for="change-document" class="btn btn-outline-primary round mr-75 mb-0">
+                                        <span class=" d-sm-block"><i data-feather="plus" class="mr-2"></i>Add
+                                            Files</span>
+                                        <input type="file" id="change-document" name="fileType"
+                                            [(ngModel)]="mode.fileType"
+                                            accept="image/png, image/jpeg, image/jpg, .doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                            class="form-control" (change)="UploadDocument($event)">
+                                        <span class="req-red">{{fileUploadError}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="colFormLabel">Description</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="colFormLabel" placeholder="Enter description"
+                                        name="description" [(ngModel)]="mode.description" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group mt-2 mb-0">
+                                <button type="button" rippleeffect="" routerLink="/asset/documents"
+                                    class="mr-1 btn btn-outline-secondary round waves-effect"
+                                    style="width:150px">Cancel</button>
+                                <button type="submit" [disabled]="!rd.valid || !isFileValid" rippleeffect=""
+                                    class="btn btn-primary round waves-effect" style="width:150px"
+                                    id="btnSave">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/asset/maintenances" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>Add Maintenance
+                        </h1>
+                    </div>
+                    <div *ngIf="message">{{ simpleAlert() }} </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body p-2 p-xl-3">
+                <form class="form" #r="ngForm" (ngSubmit)="Save(r)">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Type of Maintenance<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select required ngModel name="maintenanceTYpeId" id="typeofMaintenance"
+                                        #typeofMaintenance="ngModel" class="form-control">
+                                        <option value="">Select Type of Maintenance</option>
+                                        <option value="1">Full Service</option>
+                                        <option value="2">Partial Service</option>
+                                    </select>
+                                    <span class="help-block text-danger"
+                                        *ngIf="typeofMaintenance.touched && typeofMaintenance.invalid">
+                                        Type of Maintenance is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Priority<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select required ngModel name="priorityId" id="priority" #priority="ngModel"
+                                        class="form-control">
+                                        <option value="">Select Priority</option>
+                                        <option value="1">High</option>
+                                        <option value="2">Medium</option>
+                                        <option value="3">Low</option>
+                                    </select>
+                                    <span class="help-block text-danger" *ngIf="priority.touched && priority.invalid">
+                                        Priority is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="expectedStartDate">Expected Start Date<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9 datepicker">
+                                    <input required name="expectedStartDate" id="expectedStartDate"
+                                        [(ngModel)]="model.expectedStartDate" #expectedStartDate="ngModel"
+                                        placeholder="Select Date">
+                                    <!-- <ng2-flatpickr required name="expectedStartDate" id="expectedStartDate" ngModel
+                                        #expectedStartDate="ngModel" [config]="birthDateselect"
+                                        placeholder="Select Date"></ng2-flatpickr> -->
+                                    <span class="help-block text-danger" id="error-start-message"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Expected End Date<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9 datepicker">
+                                    <input required name="expectedEndDate" id="expectedEndDate" ngModel
+                                        #expectedEndDate="ngModel" placeholder="Select Date">
+                                    <!-- <ng2-flatpickr required name="expectedEndDate" id="expectedEndDate" ngModel
+                                        #expectedEndDate="ngModel" [config]="birthDateselect"
+                                        placeholder="Select Date"></ng2-flatpickr> -->
+                                    <span class="help-block text-danger" id="error-end-message"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Status<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <input required ngModel name="statusId" type="text" id="statusId"
+                                        [attr.disabled]="true" [(ngModel)]="model.statusId" placeholder="Enter status"
+                                        class="form-control" #statusId="ngModel">
+                                    <span class="help-block text-danger" *ngIf="statusId.touched && statusId.invalid">
+                                        Status is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group mt-2 mb-0">
+                                <button type="button" rippleeffect="" (click)="Cancel()"
+                                    class="mr-1 btn btn-outline-secondary round waves-effect"
+                                    style="width:150px">Cancel</button>
+                                <button type="submit" [disabled]="!r.valid" rippleeffect=""
+                                    class="btn btn-primary round waves-effect" style="width:150px"
+                                    id="btnSave">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

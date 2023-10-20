@@ -1,0 +1,188 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/customer/list" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>Edit Customer
+                        </h1>
+                    </div>
+                    <div *ngIf="message">{{ simpleAlert() }} </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body p-2 p-xl-3">
+                <form class="" #departmentEditForm="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-12 mb-1">
+                            <p>Enter Details to edit customer</p>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label hidden class="col-md-3 col-form-label" for="">ID<span
+                                    class="req-red strong">*</span></label>
+                            <div class="col-md-9">
+                                <input hidden type="text" id="id" #ID="ngModel" name="id" placeholder="Enter Phone No."
+                                    maxlength="15" class="form-control" [(ngModel)]="model.id">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">First Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-9">
+                                    <input type="text" id="first_name" required name="firstName" #Firstname="ngModel"
+                                        placeholder="Enter First Name" class="form-control"
+                                        [(ngModel)]="model.firstName">
+                                    <div *ngIf="Firstname.invalid && Firstname.touched"
+                                        class="error-message text-danger">
+                                        First Name is Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Last Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-9">
+                                    <input type="text" id="last_name" placeholder="Enter Last Name" class="form-control"
+                                        name="lastName" required #Lastname="ngModel" [(ngModel)]="model.lastName">
+                                    <div *ngIf="Lastname.invalid && Lastname.touched" class="error-message text-danger">
+                                        Last Name is Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Email Address<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-9">
+                                    <input type="email" id="email" placeholder="Enter Email Address"
+                                        class="form-control" [(ngModel)]="model.email" name="email" required
+                                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #emailInput="ngModel"
+                                        (keyup)="getEmail($event.target.value)">
+                                    <div *ngIf="(emailInput.invalid && emailInput.touched) || emailInput.dirty">
+                                        <span class="help-block text-danger">{{checkEmailError}}</span>
+                                        <span class="help-block text-danger" *ngIf="emailInput.errors?.required">
+                                            Email Address is required
+                                        </span>
+                                        <span class="help-block text-danger" *ngIf="emailInput.errors?.pattern">
+                                            Email Address is not valid
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Phone Number</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="phone" placeholder="Enter Phone No." name="phoneNumber"
+                                        maxlength="15" class="form-control" #phone="ngModel"
+                                        [(ngModel)]="model.phoneNumber"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
+                                        pattern=".{7,15}" (keyup)="getPhoneNumber($event.target.value)">
+                                    <span class="help-block text-danger" *ngIf="phone.errors?.pattern">
+                                        Minimum 7 digit allowed
+                                    </span>
+                                    <span class="req-red custom-valid">{{checkPhonenumber}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Department Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-md-9">
+                                    <select name="department" id="" class="form-control"
+                                        [(ngModel)]="model.departmentId" #Departmentname="ngModel" required>
+                                        <option value="">Select</option>
+                                        <option *ngFor="let web of departmentList" [value]="web.value">{{web.text}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="Departmentname.invalid && Departmentname.touched"
+                                        class="error-message text-danger">
+                                        Department Name is Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Item Location</label>
+                                <div class="col-md-9">
+                                    <select id="location" class="form-control" [(ngModel)]="model.locationId"
+                                        name="locationId" #Locationname="ngModel">
+                                        <option value="">Select</option>
+                                        <option *ngFor="let web of locationList" [value]="web.value">{{web.text}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Status<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="statusId" [(ngModel)]="model.statusId" id="" class="form-control"
+                                        #Statusname="ngModel" required>
+                                        <option value="">Select Status</option>
+                                        <option *ngFor="let web of statuslist" [value]="web.value">{{web.text}}</option>
+                                    </select>
+                                    <div *ngIf="Statusname.invalid && Statusname.touched"
+                                        class="error-message text-danger">
+                                        Status is Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Comments</label>
+                                <div class="col-md-9">
+                                    <textarea name="comments" #Comments="ngModel" id="" cols="30" rows="4"
+                                        class="form-control" [(ngModel)]="model.comments"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body text-center upload-img">
+                                            <div class="row match-height align-items-center">
+                                                <div class="col-md-12">
+                                                    <div class="card mb-2">
+                                                        <div class="img-height-min">
+                                                            <img alt="" class="assetpic" [src]="model.customerImage"
+                                                                *ngIf="model.customerImage != null">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 text-center">
+                                                    <label for="upload-picture" class="" style="width:100%">
+                                                        <span class="d-none d-sm-block">Drag or Upload Customer Image
+                                                            here<i data-feather="upload"
+                                                                class="font-medium-5 mr-1"></i></span>
+                                                        <input type="file" id="upload-picture" multiple
+                                                            (change)="UploadImage($event)" name="customerImage"
+                                                            accept="image/png, image/jpeg, image/jpg"
+                                                            class="form-control">
+                                                        <span class="req-red">{{fileUploadError}}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2 mb-0">
+                            <a href="/customer/list" class="mr-1 btn btn-outline-secondary round waves-effect"
+                                style="width:120px">Cancel</a>
+                            <button type="button"
+                                [disabled]="!isFileValid || departmentEditForm.invalid || emailExists || noExists"
+                                (click)="Save()" rippleeffect="" class="btn btn-primary round waves-effect"
+                                style="width:120px" id="btnSave">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

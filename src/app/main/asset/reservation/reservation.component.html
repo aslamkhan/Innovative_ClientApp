@@ -1,0 +1,67 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            Reservations
+                        </h1>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">{{assetName}}
+                                            &nbsp;&nbsp;</span>
+                                    </a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            <span *ngIf="item_type =='asset'">Asset ID</span>
+                                            <span *ngIf="item_type =='inventory'">Inventory ID</span>
+                                            {{barcodeId}}
+                                            &nbsp;&nbsp;</span></a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{serialNumber}}
+                                            &nbsp;&nbsp;</span></a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{assetLocation}}
+                                            &nbsp;&nbsp;</span></a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-4 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right" *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+                        <button type="button" (click)="AddEvent()" class="ml-50 btn btn-primary round waves-effect"><i
+                                data-feather="plus" class="mr-2"></i>Add Reservation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow-none border-0 mb-0 rounded-0">
+                    <div class="card-body pb-0">
+                        <full-calendar [options]="calendarOptions"></full-calendar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <core-sidebar class="modal modal-slide-in fade event-sidebar" name="calendar-event-sidebar"
+        overlayClass="modal-backdrop" hideOnEsc="true">
+        <app-reservation-sidebar></app-reservation-sidebar>
+    </core-sidebar>
+</div>

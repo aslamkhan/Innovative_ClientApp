@@ -1,0 +1,110 @@
+<div class="slideout-content">
+    <!-- Modal To Add New User Starts-->
+    <div class="modalsd modal-slide-in sdfade new-user-modal" id="modals-slide-in">
+        <div class="modal-dialog sidebar-lg">
+            <div class="modal-content p-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="toggleSidebar('asset-view-filter')">
+                    ×
+                </button>
+                <div class="modal-body flex-grow-1">
+                    <form class="mt-4" [formGroup]="orderFilterForm">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <h3 class="text-left font-weight-bolder">Filter for {{assetName}}</h3>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Asset ID</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" value="{{assetID}}"
+                                    placeholder="Search by assetId" name="assetID" id="assetID" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Check Out Date
+                                From</label>
+                            <div class="col-md-8 datepicker">
+                                <ng2-flatpickr [config]="birthDateOptions" placeholder="Select Date"
+                                    formControlName="checkOutFrom" id="checkOutFrom"
+                                    name="checkOutFrom"></ng2-flatpickr>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Check Out Date
+                                To</label>
+                            <div class="col-md-8 datepicker">
+                                <ng2-flatpickr [config]="birthDateOptions" placeholder="Select Date"
+                                    formControlName="checkOutTo" id="checkOutTo" name="checkOutTo"></ng2-flatpickr>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Condition</label>
+                            <div class="col-md-8 datepicker">
+                                <ng-multiselect-dropdown [settings]="conditiondropdownSettings" [data]="conditionsList"
+                                    formControlName="condition" name="condition" id="condition">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Status</label>
+                            <div class="col-md-8">
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                    formControlName="status" name="status" id="status">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Return Due Date
+                                From</label>
+                            <div class="col-md-8 datepicker">
+                                <ng2-flatpickr [config]="birthDateOptions" placeholder="Select Date"
+                                    formControlName="returnDueFrom" name="returnDueFrom"></ng2-flatpickr>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Return Due Date
+                                To</label>
+                            <div class="col-md-8 datepicker">
+                                <ng2-flatpickr [config]="birthDateOptions" placeholder="Select Date" name="returnDueTo"
+                                    id="returnDueTo" formControlName="returnDueTo"></ng2-flatpickr>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Location</label>
+                            <div class="col-md-8">
+
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="locationList"
+                                    formControlName="location" name="location" id="location">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Vendor</label>
+                            <div class="col-md-8">
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="vendorList"
+                                    formControlName="vendor" name="vendor" id="vendor">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Serial Number</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="Search by Serial Number"
+                                    name="serialNumber" id="serialNumber" formControlName="serialNumber">
+                            </div>
+                        </div>
+                        <div class="form-group row mx-2">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary btn-block round" data-dismiss="modal"
+                                    (click)="toggleSidebar('asset-view-filter')" rippleEffect>
+                                    Apply Filter
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

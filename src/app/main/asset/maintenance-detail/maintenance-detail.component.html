@@ -1,0 +1,89 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <div class="content-header row">
+            <div class="content-header-left col-md-12 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/asset/maintenances"><i data-feather="arrow-left"
+                                    class="mr-1 font-medium-5"></i></a>Maintenance Detail
+                        </h1>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted ml-2">
+                                    <div class="badge badge-pill badge-light-danger px-2">{{model.status}}</div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" for="">Asset ID</label>
+                            <label class="col-md-8 col-form-label" for="">{{model.assestsID}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" for="">Type of Maintenance</label>
+                            <label class="col-md-8 col-form-label" for="">{{model.maintenanceType}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" for="">Priority</label>
+                            <label class="col-md-8 col-form-label" for="">{{model.priority}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" for="">Asset</label>
+                            <label class="col-md-8 col-form-label" for="">{{model.assetName}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" for="">Expected Start Date</label>
+                            <label class="col-md-8 col-form-label" for="">{{model.expectedStartDate |
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" for="">Expected End Date</label>
+                            <label class="col-md-8 col-form-label" for="">{{model.expectedEndDate |
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                        <div class="form-group row display-field">
+                            <label class="col-md-4 col-form-label" for="">Assigned to</label>
+                            <label class="col-md-8 col-form-label" for="">{{model.assignedTo}}</label>
+                        </div>
+                        <div class="form-group row display-field">
+                            <label class="col-md-4 col-form-label" for="">Signed out by</label>
+                            <label class="col-md-8 col-form-label" for="">Mark Carson <img src="assets/images/sign.png"
+                                    alt="" class="ml-2" height="50"></label>
+                        </div>
+                        <div class="form-group row display-field">
+                            <label class="col-md-4 col-form-label" for="">Returned to</label>
+                            <label class="col-md-8 col-form-label" for="">Charles Lewis</label>
+                        </div>
+                        <div class="form-group row display-field">
+                            <label class="col-md-4 col-form-label" for="">Actual Date Returned</label>
+                            <label class="col-md-8 col-form-label" for="">26-09-2022 </label>
+                        </div>
+                        <div class="form-group row display-field">
+                            <label class="col-md-4 col-form-label" for="">Notes</label>
+                            <label class="col-md-8 col-form-label" for="">The Body is Outdated and needs to be change
+                                b/c it will be break soon</label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row display-field">
+                    <div class="col-md-12 mb-1">
+                        <h4>Documents</h4>
+                    </div>
+                    <div class="col-md-12">
+                        <a href="#" class="mr-2">File.doc</a>
+                        <a href="#">File2.doc</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

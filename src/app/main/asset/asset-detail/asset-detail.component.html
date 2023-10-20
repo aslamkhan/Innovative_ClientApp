@@ -1,0 +1,264 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <div class="content-header row">
+            <div class="content-header-left col-md-6 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/asset/view/{{modelForm.assetId}}" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>{{modelForm.assetName}}
+                        </h1>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <div class="badge badge-pill badge-light-success" style="width: 90px;">
+                                        {{modelForm.status}}</div>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted"
+                                    *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+                                    <a routerLink="/asset/subassetedit/{{modelForm.barCodeID}}" class="text-primary"><i
+                                            data-feather="edit" class="mr-50"></i>Edit</a>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted disable-field">
+                                    <a href="#" class="text-danger"><i data-feather="trash-2"
+                                            class="mr-50"></i>Delete</a>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted disable-field" *ngIf="item_type=='asset'">
+                                    <span><i data-feather="slash" class="mr-50"></i>Retire</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-6 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <div class="btns">
+                            <div ngbDropdown style="width:180px" class="d-inline-block ml-50 disable-field"
+                                *ngIf="item_type=='asset'">
+                                <button ngbDropdownToggle class="btn btn-dark disable-field" type="button"
+                                    id="dropdownMenuButton1" rippleEffect>
+                                    <img src="assets/images/menu/asset-white.png" height="15px" class="mr-1"
+                                        alt="">Services<i data-feather="chevron-down" class="ml-2"></i>
+                                </button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="printer"
+                                            class="mr-50"></i>Print Document</a>
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="file-text"
+                                            class="mr-50"></i>Export to CSV</a>
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="file-text"
+                                            class="mr-50"></i>Export to PDF</a>
+                                </div>
+                            </div>
+                            <div ngbDropdown style="width:150px" class="d-inline-block disable-field">
+                                <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                    id="dropdownMenuButton" rippleEffect>
+                                    Actions <i data-feather="chevron-down" class="ml-2"></i>
+                                </button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="printer"
+                                            class="mr-50"></i>Print Document</a>
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="file-text"
+                                            class="mr-50"></i>Export to CSV</a>
+                                    <a ngbDropdownItem href="javascript:void(0)"><i data-feather="file-text"
+                                            class="mr-50"></i>Export to PDF</a>
+                                </div>
+                            </div>
+                            <a routerLink="/asset/reservation-history" class="btn btn-primary round waves-effect">Rental
+                                History</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-md-12 mb-1">
+                        <h4><img src="assets/images/icon/setting_icon.png" height="25" alt=""
+                                class="img-responsive mr-1"> Tool info</h4>
+                    </div>
+                    <div class="col-md-4 p-0">
+                        <img src="{{modelForm.assetImage}}" alt="" class="img-responsive order_img order_size">
+                    </div>
+                    <div class="col-md-12 mt-5 border-top pt-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Name</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.assetName}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Category</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.category}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for=""
+                                        *ngIf="item_type=='asset'">Asset
+                                        Quantity</label>
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for=""
+                                        *ngIf="item_type=='inventory'">Inventory Quantity</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.quantity}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Sub Level</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.subLevel}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Serial
+                                        Number</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.serialNumber}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Location</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.location}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Color</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.color}} <span
+                                            class="yellow_bage disable-field">&nbsp;</span></label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Weight</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.weight}}
+                                        {{modelForm.unit}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-3 col-form-label font-weight-bolder" for="">Description</label>
+                                    <label class="col-md-3 col-form-label" for=""> {{modelForm.description}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Vendor</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.vendor}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="item_type=='inventory'">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Reorder
+                                        Quantity</label>
+                                    <label class="col-md-6 col-form-label" for="">xxx</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="item_type=='inventory'">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Low Stock
+                                        Threshold</label>
+                                    <label class="col-md-6 col-form-label" for="">xxxx</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Date
+                                        Purchased</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.datePurchased |
+                                        date:'dd-MM-yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="item_type=='asset'">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Max Rental Days
+                                        Allowed</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.maxRentalDaysAllowed}}
+                                        Days</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" *ngIf="item_type=='asset'"
+                                        for="">Replacement
+                                        Cost</label>
+                                    <label class="col-md-6 col-form-label font-weight-bolder"
+                                        *ngIf="item_type=='inventory'" for="">Price</label>
+                                    <label class="col-md-6 col-form-label" for="">${{modelForm.replacementCost}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Warranty Expiry
+                                        Date</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.warrantyExpiryDate |
+                                        date:'dd-MM-yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="item_type=='asset'">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Inspected
+                                        by</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.inspectedby}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="item_type=='asset'">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Next Maintenance
+                                        Date</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.nextMaintenanceDate |
+                                        date:'dd-MM-yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">End of Life
+                                        date</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.endofLifedate |
+                                        date:'dd-MM-yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="item_type=='asset'">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Last Inspection
+                                        Date</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.lastInspectionDate |
+                                        date:'dd-MM-yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="item_type=='asset'">
+                                <div class="form-group row mb-50">
+                                    <label class="col-md-6 col-form-label font-weight-bolder" for="">Next inspection
+                                        Date</label>
+                                    <label class="col-md-6 col-form-label" for="">{{modelForm.nextInspectionDate |
+                                        date:'dd-MM-yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12  border-top pt-2 mt-1">
+                                <h4>Notes</h4>
+                            </div>
+                            <div class="col-md-10">
+                                <label class="col-form-label" for="">{{modelForm.notes}}</label>
+                            </div>
+                            <div class="col-md-12  border-top pt-2 mt-1">
+                                <h4>Documents</h4>
+                            </div>
+                            <div class="col-md-10">
+                                <a class="mr-1"
+                                    (click)="downloadDocument(modelForm.documentId)">{{modelForm.documents}}</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

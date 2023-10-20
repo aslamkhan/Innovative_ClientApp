@@ -1,0 +1,162 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/user/list" class="mr-1"><i data-feather="arrow-left"
+                                    class="font-medium-5"></i></a> Edit User
+                        </h1>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body p-2 p-xl-3">
+                <form class="" #userEditForm="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" hidden for="">User Id</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="colFormLabel" hidden [(ngModel)]="model.id"
+                                        placeholder="Enter First Name" class="form-control" name="id">
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">First Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="First" [(ngModel)]="model.firstName" name="firstName"
+                                        placeholder="Enter First Name" class="form-control" required #First="ngModel">
+                                    <span class="help-block text-danger" *ngIf="First.touched && First.invalid">
+                                        First Name is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Last Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="Last" [(ngModel)]="model.lastName" name="lastName"
+                                        placeholder="Enter Last Name" class="form-control" required #Last="ngModel">
+                                    <span class="help-block text-danger" *ngIf="Last.touched && Last.invalid">
+                                        Last Name is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Email<span
+                                        class="req-red strong">*</span></label>
+                                <!-- <div class="col-sm-9">
+                                    <input type="text" id="colFormLabel" [(ngModel)]="model.emailAddress"
+                                        placeholder="Enter Email Address" class="form-control">
+                                </div> -->
+                                <div class="col-sm-9">
+                                    <input required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                        name="emailAddress" id="userEmail" #c [(ngModel)]="model.emailAddress"
+                                        type="email" id="userEmail" placeholder="Enter Email Address"
+                                        class="form-control" (keyup)="getEmail($event.target.value)"
+                                        #userEmail="ngModel">
+                                    <span class="help-block text-danger">{{checkAssetId}}</span>
+                                    <span class="help-block text-danger" *ngIf="userEmail.touched && userEmail.invalid">
+                                        <span *ngIf="userEmail.errors.required">Email is required</span>
+                                    </span>
+                                    <div *ngIf="userEmail.errors">
+                                        <div class="text-danger" *ngIf="userEmail.errors.pattern">
+                                            Please enter valid email address.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Password<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="password" required ngModel name="password" id="colFormLabel"
+                                        [(ngModel)]="model.password" #pass="ngModel" placeholder="Enter Password"
+                                        class="form-control" minlength="3" maxlength="12" #userPassword="ngModel">
+                                    <span class="help-block text-danger"
+                                        *ngIf="pass.touched && pass.invalid && pass.errors.required">
+                                        Password is required
+                                    </span>
+                                    <div *ngIf="userPassword.errors">
+                                        <div class="text-danger" *ngIf="userPassword.errors.minlength">
+                                            Please enter 3 or more characters for password.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Department<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="department" id="department" [(ngModel)]="model.departmentID"
+                                        class="form-control" required #department="ngModel">
+                                        <option *ngFor="let web of deparmentsList" [text]="web.text"
+                                            [value]="web.value">
+                                            {{web.text}}
+                                        </option>
+                                    </select>
+                                    <span class="help-block text-danger"
+                                        *ngIf="department.touched && department.invalid">
+                                        Department is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Role<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="role" id="role" [(ngModel)]="model.roleId" class="form-control"
+                                        required #role="ngModel">
+                                        <option value="">Select Role</option>
+                                        <option *ngFor="let web of rolesList" [value]="web.value">{{web.text}}
+                                        </option>
+                                    </select>
+                                    <span class="help-block text-danger" *ngIf="role.touched && role.invalid">
+                                        Role is required
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">User Location<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="location" [(ngModel)]="model.locationID" id="location"
+                                        class="form-control" required #location="ngModel">
+                                        <option value="">Select Location</option>
+                                        <option *ngFor="let web of locationList" [value]="web.value">{{web.text}}
+                                        </option>
+                                    </select>
+                                    <span class="help-block text-danger" *ngIf="location.touched && location.invalid">
+                                        User Location is required
+                                    </span>
+                                </div>
+                            </div> -->
+                            <div class="form-group row mb-2" *ngIf="isEmailExists">
+                                <label class="col-md-3 col-form-label" for="">MFA</label>
+                                <div class="col-sm-9">
+                                    <input type="checkbox" [checked]="model.IsEdit" id="employeeType"
+                                        name="employeeType">
+                                </div>
+                            </div>
+                            <div class="form-group mt-2 mb-0">
+                                <button type="button" class="mr-1 btn btn-outline-secondary round waves-effect"
+                                    style="width:150px" (click)="Cancel()">Cancel</button>
+                                <button type="button" [disabled]="userEditForm.invalid || emailExists || noExists"
+                                    (click)="Save()" rippleeffect="" class="btn btn-primary round waves-effect"
+                                    style="width:120px" id="btnEdit">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

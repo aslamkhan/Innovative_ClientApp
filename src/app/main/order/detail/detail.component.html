@@ -1,0 +1,297 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <div class="content-header row">
+            <div class="content-header-left col-md-6 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h2 class="content-header-title float-left mb-0 text-danger">
+                            <a routerLink="/order/list" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>Order#{{model.id}}
+                        </h2>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <a routerLink="/order/edit/1" class="text-primary disable-filed"><i
+                                            data-feather="edit" class="mr-50"></i>Edit</a>
+                                </li>
+                                <!-- <li class="breadcrumb-item ng-star-inserted">
+                                    <a href="#" class="text-danger"><i data-feather="trash-2" class="mr-50"></i>Delete Order</a>
+                                </li> -->
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-6 col-12 mb-2">
+                <div class="row">
+
+                    <div class="col-md-12 text-right" *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+                        <button type="button" (click)="CancelStatus(model.id)" rippleeffect=""
+                            class="ml-50 btn btn-danger round waves-effect" *ngIf="model.orderStatus == 'Open'">Cancel
+                            Order</button>
+                        <a routerLink="/order/edit/{{model.id}}" rippleeffect=""
+                            class="ml-50 btn btn-primary round waves-effect float-right"
+                            *ngIf="model.orderStatus == 'Pending' || model.orderStatus == 'Open'">Edit Order</a>
+
+                        <div ngbDropdown style="width:200px" class="d-inline-block ml-50 disable-filed">
+                            <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                id="dropdownMenuButton" rippleEffect>
+                                Actions <i data-feather="chevron-down" class="ml-2"></i>
+                            </button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                <a ngbDropdownItem href="javascript:void(0)"><i data-feather="printer"
+                                        class="mr-50"></i>Print Document</a>
+                                <a ngbDropdownItem href="javascript:void(0)"><i data-feather="file-text" drstv
+                                        class="mr-50"></i>Export to CSV</a>
+                                <a ngbDropdownItem href="javascript:void(0)"><i data-feather="file-text"
+                                        class="mr-50"></i>Export to PDF</a>
+                            </div>
+                        </div>
+                        <button type="button" rippleeffect=""
+                            class="btn btn-primary round waves-effect disable-filed">Check
+                            Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row mb-2">
+                    <div class="col-md-12 mb-1">
+                        <h4><i data-feather="user" class="mr-1 font-medium-5"></i>Customer and Order Creation</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Customer</label>
+                            <label class="col-md-9 col-form-label" for="">{{customerDetail.firstName}}
+                                {{customerDetail.lastName}} </label>
+                            <label class="col-md-3 col-form-label" for="">Phone Number</label> <label
+                                class="col-md-9 col-form-label" for="">{{customerDetail.phoneNumber}}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 disable-filed">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">I am age</label>
+                            <label class="col-md-9 col-form-label" for="">18</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-1">
+                        <h4><i data-feather="box" class="mr-1 font-medium-5"></i>Order Details
+                            <div class="ml-2 badge badge-pill badge-light-success">
+                                {{model.orderStatus}} </div>
+                        </h4>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Order Type</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.orderType}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Order Date</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.orderDate |
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Check Out Date</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.checkOutDate
+                                | date:'dd-MM-yyyy'}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Collected By</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.collectedBy}}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Signature</label>
+                            <div class="col-md-12">
+                                <img [src]="model.signatureLocation"
+                                    (click)="modalOpenXs(modalxs, model.signatureLocation)" alt="" height="50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Created On</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.dateAdded |
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 disable-filed">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Created By</label>
+                            <label class="col-md-9 col-form-label" for="">Admin 1</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Description</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.notes}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label " for="">Files</label>
+                            <div class="col-md-9 col-form-label">
+                                <a class="mr-1" *ngFor="let obj of documentFile"
+                                    (click)="fileDownload(obj)">{{obj.fileName}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ngx-datatable [rows]="orderDetail" [rowHeight]="50" class="bootstrap core-bootstrap custom_datatable"
+                    [limit]="10" [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="50"
+                    [scrollbarH]="true" [limit]="basicSelectedOption">
+                    <ngx-datatable-column name="" [width]="120" [sortable]="false">
+                        <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                            <div class="d-flex align-items-center">
+                                <a href="javascript:void(0)" (click)="modalOpenLG(modalLG,row.id)"><img
+                                        style="height:12px" class="mr-1" src="assets/images/icon/eye.png" alt=""></a>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Asset ID" prop="barCodeID" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="Asset Name" prop="assetName" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="Serial Number" prop="serialNumber" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="Location" prop="location" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="Quantity" prop="quantity" [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="Condition At Check Out" prop="conditionAtCheckOut"
+                        [width]="120"></ngx-datatable-column>
+                    <ngx-datatable-column name="Return Due Date" prop="returnDueDate" [width]="120"><ng-template
+                            let-row="row" ngx-datatable-cell-template>
+                            {{row.returnDueDate | date:'dd-MM-yyyy'}}
+                        </ng-template></ngx-datatable-column>
+                    <ngx-datatable-column name="Check In Date" prop="checkInDate" [width]="120">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.checkInDate | date:'dd-MM-yyyy'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Condition At Check In" prop="conditionAtCheckIn"
+                        [width]="220"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </div>
+    </div>
+    <ng-template #modalLG let-modal>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+            <div class="p-2">
+                <div class="content-header row">
+                    <div class="content-header-left col-md-8 col-12 mb-2">
+                        <div class="row breadcrumbs-top">
+                            <div class="col-md-12 d-flex align-items-center">
+                                <h2 class="content-header-title float-left mb-0 text-danger">
+                                    Order Asset Details
+                                </h2>
+                                <div class="breadcrumb-wrapper d-flex ">
+                                    <ol class="breadcrumb align-items-center">
+                                        <li class="breadcrumb-item ng-star-inserted">
+                                            <span class="ng-star-inserted">Asset ID</span>
+                                        </li>
+                                        <li class="breadcrumb-item ng-star-inserted">
+                                            <span class="ng-star-inserted">{{subOrderDetail.barCodeID}}</span>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-header-right col-md-4 col-12 mb-2 text-right">
+                        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 img-height-min" *ngIf="subOrderDetail.assetImage==null">
+                        <img src="assets/images/no_img.png" alt="" class="img-responsive order_img assetpic">
+                        <p class="mt-50">{{subOrderDetail.description}}</p>
+                    </div>
+                    <div class="col-md-4 img-height-min" *ngIf="subOrderDetail.assetImage!=null">
+                        <img src="{{subOrderDetail.assetImage}}" alt="" class="img-responsive order_img assetpic">
+                        <p class="mt-50">{{subOrderDetail.description}}</p>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img src="assets/images/icon/setting_icon.png"
+                                    width="20" alt="" class="mr-1">Asset
+                                Name</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.assetName}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img
+                                    src="assets/images/icon/calendar_icon.png" width="20" alt="" class="mr-1">Check
+                                Out
+                                Date</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.checkOutDate|
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img src="assets/images/icon/user_icon.png"
+                                    width="20" alt="" class="mr-1">Assigned
+                                to</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.assignedTo}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img src="assets/images/icon/terms_icon.png"
+                                    width="20" alt="" class="mr-1">Condition
+                                at check out</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.conditionAtCheckOut}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img
+                                    src="assets/images/icon/calendar_icon.png" width="20" alt="" class="mr-1">Return
+                                Due
+                                Date</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.returnDueDate |
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img
+                                    src="assets/images/icon/calendar_icon.png" width="20" alt="" class="mr-1">Check-in
+                                Date</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.checkInDate |
+                                date:'dd-MM-yyyy' }}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img src="assets/images/icon/terms_icon.png"
+                                    width="20" alt="" class="mr-1">Condition
+                                at Check in</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.conditionAtCheckIn}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </ng-template>
+    <ng-template #modalxs let-modal>
+        <div class="modal-body  bg-transparent p-0" tabindex="0" ngbAutofocus>
+            <di class="row">
+                <div class="col-md-12">
+                    <img [src]="url" alt="" width="100%" style="border-radius: 10px;">
+                </div>
+            </di>
+        </div>
+    </ng-template>
+</div>

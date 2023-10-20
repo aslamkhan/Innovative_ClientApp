@@ -1,0 +1,68 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/user/list" class="mr-1"><i data-feather="arrow-left"
+                                    class="font-medium-5"></i> </a>Users Detail
+                        </h1>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <div class="badge badge-pill badge-light-success ng-star-inserted"
+                                        [ngClass]="model.statusClass">{{ model.status }}</div>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted" *ngIf="role=='admin'||role=='supervisor'">
+                                    <a routerLink="/user/edit/{{model.userId}}"><i data-feather="edit"
+                                            class="mr-1"></i>Edit</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body p-2 p-xl-3">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">First Name</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.firstName}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Last Name</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.lastName}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Email</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.emailAddress}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Department</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.department}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Role</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.role}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">User Location</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.location}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="">Last Login Date</label>
+                            <label class="col-md-9 col-form-label" for="">{{model.lastLoginDate}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

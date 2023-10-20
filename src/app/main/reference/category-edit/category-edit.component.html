@@ -1,0 +1,64 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/reference/categories" class="mr-1"><i data-feather="arrow-left"
+                                    class=" font-medium-5"></i> </a>Edit Category
+                        </h1>
+                    </div>
+                    <div *ngIf="message">{{ simpleAlert() }} </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body  p-2 p-xl-3">
+                <form class="" #departmentEditForm="ngForm" novalidate>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 col-form-label" for="">Category Name<span class="req-red strong">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" id="colFormLabel" placeholder="Enter Category Name"
+                                    [(ngModel)]="model.categoryName" #categoryname="ngModel" required name="categoryName" class="form-control"  (keyup)="getCategoryName($event.target.value)">
+                                    <span class="req-red custom-valid">{{checkAssetId}}</span>
+                                    <span class="help-block text-danger"
+                                    *ngIf="categoryname.touched && categoryname.invalid">
+                                    Category Name Required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 col-form-label" for="">Status<span class="req-red strong">*</span></label>
+                            <div class="col-sm-9">
+                                <select name="" #statusname="ngModel" required name="statusName" [(ngModel)]="model.statusId" id="" class="form-control">
+                                    <option value="">Select Status</option>
+                                    <option *ngFor="let web of statuslist" [value]="web.value">{{web.text}}</option>
+                                </select>
+
+                                <span class="help-block text-danger"
+                                    *ngIf="statusname.touched && statusname.invalid">
+                                    Status Required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group mt-2 mb-0">
+                            <button type="button" rippleeffect="" routerLink="/reference/categories"
+                                class="mr-1 btn btn-outline-secondary round waves-effect"
+                                style="width:150px">Cancel</button>
+                            <button type="button" (click)="Save()" [disabled]="departmentEditForm.invalid ||emailExists" rippleeffect=""
+                                class="btn btn-primary round waves-effect" style="width:150px" id="btnSave">Update</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

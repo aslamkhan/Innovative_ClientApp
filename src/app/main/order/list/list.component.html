@@ -1,0 +1,318 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-4 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex">
+                        <h1 class="content-header-title float-left mb-0">
+                            Orders
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-8 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button" data-toggle="modal" data-target="#order-filter"
+                            (click)="toggleSidebar('order-filter')" rippleeffect=""
+                            class="btn btn-outline-primary round waves-effect">Apply Filter <i
+                                data-feather="chevron-right" class="ml-2"></i></button>
+
+                        <a routerLink="/order/create" rippleeffect=""
+                            *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'"
+                            class="ml-50 btn btn-primary round waves-effect float-right"><i data-feather="plus"
+                                class="mr-2"></i>Add Order</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <section id="ngx-datatable-kitchen-sink">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <label class="d-flex align-items-center">Show
+                                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption"
+                                        style="width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-xl-center text-md-center text-center">
+                            <button type="button" class="mr-1 btn badge-warning round waves-effect" style="width:150px"
+                                (click)="openOrder(pendingStatus)">Pending</button>
+                            <button type="button" class="mr-1 btn badge-success round waves-effect" style="width:150px"
+                                (click)="openOrder(openStatus)">Open</button>
+                            <button type="button" class="mr-1 btn badge-primary round waves-effect" style="width:150px"
+                                (click)="openOrder(allStatus)">All</button>
+                        </div>
+                        <div class="col-md-3 col-12 d-flex justify-content-md-end">
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                <label class="d-flex align-items-center"><input type="search" placeholder="Search..."
+                                        class="form-control ml-25" (keyup)="filterUpdate($event)"
+                                        (search)="filterUpdate($event)" /></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+
+                    </div>
+                    <div class="row mb-2" *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+
+                        <div class="col-md-12 text-xl-right text-md-right text-center">
+                            <div class="btn-group">
+                                <div ngbDropdown style="width:200px">
+                                    <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                        id="dropdownMenuButton" rippleEffect>
+                                        Actions
+                                    </button>
+                                    <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                        <a ngbDropdownItem href="javascript:void(0)" (click)="modalOpenLG(modalLG)"><i
+                                                data-feather="user" class="mr-50"></i>New Customer</a>
+                                        <a ngbDropdownItem routerLink="/order/create"><i data-feather="box"
+                                                class="mr-50"></i>New Order</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-datatable [rows]="kitchenSinkRows" [rowHeight]="60"
+                        class="bootstrap core-bootstrap custom_datatable" [limit]="10" [columnMode]="ColumnMode.force"
+                        [headerHeight]="40" [footerHeight]="60" [scrollbarH]="true" [limit]="basicSelectedOption">
+                        <ngx-datatable-column name="" [width]="120" [sortable]="false">
+                            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                <div class="d-flex align-items-center"
+                                    *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'else readOnly">
+                                    <a routerLink="/order/detail/{{ row.id }}" class="mr-1"><img style="height:12px"
+                                            src="assets/images/icon/eye.png" alt=""></a>|
+                                    <a routerLink="/order/edit/{{ row.id }}" class="ml-1"><img style="height:12px"
+                                            src="assets/images/icon/edit.png" alt=""></a>
+                                </div>
+                                <ng-template #readOnly>
+                                    <a routerLink="/order/detail/{{ row.id }}" class="mr-1"><img style="height:12px"
+                                            src="assets/images/icon/eye.png" alt=""></a>
+                                </ng-template>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column class="text-center" name="Order#" prop="id"></ngx-datatable-column>
+                        <ngx-datatable-column name="Customer" prop="customerName">
+                            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                <div class="d-flex align-items-center ng-star-inserted">
+                                    <div class="ng-star-inserted">
+                                        <img height="32" width="32" *ngIf="row.customerImage!=null"
+                                            (click)="modalOpenXs(modalxs, row.customerImage)"
+                                            class="mr-50 cursor-pointer" src="{{ row.customerImage }}">
+                                    </div>
+                                    <div class="cell-line-height">
+                                        <span class="">{{ row.customerName }}</span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Colleted By" prop="colloctedBy">
+                            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                <div class="d-flex align-items-center ng-star-inserted">
+                                    <div class="ng-star-inserted">
+                                        <img height="32" width="32" *ngIf="row.colloctedByImage!=null"
+                                            (click)="modalOpenXs(modalxs, row.colloctedByImage)"
+                                            class="mr-50 cursor-pointer" src="{{ row.colloctedByImage }}">
+                                    </div>
+                                    <div class="cell-line-height">
+                                        <span class="">{{ row.colloctedByName }}</span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Check Out Date" prop="checkOutDate">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.checkOutDate | date:'dd/MM/yyyy'}}
+                            </ng-template></ngx-datatable-column>
+                        <ngx-datatable-column name="Order Type" prop="orderType"></ngx-datatable-column>
+                        <ngx-datatable-column name="Status" prop="statusId">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <div class="badge badge-pill" [ngClass]="row.statusClass">
+                                    {{row.status}}
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                    </ngx-datatable>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <core-sidebar class="modal modal-slide-in sidebar-todo-modal fade" name="order-filter" overlayClass="modal-backdrop"
+        hideOnEsc="true">
+        <app-order-filter></app-order-filter>
+    </core-sidebar>
+    <ng-template #modalLG let-modal>
+        <div class="modal-body p-0" tabindex="0" ngbAutofocus>
+            <div class="row p-2 p-xl-3">
+                <div class="col-md-12">
+                    <h2 class="content-header-title font-weight-bolder float-left mb-0">
+                        Create New Customer
+                    </h2>
+                    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="message">{{ simpleAlert() }} </div>
+            <hr />
+            <form class="form" #r="ngForm" (ngSubmit)="SaveCustomer(r)">
+                <div class="row p-2 p-xl-3">
+                    <div class="col-md-12 mb-1">
+                        <p>Enter Details to add customer to make order</p>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group row mb-2">
+                            <label class="col-md-4 col-form-label" for="">First Name<span
+                                    class="req-red strong">*</span></label>
+                            <div class="col-md-8">
+                                <input ngModel name="firstName" required #firstname="ngModel" type="text" id="firstname"
+                                    placeholder="Enter First Name" class="form-control">
+                                <span class="help-block text-danger" *ngIf="firstname.touched && firstname.invalid">
+                                    First Name is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-4 col-form-label" for="">Last Name<span
+                                    class="req-red strong">*</span></label>
+                            <div class="col-md-8">
+                                <input ngModel name="lastName" required #lastname="ngModel" type="text" id="lastname"
+                                    placeholder="Enter Last Name" class="form-control">
+                                <span class="help-block text-danger" *ngIf="lastname.touched && lastname.invalid">
+                                    Last Name is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-4 col-form-label" for="">Email Address<span
+                                    class="req-red strong">*</span></label>
+                            <div class="col-md-8">
+                                <input ngModel name="email" required #email="ngModel" type="email" id="email"
+                                    placeholder="Enter Email Address" class="form-control"
+                                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                    (keyup)="getEmail($event.target.value)">
+                                <div *ngIf="(email.invalid && email.touched) || email.dirty">
+                                    <span class="help-block text-danger">{{checkEmailError}}</span>
+                                    <span class="help-block text-danger" *ngIf="email.errors?.required">
+                                        Email Address is required
+                                    </span>
+                                    <span class="help-block text-danger" *ngIf="email.errors?.pattern">
+                                        Email Address is not valid
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-4 col-form-label" for="">Phone Number</label>
+                            <div class="col-md-8">
+                                <input ngModel name="phoneNumber" #phone="ngModel" type="number" id="phone"
+                                    placeholder="Enter Phone No." maxlength="15" class="form-control"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
+                                    pattern=".{7,15}" (keyup)="getPhoneNumber($event.target.value)">
+                                <span class="help-block text-danger" *ngIf="phone.errors?.pattern">
+                                    Minimum 7 Digit Required
+                                </span>
+                                <span class="help-block text-danger">{{checkPhonenumber}}</span>
+                                <div *ngIf="model.phoneNumber > 0 && model.phoneNumber < 15" class="alert alert-danger">
+                                    Contact number must be 15 digits
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-4 col-form-label" for="">Department Name<span
+                                    class="req-red strong">*</span></label>
+                            <div class="col-md-8">
+                                <select ngModel required #Department="ngModel" name="departmentId" id="Department"
+                                    class="form-control">
+                                    <option value="">Select</option>
+                                    <option *ngFor="let web of departmentList" [value]="web.value">{{web.text}}
+                                    </option>
+                                </select>
+                                <span class="help-block text-danger" *ngIf="Department.touched && Department.invalid">
+                                    Department is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-4 col-form-label" for="">Item Location</label>
+                            <div class="col-md-8">
+                                <select ngModel #Location="ngModel" name="locationId" id="Location"
+                                    class="form-control">
+                                    <option value="">Select</option>
+                                    <option [value]="web.value" *ngFor="let web of locationList">{{web.text}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-4 col-form-label" for="">Status<span
+                                    class="req-red strong">*</span></label>
+                            <div class="col-sm-8">
+                                <select required ngModel name="statusId" id="statuss" #statuss="ngModel"
+                                    class="form-control">
+                                    <option value="">Select Status</option>
+                                    <option *ngFor="let web of statuslist" [value]="web.value">{{web.text}}</option>
+                                </select>
+                                <span class="help-block text-danger" *ngIf="statuss.touched && statuss.invalid">
+                                    Status is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-4 col-form-label" for="">Comments</label>
+                            <div class="col-md-8">
+                                <textarea ngModel name="comments" cols="30" rows="4" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label for="drap-picture" class="" style="width: 100%">
+                                    <div class="card" style="border: 1px dashed #d8d6de   ;  width: 100%;
+                      height: 125px;">
+                                        <div class="card-body text-center" *ngFor="let src of images">
+                                            <img class="assetpic" src="{{src}}" width="100%" />
+                                        </div>
+                                    </div>
+                                    <input ngModel name="customerImage" id="picture" #picture="ngModel" type="file"
+                                        id="drap-picture" (change)="UploadImage($event)"
+                                        accept="image/png, image/jpeg, image/jpg" class="form-control">
+                                    <span class="req-red">{{fileUploadError}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center mt-2">
+                        <button type="submit" [disabled]="!isFileValid || !r.valid || emailExists || noExists"
+                            rippleeffect="" class="btn btn-primary round waves-effect" style="width: 170px"
+                            id="btnSave">
+                            Create Customer
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </ng-template>
+    <ng-template #modalxs let-modal>
+        <div class="modal-body  bg-transparent p-0" tabindex="0" ngbAutofocus>
+            <di class="row">
+                <div class="col-md-12">
+                    <img [src]="url" alt="" width="100%" style="border-radius: 10px;">
+                </div>
+            </di>
+        </div>
+    </ng-template>
+</div>

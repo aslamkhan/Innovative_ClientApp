@@ -1,0 +1,158 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            Rental History
+                        </h1>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">{{assetName}}
+                                            &nbsp;&nbsp;</span></a>
+                                    <span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            <span *ngIf="item_type =='asset'">Asset ID</span>
+                                            <span *ngIf="item_type =='inventory'">Inventory ID</span> {{barcodeId}}
+                                            &nbsp;&nbsp;</span>
+                                    </a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{serialNumber}}
+                                            &nbsp;&nbsp;</span></a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{assetLocation}}
+                                            &nbsp;&nbsp;</span></a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-4 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button" data-toggle="modal" data-target="#send-invoice-sidebar"
+                            (click)="toggleSidebar('reservation-filter')" rippleeffect=""
+                            class="btn btn-outline-primary round waves-effect disable-field">Apply Filter <i
+                                data-feather="chevron-right" class="ml-2"></i></button>
+                        <button type="button" rippleeffect=""
+                            class="ml-50 btn btn-outline-secondary round waves-effect float-right disable-field">Import
+                            CSV</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <section id="ngx-datatable-kitchen-sink">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <label class="d-flex align-items-center">Show
+                                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption"
+                                        style="width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 d-flex justify-content-md-end">
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                <label class="d-flex align-items-center"><input type="search" placeholder="Search..."
+                                        class="form-control ml-25" (keyup)="filterUpdate($event)"
+                                        (search)="filterUpdate($event)" /></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-12 text-xl-right text-md-right text-center">
+                            <div class="btn-group">
+                                <div ngbDropdown style="width:200px">
+                                    <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                        id="dropdownMenuButton" rippleEffect>
+                                        Actions
+                                    </button>
+                                    <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                        <a ngbDropdownItem onclick="js:window.print()" class="disable-filed"><i
+                                                data-feather="printer" class="mr-50"></i>Print Document</a>
+                                        <a ngbDropdownItem (click)="exportCSVFile()"><i data-feather="file-text"
+                                                class="mr-50"></i>Export to CSV</a>
+                                        <a ngbDropdownItem href="javascript:void(0)" class="disable-field"><i
+                                                data-feather="file-text" class="mr-50"></i>Export to PDF</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-datatable [rows]="kitchenSinkRows" [rowHeight]="50"
+                        class="bootstrap core-bootstrap custom_datatable img_datatable" [limit]="10"
+                        [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="50" [scrollbarH]="true"
+                        [limit]="basicSelectedOption">
+
+                        <ngx-datatable-column name="Order ID" prop="orderId" [width]="40"></ngx-datatable-column>
+                        <ngx-datatable-column name="Assigned to" prop="assignedTo" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Check In" prop="checkIn" [width]="100">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.checkIn | date:'dd-MM-yyyy'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Check Out" prop="checkOut" [width]="100">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.checkOut | date:'dd-MM-yyyy'}}
+                            </ng-template></ngx-datatable-column>
+                        <ngx-datatable-column name="Check In Condition" prop="checkInCondition"
+                            [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Check Out Condition" prop="checkOutCondition"
+                            [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Return Due Date" prop="returnDueDate" [width]="100">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.returnDueDate | date:'dd-MM-yyyy'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Signature" prop="signature" [width]="120">
+                            <ng-template let-sign_img="value" ngx-datatable-cell-template let-row="row">
+                                <div class="text-center">
+                                    <img src="{{row.signature}}" (click)="modalOpenXs(modalxs, row.signature)" alt=""
+                                        style="height:32px" class="image-responsive cursor-pointer">
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <core-sidebar class="modal modal-slide-in sidebar-todo-modal fade" name="reservation-filter"
+        overlayClass="modal-backdrop" hideOnEsc="true">
+        <app-reservation-filter></app-reservation-filter>
+    </core-sidebar>
+    <ng-template #modalxs let-modal>
+        <div class="modal-body  bg-transparent p-0" tabindex="0" ngbAutofocus>
+            <di class="row">
+                <div class="col-md-12">
+                    <img [src]="url" alt="" width="100%" style="border-radius: 10px;">
+                </div>
+            </di>
+        </div>
+    </ng-template>
+</div>

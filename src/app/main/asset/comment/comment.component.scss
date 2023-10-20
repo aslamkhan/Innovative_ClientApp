@@ -1,0 +1,81 @@
+@import '@core/scss/base/pages/app-chat.scss';
+@import '@core/scss/base/pages/app-chat-list.scss';
+@import '@core/scss/base/components/include'; // Components includes
+
+// Chat Application
+.chat-application {
+
+    .chat-sidebar,
+    .sidebar-content,
+    .chat-user-sidebar,
+    .active-user-profile-sidebar,
+    .chat-sidebar-wrapper {
+        height: 100%;
+    }
+
+    .chat-sidebar {
+        border-right: 1px solid $border-color;
+    }
+
+    .sidebar-content {
+        min-width: auto;
+    }
+
+    .chat-profile-sidebar {
+        top: 0;
+        left: 0;
+    }
+
+    .sidebar {
+        position: unset;
+    }
+}
+
+// Dark Layout
+.dark-layout {
+    .chat-application {
+        .chat-sidebar {
+            background-color: $theme-dark-card-bg !important;
+            border-right: 1px solid $theme-dark-border-color;
+        }
+    }
+}
+
+.user-chats {
+    height: 500px !important;
+    overflow-y: auto;
+}
+
+.user-chats::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+/* Track */
+
+.user-chats::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px #E1E1E1;
+    border-radius: 10px;
+}
+
+
+/* Handle */
+
+.user-chats::-webkit-scrollbar-thumb {
+    background: gray;
+    border-radius: 10px;
+}
+
+
+/* Handle on hover */
+
+.user-chats::-webkit-scrollbar-thumb:hover {
+    background: #707070;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}

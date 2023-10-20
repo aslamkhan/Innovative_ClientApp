@@ -1,0 +1,571 @@
+<div class="content-wrapper container-xxl p-0 mb-4">
+  <div class="content-body">
+    <form class="create-order" #orderEditForm="ngForm" novalidate>
+      <div class="content-header row">
+        <div class="content-header-left col-md-8 col-12 mb-0">
+          <div class="row breadcrumbs-top">
+            <div class="col-md-12 d-flex align-items-center">
+              <h1 class="content-header-title float-left mb-0">
+                <a routerLink="/order/list" class="mr-1"><i data-feather="arrow-left" class="font-medium-5"></i>
+                </a>Create New Order
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="row mt-1">
+        <div class="col-md-12">
+          <h3 class="font-weight-bolder">Customer Detail</h3>
+        </div>
+      </div>
+      <div class="row match-height align-items-center">
+        <div class="col-md-8">
+          <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label" for="">Customer<span class="req-red strong">*</span></label>
+            <div class="col-sm-6">
+              <select name="customerId" id="customerId" [(ngModel)]="modelForm.customerID"
+                (change)="oncustomer_change($event.target.value)" class="form-control" Customer="customer"
+                #Customer="ngModel" required>
+                <option value="">Select Customer</option>
+                <option *ngFor="let web of customerList" [value]="web.value">{{web.text}}</option>
+              </select>
+              <span class="help-block text-danger" *ngIf="Customer.touched && Customer.invalid">
+                Customer is required
+              </span>
+            </div>
+            <div class="col-md-4 mt-50">
+              <a href="javascript:void(0)" (click)="modalOpenLG(modalLG)" class=""><i data-feather="plus-circle"
+                  class="mr-50 font-medium-5"></i>Add
+                New Customer</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group row">
+            <div class="col-md-12 image-fit">
+              <div class="card" style="border: 1px dashed #d8d6de; height: 200px; width: 200px">
+                <img [src]="image_url" alt="" class="image-responsive" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-12">
+          <h3 class="text-danger font-weight-bolder">Order #</h3>
+          <p>Please Enter the Detail of rental/Reservation below</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row mb-2">
+            <label class="col-md-3 col-form-label" for="">Order Type<span class="req-red strong">*</span></label>
+            <div class="col-sm-9">
+              <select name="orderTypeID" id="orderTypeID" class="form-control" [(ngModel)]="modelForm.orderTypeID"
+                name="Order" #Order="ngModel" required>
+                <option value="">Select Order Type</option>
+                <option *ngFor="let web of orderTypeList; let i = index" [value]="web.id"
+                  [selected]="isCustomer && i === 0">
+                  {{web.status}}</option>
+              </select>
+              <span class="help-block text-danger" *ngIf="Order.touched && Order.invalid">
+                Order Type is required
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 second-checkout-date">
+          <div class="row">
+            <label class="col-md-3 col-form-label" for="">Check Out Date</label>
+            <div class="col-sm-9">
+              <button>
+                <input placeholder="Check Out Date" id="checkoutDate" [(ngModel)]="modelForm.checkOutDate"
+                  name="CheckoutDate" #CheckoutDate="ngModel" (change)="changeCheckOut($event)" class="checkout-center">
+              </button>
+              <button class="btn btn-danger clear-checkout" (click)="clearCheckoutDate()">Clear Date</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row mb-2">
+            <label class="col-md-3 col-form-label" for="">Order Date<span class="req-red strong">*</span></label>
+            <div class="col-sm-9 datepicker">
+              <input required id="orderDate" [(ngModel)]="modelForm.orderDate" placeholder="Select Order Date"
+                name="orderDate" #OrderDate="ngModel">
+
+              <span class="help-block text-danger" id="error-message"></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row mb-2">
+            <label class="col-md-3 col-form-label" for="">Collected By<span *ngIf="checkoutDateReq==1"
+                class="req-red strong">*</span></label>
+            <div class="col-sm-9">
+              <select name="collectedby_id" id="collectedby_id" [(ngModel)]="modelForm.collectedbyID"
+                [attr.disabled]="checkoutDateReq==0 ? true : null" class="form-control" name="CollectedBy"
+                #CollectedBy="ngModel" [required]="checkoutDateReq==1">
+                <option value="">Select Customer</option>
+                <option *ngFor="let web of customerList" [value]="web.value"
+                  [selected]="isCustomer && colloectedValue == web.value">
+                  {{web.text}}</option>
+              </select>
+              <span class="help-block text-danger" *ngIf="CollectedBy.touched && CollectedBy.invalid">
+                Collected By is required
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row mb-2">
+            <label class="col-md-3 col-form-label" for="">Status</label>
+            <div class="col-sm-9">
+              <input required name="statusId" [attr.disabled]="true" id="statusId" [(ngModel)]="modelForm.statusId"
+                class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="form-group row mb-2">
+            <label class="col-md-3 col-form-label" for="">Notes(If any)</label>
+            <div class="col-sm-9">
+              <textarea name="" id="" cols="30" rows="4" name="notes" #notes="ngModel" class="form-control"
+                placeholder="Add Notes" [(ngModel)]="modelForm.notes"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row mb-2">
+            <label class="col-md-3 col-form-label" for="">Signature
+              <span *ngIf="isSignPadRequired" class="req-red strong">*</span></label>
+            <div class="col-sm-9" [class.disabled-input-return]="checkoutDateReq==0">
+              <canvas #signPadCanvas (touchstart)="startSignPadDrawing($event)" (touchmove)="movedFinger($event)"
+                (click)="mySignPadDrawing()"></canvas>
+              <div><span class="help-block text-danger" *ngIf="isSignPadRequired">
+                  {{SignatureError}}
+                </span></div>
+              <button class="btn btn-success disable-field" color="secondary" (click)="saveSignPad()">Save</button>
+              <button class="btn btn-danger clear-signature" (click)="clearSignPad()">Clear</button>
+              <button class="btn btn-warning disable-field" (click)="undoSign()">Undo</button>
+              <div class="disable-field">
+                <div>
+                  <img src='{{ signImage }}' />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <label class="col-md-3 col-form-label" for="">Files</label>
+            <div class=" col-md-9">
+              <label for="change-orderFile" class="btn btn-outline-primary round mr-75 mb-0">
+                <span class="d-sm-block"><i data-feather="plus" class="mr-2"></i>Add Files</span>
+                <input type="file" id="change-orderFile" multiple (change)="FileUpload($event)"
+                  accept="image/png, image/jpeg, image/jpg, .doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  class="form-control">
+                <span class="req-red">{{fileUploadError}}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body overflow-auto">
+              <div class="row">
+                <div class="col-md-12 d-flex justify-content-md-end mb-1">
+                  <div class="d-flex align-items-center justify-content-end pb-1 pl-md-0 pb-md-0">
+                    <label class="d-flex align-items-center col-form-label disable-field">Search Asset
+                      <select [(ngModel)]="asset_name" class="ml-1 form-control" name="asset_name" style="width: 120px">
+                        <option value="">Select Asset</option>
+                        <option value="{{ arr }}" *ngFor="let arr of assets">
+                          {{ arr }}
+                        </option>
+                      </select>
+                    </label>
+                    <button type="button" (click)="onaddasset()" class="btn btn-primary round ml-1">
+                      <i data-feather="plus" class="mr-50"></i>Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <table class="table order_table">
+                <thead>
+                  <tr>
+                    <th class="text-center border-top-left-radius-10 border-bottom-left-radius-10"></th>
+                    <th class="text-center">Asset ID/Inventory ID</th>
+                    <th class="text-center">Asset Name/Inventory Name</th>
+                    <th class="text-center">Serial Number</th>
+                    <th class="text-center">Location</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">Condition at check out</th>
+                    <th class="text-center">Return Due Date</th>
+                    <th class="text-center disable-field">Check in Date</th>
+                    <th class=" text-center border-top-right-radius-10 border-bottom-right-radius-10 disable-field">
+                      Condition at Check in
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of asset_data; let i = index">
+                    <td class="text-center choose-td">
+                      <a href="javascript:void(0)" (click)="ondelete(i)" class="ml-50 mr-50"><i data-feather="trash-2"
+                          class="text-danger"></i></a><span>|</span>
+                      <span (click)="modalOpenLG(modalLGSearch)"><img class="search-icon"
+                          src="assets/images/icon/search-icon-transparent-images-vector-15.png" alt=""></span>
+                      <input name="barcodeImage{{i}}" [(ngModel)]="item.barcodeImage" type="file"
+                        id="upload-picture{{i}}" (change)="printBarCode(item,i)"
+                        accept="image/png, image/jpeg, image/jpg" class="form-control ml-50 disable-field">
+                    </td>
+                    <td class="text-center">
+                      <input type="text" [(ngModel)]="item.barCodeID" name="barCodeID{{i}}" id="barCodeID{{i}}"
+                        #barCodeID="ngModel" class="form-control barcode-cursor" (keyup)="GetAsset($event,item)" />
+                      <span class="req-red">{{item.error}}</span>
+                    </td>
+                    <td class="text-center">
+                      <input type="text" [(ngModel)]="item.assetName" name="assetName{{i}}" id="assetId{{i}}"
+                        class="form-control" [attr.disabled]="true" />
+                      <input type="hidden" value="{{item.assetItemType}}" name="assetItemType{{i}}"
+                        id="assetItemType{{i}}">
+                    </td>
+
+                    <td class="text-center">
+                      <input type="text" [(ngModel)]="item.serialNumber" name="serialNumber{{i}}" id="serialNumber{{i}}"
+                        class="form-control" [attr.disabled]="true" />
+                    </td>
+                    <td class="text-center">
+                      <input type="text" [(ngModel)]="item.location" name="location{{i}}" id="location{{i}}"
+                        class="form-control" [attr.disabled]="true" />
+                      <input type="hidden" value="{{item.locationID}}" name="locationID{{i}}" id="locationID{{i}}">
+                    </td>
+
+                    <td class="text-center">
+                      <input type="number" [(ngModel)]="item.quantity" id="quantity{{i}}" class="form-control"
+                        (keyup)="getInventoryQuantity($event,item)" name="quantity{{i}}"
+                        [disabled]="item.isQtyEnable" />
+                      <input type="hidden" value="{{item.inventoryQuantity}}" name="inventoryQuantity{{i}}"
+                        id="inventoryQuantity{{i}}">
+                      <!-- <span class="req-red">{{item.errorQuantity}}</span> -->
+                      <span class="help-block text-danger">{{item.errorQuantity}}</span>
+                    </td>
+                    <td class="text-center">
+                      <select [(ngModel)]="item.conditionAtCheckOutID" class="form-control"
+                        name="conditionAtCheckOutID{{i}}" [disabled]="item.isCondition" id="conditionAtCheckOutID{{i}}">
+                        <option value="">Select</option>
+                        <option *ngFor="let web of assetConditionList" [value]="web.value">{{web.text}}</option>
+                      </select>
+                    </td>
+                    <td class="text-center">
+                      <ng2-flatpickr *ngIf="!item.isCondition" [config]="ReturnDateOptions"
+                        [setDate]="item.returnDueDate" [(ngModel)]="item.returnDueDate" placeholder="Select Date"
+                        name="returnDueDate{{i}}" (change)="onDateChange($event, row)"></ng2-flatpickr>
+                      <input type="text" placeholder="Select Date" *ngIf="item.isCondition" name="returnDueDate{{i}}"
+                        [(ngModel)]="item.returnDueDate" [disabled]="item.isCondition" class="form-control" />
+                    </td>
+                    <td class="text-center disable-field">
+                      <ng2-flatpickr [config]="birthDateOptions" [setDate]="item.checkInDate"
+                        [(ngModel)]="item.checkInDate" placeholder="Select Date"
+                        name="checkInDate{{i}}"></ng2-flatpickr>
+                    </td>
+                    <td class="text-center disable-field">
+                      <select [(ngModel)]="item.conditionAtCheckInID" class="form-control"
+                        name="conditionAtCheckInID{{i}}">
+                        <option value="">Select</option>
+                        <option *ngFor="let web of assetConditionList" [value]="web.value">{{web.text}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-12">
+          <a routerLink="/order/list" rippleeffect="" class="mr-1 btn btn-outline-secondary round waves-effect"
+            style="width: 120px">Cancel</a>
+          <button type="button" [disabled]="orderEditForm.invalid || !isSignPadDraw  || !isFileValid" rippleeffect=""
+            (click)="Save()" class="btn btn-primary round waves-effect" style="width: 170px" id="btnSaveOrder">
+            Create New Order
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <ng-template #modalLG let-modal>
+    <div class="modal-body p-0" tabindex="0" ngbAutofocus>
+      <div class="row p-2 p-xl-3">
+        <div class="col-md-12">
+          <h2 class="content-header-title font-weight-bolder float-left mb-0">
+            Create New Customer
+          </h2>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="message">{{ simpleAlert() }} </div>
+      <hr />
+      <form class="form" #r="ngForm" (ngSubmit)="SaveCustomer(r)">
+        <div class="row p-2 p-xl-3">
+          <div class="col-md-12 mb-1">
+            <p>Enter Details to add customer to make order</p>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group row mb-2">
+              <label class="col-md-4 col-form-label" for="">First Name<span class="req-red strong">*</span></label>
+              <div class="col-md-8">
+                <input ngModel name="firstName" required #firstname="ngModel" type="text" id="firstname"
+                  placeholder="Enter First Name" class="form-control">
+                <span class="help-block text-danger" *ngIf="firstname.touched && firstname.invalid">
+                  First Name is required
+                </span>
+              </div>
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-md-4 col-form-label" for="">Last Name<span class="req-red strong">*</span></label>
+              <div class="col-md-8">
+                <input ngModel name="lastName" required #lastname="ngModel" type="text" id="lastname"
+                  placeholder="Enter Last Name" class="form-control">
+                <span class="help-block text-danger" *ngIf="lastname.touched && lastname.invalid">
+                  Last Name is required
+                </span>
+              </div>
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-md-4 col-form-label" for="">Email Address<span class="req-red strong">*</span></label>
+              <div class="col-md-8">
+                <input ngModel name="email" required #email="ngModel" type="email" id="email"
+                  placeholder="Enter Email Address" class="form-control"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" (keyup)="getEmail($event.target.value)">
+                <div *ngIf="(email.invalid && email.touched) || email.dirty">
+                  <span class="help-block text-danger">{{checkAssetId}}</span>
+                  <span class="help-block text-danger" *ngIf="email.errors?.required">
+                    Email Address is required
+                  </span>
+                  <span class="help-block text-danger" *ngIf="email.errors?.pattern">
+                    Email Address is not valid
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-md-4 col-form-label" for="">Phone Number</label>
+              <div class="col-md-8">
+                <input ngModel name="phoneNumber" #phone="ngModel" type="number" id="phone"
+                  placeholder="Enter Phone No." maxlength="15" class="form-control"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
+                  pattern=".{7,15}" (keyup)="getPhoneNumber($event.target.value)">
+                <span class="help-block text-danger" *ngIf="phone.errors?.pattern">
+                  Minimum 7 Digit Required
+                </span>
+                <span class="help-block text-danger">{{checkPhonenumber}}</span>
+                <div *ngIf="modelForm.phoneNumber > 0 && modelForm.phoneNumber < 15" class="alert alert-danger">
+                  Contact number must be 15 digits
+                </div>
+              </div>
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-md-4 col-form-label" for="">Department Name<span class="req-red strong">*</span></label>
+              <div class="col-md-8">
+                <select ngModel required #Department="ngModel" name="departmentId" id="Department" class="form-control">
+                  <option value="">Select</option>
+                  <option *ngFor="let web of departmentList" [value]="web.value">{{web.text}}</option>
+                </select>
+                <span class="help-block text-danger" *ngIf="Department.touched && Department.invalid">
+                  Department is required
+                </span>
+              </div>
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-md-4 col-form-label" for="">Item Location</label>
+              <div class="col-md-8">
+                <select ngModel #Location="ngModel" name="locationId" id="Location" class="form-control">
+                  <option value="">Select</option>
+                  <option [value]="web.value" *ngFor="let web of locationList">{{web.text}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-md-4 col-form-label" for="">Status<span class="req-red strong">*</span></label>
+              <div class="col-sm-8">
+                <select required ngModel name="statusId" id="statuss" #statuss="ngModel" class="form-control">
+                  <option value="">Select Status</option>
+                  <option *ngFor="let web of statuslist" [value]="web.value">{{web.text}}</option>
+                </select>
+                <span class="help-block text-danger" *ngIf="statuss.touched && statuss.invalid">
+                  Status is required
+                </span>
+              </div>
+            </div>
+            <div class="form-group row mb-2">
+              <label class="col-md-4 col-form-label" for="">Comments</label>
+              <div class="col-md-8">
+                <textarea ngModel name="comments" cols="30" rows="4" class="form-control"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label for="drap-picture" class="" style="width: 100%">
+                  <div class="card" style="border: 1px dashed #d8d6de   ;  width: 100%;
+                  height: 275px;">
+                    <div class="card-body text-center" *ngFor="let src of images">
+                      <img class="assetpic" src="{{src}}" width="100%" />
+                      <!-- <p class="mt-1 mb-0">Drag or Upload Customer Image here</p> -->
+                    </div>
+                  </div>
+                  <input ngModel name="customerImage" type="file" id="drap-picture" (change)="UploadImage($event)"
+                    accept="image/png, image/jpeg, image/jpg" class="form-control">
+                  <span class="req-red">{{customerFileUploadError}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 text-center mt-2">
+            <button type="submit" [disabled]="!r.valid || emailExists || !isCustomerFileValid" rippleeffect=""
+              class="btn btn-primary round waves-effect" style="width: 170px" id="btnSaveCustomer">
+              Create Customer
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #modalLGSearch let-modal>
+    <div class="modal-body p-0" tabindex="0" ngbAutofocus>
+      <div class="row px-3 pt-2 pb-0">
+        <div class="col-md-12 p-0">
+          <h2 class="content-header-title font-weight-bolder float-left mb-0">
+            Search for Items
+          </h2>
+          <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <hr>
+
+      <div class="row p-2 p-xl-3">
+        <div class="col-md-12">
+          <div class="form-group row">
+            <label class="col-md-4 col-form-label" for=""> Tool Number</label>
+            <label class="col-md-8 col-form-label font-weight-bolder" for="">
+              <input type="text" class="form-control" placeholder="Search by Tool Number" name="serialNumber"
+                id="serialNumber" [(ngModel)]="modelDetail.serialNumber" #serialNumber="ngModel">
+            </label>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 col-form-label" for="">Asset Name</label>
+            <label class="col-md-8 col-form-label font-weight-bolder" for="">
+              <input type="text" class="form-control" placeholder="Search by Asset Name" name="assetName" id="assetName"
+                [(ngModel)]="modelDetail.assetName" #assetName="ngModel">
+            </label>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 col-form-label" for=""> Location </label>
+            <label class="col-md-8 col-form-label font-weight-bolder" for="">
+              <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="locationList"
+                [(ngModel)]="modelDetail.location" #location="ngModel" name="location" id="location">
+              </ng-multiselect-dropdown>
+            </label>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 col-form-label" for="">Asset Number</label>
+            <label class="col-md-8 col-form-label font-weight-bolder" for="">
+              <input type="text" class="form-control" placeholder="Search by Asset Number" name="assetNumber"
+                id="assetNumber" [(ngModel)]="modelDetail.assetNumber" #assetNumber="ngModel"
+                (keypress)="numericOnly($event)">
+            </label>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 col-form-label" for="">Item Category</label>
+            <label class="col-md-8 col-form-label font-weight-bolder" for="">
+              <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="categoryList"
+                [(ngModel)]="modelDetail.itemCategory" #itemCategory="ngModel" name="itemCategory" id="itemCategory">
+              </ng-multiselect-dropdown>
+            </label>
+          </div>
+        </div>
+        <div class="col-md-12 text-right mt-2">
+          <button type="button" rippleeffect="" class="mr-1 btn btn-primary round 2waves-effect" style="width:130px"
+            (click)="submitSubDetail()" id="btnsubmitSubDetail">Submit</button>
+          <button type="button" rippleeffect="" class="mr-1 btn btn-secondary round 2waves-effect" style="width:130px"
+            (click)="resetSubDetail()">Reset</button>
+          <div class="col-md-12 text-right mt-2"> <button type="button" rippleeffect=""
+              class="mr-1 btn btn-primary round 2waves-effect" (click)="populateTable()" style="width:130px">Add to
+              Order Form</button></div>
+        </div>
+        <div class="col-md-12 mt-3">
+          <h4>Search Result</h4>
+          <div class="result-table">
+            <table class="table order_table">
+              <thead>
+                <tr>
+                  <th class="text-center border-top-left-radius-10 border-bottom-left-radius-10"></th>
+                  <th class="text-center">Asset ID </th>
+                  <th class="text-center">Tool Number </th>
+                  <th class="text-center">Location </th>
+                  <th class="text-center">Assign To </th>
+                  <th class="text-center">Check Out Date </th>
+                  <th class="text-center disable-field">Condition </th>
+                  <th class="text-center">Return Due Date </th>
+                  <th class="text-center ">Status</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="orderSubGridDetail.length==0">
+                  <td colspan="9">No data to display</td>
+                </tr>
+                <tr *ngFor="let item of orderSubGridDetail; let i = index;">
+                  <td><input type="checkbox" value="{{item.assetID}}" (change)="populateResult($event)"></td>
+                  <td>{{item.assetID}}</td>
+                  <td>{{item.serialNumber}}</td>
+                  <td>{{item.location}}</td>
+                  <td>{{item.assignTo}}</td>
+                  <td>{{item.checkOutDate | date:'dd/MM/yyyy'}}</td>
+                  <td class="disable-field">{{item.condition}}</td>
+                  <td>{{item.returnDueDate | date:'dd/MM/yyyy'}}</td>
+                  <td>
+                    <div ngbDropdown class="badge badge-pill" style="width: 90px;" [ngClass]="{
+                                                                                                                        'badge-success': item.status == 'Available',
+                                                                                                                        'badge-warning': item.status == 'Check Out',
+                                                                                                                        'badge-pink': item.status == 'Reserved',
+                                                                                                                        'badge-blue': item.status == 'Maintenance',
+                                                                                                                        'badge-green': item.status == 'Inspection',
+                                                                                                                        'badge-danger': item.status == 'Not Active' || item.status == 'Unavailable'
+                                                                                                                    }">
+
+                      <div> {{ item.status ==
+                        'Available' ? 'Available' : item.status == 'Check Out' ? 'Checked Out'
+                        : item.status == 'Reserved' ?
+                        'Reserved' : item.status == 'Maintenance' ? 'Maintenance'
+                        : item.status == 'Inspection' ? 'Inspection' :
+                        item.status == 'Unavailable' ? 'Unavailable':
+                        item.status
+                        == 'Not Active' ? 'Not
+                        Active' : 'Not Active' }}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="col-md-12 text-right mt-2"> <button type="button" rippleeffect=""
+              class="mr-1 btn btn-primary round 2waves-effect" (click)="populateTable()" style="width:130px">Add to
+              Order Form</button></div>
+
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

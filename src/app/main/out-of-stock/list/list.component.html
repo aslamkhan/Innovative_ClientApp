@@ -1,0 +1,138 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-5 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex">
+                        <h1 class="content-header-title float-left mb-0">
+                            Out of Stock log
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-7 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button" data-toggle="modal" data-target="#send-invoice-sidebar"
+                            (click)="toggleSidebar('stock-logo-filter')" rippleEffect
+                            class="btn btn-outline-primary round waves-effect">Apply Filter <i
+                                data-feather="chevron-right" class="ml-2"></i></button>
+                        <a routerLink="/out_of_stock/create" href="#" rippleeffect=""
+                            *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'"
+                            class="ml-50 btn btn-primary round waves-effect float-right"><i data-feather="plus"
+                                class="mr-2 "></i>Add Item</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <section id="ngx-datatable-kitchen-sink">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <label class="d-flex align-items-center">Show
+                                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption"
+                                        style="width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 d-flex justify-content-md-end">
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                <label class="d-flex align-items-center"><input type="search" placeholder="Search..."
+                                        class="form-control ml-25" (keyup)="filterUpdate($event)"
+                                        (search)="filterUpdate($event)" /></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-6">
+                            <label class="d-flex align-items-center" for="">Select By Category &nbsp;&nbsp;
+                                <!-- <select name="" id="" class="form-control" style="width:240px">
+                                    <option value="">Impact Wrench</option>
+                                    <option value="">Air ratchet</option>
+                                </select> -->
+                                <select name="categoryId" class="form-control"
+                                    (change)="filterByCategory($event.target.value)"
+                                    (search)="filterByCategory($event)">
+                                    <option value="">Select Category</option>
+                                    <option *ngFor="let web of categoryList" [value]="web.value">{{web.text}}</option>
+                                </select>
+                            </label>
+
+                        </div>
+                        <div class="col-md-6 text-xl-right text-md-right text-center ">
+                            <div class="btn-group">
+                                <div ngbDropdown style="width:200px">
+                                    <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                        id="dropdownMenuButton" rippleEffect>
+                                        Actions
+                                    </button>
+                                    <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                        <a ngbDropdownItem href="javascript:void(0)" class="disable-filed"><i
+                                                data-feather="printer" class="mr-50"></i>Print Labels/Barcode</a>
+                                        <a ngbDropdownItem (click)="exportCSVFile()"><i data-feather="box"
+                                                class="mr-50"></i>Export to CSV</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-datatable [rows]="kitchenSinkRows" [rowHeight]="60"
+                        class="bootstrap core-bootstrap custom_datatable img_datatable" [limit]="10"
+                        [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="60" [scrollbarH]="true"
+                        [limit]="basicSelectedOption">
+                        <ngx-datatable-column name="" [width]="60" [sortable]="false">
+
+                            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                <div class="d-flex align-items-center"
+                                    *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant';else readOnly">
+                                    <a routerLink="/out_of_stock/detail/{{ row.id }}" class=" mr-1"><img
+                                            style="height:12px" src="assets/images/icon/eye.png" alt=""></a>|
+                                    <a routerLink="/out_of_stock/edit/{{ row.id }}" class="ml-1"><img
+                                            style="height:12px" src="assets/images/icon/edit.png" alt=""></a>
+                                </div>
+
+                                <ng-template #readOnly>
+                                    <a routerLink="/out_of_stock/detail/{{ row.id }}" class=" mr-1"><img
+                                            style="height:12px" src="assets/images/icon/eye.png" alt=""></a>
+                                </ng-template>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Asset ID" prop="assetId" [width]="100"></ngx-datatable-column>
+                        <ngx-datatable-column name="Asset Name" prop="assetName" [width]="120">
+                            <span></span></ngx-datatable-column>
+                        <ngx-datatable-column name="Quantity" prop="quanity" [width]="100"></ngx-datatable-column>
+                        <ngx-datatable-column name="Category" prop="categoryId" [width]="100"> <ng-template
+                                let-row="row" ngx-datatable-cell-template>
+                                {{row.categoryName}}
+                            </ng-template></ngx-datatable-column>
+                        <ngx-datatable-column name="Date Requested" prop="dateRequested" [width]="120">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.dateRequested | date:'dd/MM/yyyy'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Days Requested for" prop="daysRequested"
+                            [width]="120"></ngx-datatable-column>
+                        <!-- <ngx-datatable-column name="Requested by" prop="users.firstName"
+                            [width]="150"></ngx-datatable-column> -->
+
+                    </ngx-datatable>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <core-sidebar class="modal modal-slide-in sidebar-todo-modal fade" name="stock-logo-filter"
+        overlayClass="modal-backdrop" hideOnEsc="true">
+        <app-stock-logo-filter></app-stock-logo-filter>
+    </core-sidebar>
+</div>

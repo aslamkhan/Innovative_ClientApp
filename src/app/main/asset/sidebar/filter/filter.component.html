@@ -1,0 +1,86 @@
+<div class="slideout-content">
+    <!-- Modal To Add New User Starts-->
+    <div class="modalsd modal-slide-in sdfade new-user-modal" id="modals-slide-in">
+        <div class="modal-dialog sidebar-lg">
+            <div class="modal-content p-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="toggleSidebar('filter')">
+                    ×
+                </button>
+                <div class="modal-body flex-grow-1">
+                    <form [formGroup]="orderFilterForm" class="mt-4">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <h3 class="text-left font-weight-bolder">Filter for Asset summary</h3>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Item Types</label>
+                            <div class="col-sm-8">
+                                <!-- <form [formGroup]="dropDownForm"> -->
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="dropdownList"
+                                    formControlName="itemType" name="itemType" id="itemType">
+                                </ng-multiselect-dropdown>
+                                <!-- </form> -->
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Category</label>
+                            <div class="col-md-8">
+                                <!-- <form [formGroup]="dropDownForm"> -->
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="categoryList"
+                                    formControlName="categoryName" name="categoryName" id="categoryName">
+                                </ng-multiselect-dropdown>
+                                <!-- </form> -->
+                                <!-- <select name="" id="" class="form-control">
+                                    <option value="">Select Order Type</option>
+                                    <option [value]="obj.value" *ngFor="let obj of categoryList">
+                                        {{obj.text}}
+                                    </option>
+                                </select> -->
+
+                                <!-- <select name="" id="" class="form-control"  [(ngModel)]="model.categoryName">
+                                      <option value="">Item Type</option>
+                                    <option [value]="obj.value" *ngFor="let obj of model.assetCategoryList">{{obj.text}}</option>
+                                </select> -->
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Item Name</label>
+                            <div class="col-md-8">
+                                <input type="text" name="itemName" id="itemName" formControlName="itemName"
+                                    class="form-control" placeholder="Enter Item Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Location</label>
+                            <div class="col-sm-8">
+                                <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="locationList"
+                                    formControlName="location" name="location" id="location">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Serial Number</label>
+                            <div class="col-md-8">
+                                <input type="text" name="serialNumber" id="serialNumber" formControlName="serialNumber"
+                                    class="form-control" placeholder="Enter Serial Number">
+                            </div>
+                        </div>
+                        <div class="form-group row mx-2">
+                            <div class="col-md-12 p-0">
+                                <button type="button" class="btn btn-primary btn-block round" data-dismiss="modal"
+                                    (click)="toggleSidebar('filter')" rippleEffect>
+                                    Apply Filter
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="slideout-content">
+    <!-- Modal To Add New User Starts-->
+    <div class="modalsd modal-slide-in sdfade new-user-modal" id="modals-slide-in">
+        <div class="modal-dialog sidebar-lg">
+            <div class="modal-content p-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="toggleSidebar('reservation-filter')">
+                    ×
+                </button>
+
+                <div class="modal-body flex-grow-1">
+                    <form class="mt-4">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <h3 class="text-left font-weight-bolder">Filter for Stock History</h3>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Transaction</label>
+                            <div class="col-md-8">
+                                <select name="" id="" class="form-control">
+                                    <option value="">Select Transaction</option>
+                                    <option value="Order">Order</option>
+                                    <option value="Add to Stock">Add to Stock</option>
+                                    <option value="Remove from Stock">Remove from Stock</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">From Date</label>
+                            <div class="col-md-8">
+                                <ng2-flatpickr [config]="birthDateOptions" placeholder="Select Date"></ng2-flatpickr>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">End Date</label>
+                            <div class="col-md-8">
+                                <ng2-flatpickr [config]="birthDateOptions" placeholder="Select Date"></ng2-flatpickr>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label for="invoice-from" class="col-form-label text-left col-md-4">Transaction By</label>
+                            <div class="col-md-8">
+                                <select name="" id="" class="form-control">
+                                    <option value="">Kerry Phillip</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group  mx-2  mb-3">
+                            <div class="">
+                                <button type="button" class="btn btn-outline-primary btn-block round"
+                                    style="border: 1px dashed #0B469D !important;">
+                                    <i data-feather="plus" class="mr-1"></i> Add New Fields
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group  mx-2">
+                            <div class="">
+                                <button type="button" class="btn btn-primary btn-block round" data-dismiss="modal"
+                                    (click)="toggleSidebar('reservation-filter')" rippleEffect>
+                                    Apply Filter
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

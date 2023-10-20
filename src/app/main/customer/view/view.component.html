@@ -1,0 +1,76 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <div class="content-header row">
+            <div class="content-header-left col-md-12 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/customer/list" class="mr-1"><i data-feather="arrow-left"
+                                    class="font-medium-5"></i></a> Customer Detail
+                        </h1>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <div class="badge badge-pill px-2" [ngClass]="model.statusClass">
+                                        {{ model.status }}
+                                    </div>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted"
+                                    *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'">
+                                    <a routerLink="/customer/edit/{{model.id}}" class="text-primary"><i
+                                            data-feather="edit" class="mr-50"></i>Edit</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row mb-50">
+                            <label class="col-md-6 col-form-label" for="">First Name</label>
+                            <label class="col-md-6 col-form-label" for="">{{model.firstName}}</label>
+                        </div>
+                        <div class="form-group row mb-50">
+                            <label class="col-md-6 col-form-label" for="">Last Name</label>
+                            <label class="col-md-6 col-form-label" for="">{{model.lastName}}</label>
+                        </div>
+                        <div class="form-group row mb-50">
+                            <label class="col-md-6 col-form-label" for="">Email</label>
+                            <label class="col-md-6 col-form-label" for="">{{model.email}}</label>
+                        </div>
+                        <div class="form-group row mb-50">
+                            <label class="col-md-6 col-form-label" for="">Department</label>
+                            <label class="col-md-6 col-form-label" for="">{{model.departmentName}}</label>
+                        </div>
+                        <div class="form-group row mb-50">
+                            <label class="col-md-6 col-form-label" for="">Location</label>
+                            <label class="col-md-6 col-form-label" for="">{{model.locationName}}</label>
+                        </div>
+                        <div class="form-group row mb-50">
+                            <label class="col-md-6 col-form-label" for="">Comments</label>
+                            <label class="col-md-6 col-form-label" for="">{{model.comments}}</label>
+                        </div>
+
+                        <div class="form-group row mb-50">
+                            <label class="col-md-6 col-form-label" for="">Status</label>
+                            <label class="col-md-6 col-form-label" for=""
+                                [ngClass]="model.statusClass">{{model.status}}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">
+                        <div class="form-group row mb-50 img-height-min">
+                            <img src="assets/images/no_img.png" alt="" class="assetpic"
+                                *ngIf="model.customerImage==null">
+                            <img [src]="model.customerImage" alt="" class="assetpic" *ngIf="model.customerImage!=null">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

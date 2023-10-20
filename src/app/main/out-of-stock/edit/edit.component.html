@@ -1,0 +1,140 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/out_of_stock/logs" class="mr-1"><i data-feather="arrow-left"
+                                    class="font-medium-5"></i></a> Edit Stock
+                        </h1>
+                    </div>
+                    <div *ngIf="message">{{ simpleAlert() }} </div>
+                </div>
+            </div>
+        </div>
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body p-2 p-xl-3">
+                <form class="" #r="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Category<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select required [(ngModel)]="model.categoryId" name="categoryId" id="Category"
+                                        #Category="ngModel" class="form-control" (change)="bindSubCategoryDdl($event)">
+                                        <option value="">Select Category</option>
+                                        <option *ngFor="let web of categoryList " [value]="web.value">{{web.text}}
+                                        </option>
+                                    </select>
+                                    <span class="help-block text-danger" *ngIf="Category.touched && Category.invalid">
+                                        Category is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Sub Category<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select required name="subLevelID" id="level" [(ngModel)]="model.subCategoryId"
+                                        #level="ngModel" class="form-control" (change)="bindAssetDdl($event)">
+                                        <option value="">Select Sub Category</option>
+                                        <option [value]="obj.value" *ngFor="let obj of subcategoryList">
+                                            {{obj.text}}
+                                        </option>
+                                    </select>
+                                    <span class="help-block text-danger" *ngIf="level.touched && level.invalid">
+                                        Sub Category is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Asset Name<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="assetsId" class="form-control" [(ngModel)]="model.assetId"
+                                        #assetsId="ngModel" required>
+                                        <option value="">Select Asset</option>
+                                        <option *ngFor="let web of assetsList " [value]="web.value">{{web.text}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="assetsId.invalid && assetsId.touched" class="error-message text-danger">
+                                        Asset Name is Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Quantity<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="number" id="colFormLabel" placeholder="Enter Quantity"
+                                        class="form-control" name="quantity" #quantityname="ngModel" required
+                                        [(ngModel)]="model.quanity" (keyup)="getQuantity($event)">
+                                    <div *ngIf="quantityname.invalid && quantityname.touched"
+                                        class="error-message text-danger">
+                                        Quantity is Required
+                                    </div>
+                                    <span class="error-message text-danger" id="errorQuanity"></span>
+                                </div>
+
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Date Requested<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <input [(ngModel)]="model.dateRequested" name="dateRequested" id="dateRequested"
+                                        placeholder="Select Date" required>
+                                    <span class="help-block text-danger" id="error-message"></span>
+                                </div>
+
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Days Requested for<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+
+                                    <input type="number" placeholder="Enter Days in number" class="form-control"
+                                        [(ngModel)]="model.daysRequested" min="0" step="1" name="daterequired"
+                                        #daterequired="ngModel" required>
+                                    <div *ngIf="daterequired.invalid && daterequired.touched"
+                                        class="error-message text-danger">
+                                        Days Requested is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2">
+                                <label class="col-md-3 col-form-label" for="">Requested by<span
+                                        class="req-red strong">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="requestedbyID" class="form-control" [(ngModel)]="model.requestedbyID"
+                                        #requestname="ngModel" required id="requestname">
+                                        <option value="">Select Requested by</option>
+                                        <option *ngFor="let web of userList" [value]="web.userId">{{web.firstName}}
+                                            {{web.lastName}}</option>
+                                    </select>
+                                    <div *ngIf="requestname.invalid && requestname.touched"
+                                        class="error-message text-danger">
+                                        Select Requested Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-2 mb-0">
+                                <!-- <button type="button" class="mr-1 btn btn-outline-secondary round waves-effect" style="width:120px">Cancel</button>
+                            <button (click)="Save()" [disabled]="departmentEditForm.invalid" class="btn btn-primary round waves-effect" style="width:150px">Submit</button> -->
+                                <a routerLink="/out_of_stock/logs" rippleeffect=""
+                                    class="mr-1 btn btn-outline-secondary round waves-effect"
+                                    style="width: 120px">Cancel</a>
+                                <button (click)="Save()" [disabled]="!r.valid"
+                                    class="btn btn-primary round waves-effect" style="width:150px"
+                                    id="btnSave">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,229 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-7 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            Users
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-5 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button" rippleeffect=""
+                            class="ml-50 btn btn-outline-secondary round waves-effect disable-filed">Import CSV</button>
+                        <a *ngIf="role=='admin'||role=='supervisor'" routerLink="/user/create"
+                            class="ml-50 btn btn-primary round waves-effect"><i data-feather="plus" class="mr-2"></i>Add
+                            User</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <section id="ngx-datatable-kitchen-sink">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <label class="d-flex align-items-center">Show
+                                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption"
+                                        style="width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1 disable-filed">
+                                <label class="d-flex align-items-center">Filters
+                                    <select class=" form-control ml-2 mr-25" style="width: 230px;">
+                                        <option value="">Full Service</option>
+                                        <option value="">Partial</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12 d-flex justify-content-md-end">
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                <label class="d-flex align-items-center"><input type="search" placeholder="Search..."
+                                        class="form-control ml-25" (keyup)="filterUpdate($event)"
+                                        (search)="filterUpdate($event)" /></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-12 text-xl-right text-md-right text-center">
+                            <div class="btn-group">
+                                <div ngbDropdown style="width:200px">
+                                    <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                        id="dropdownMenuButton" rippleEffect>
+                                        Actions
+                                    </button>
+                                    <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                        <a ngbDropdownItem onclick="js:window.print()"><i data-feather="printer"
+                                                class="mr-50"></i>Print Document</a>
+                                        <a ngbDropdownItem (click)="exportCSVFile()" href="javascript:void(0)"><i
+                                                data-feather="file-text" class="mr-50"></i>Export to CSV</a>
+                                        <a ngbDropdownItem href="javascript:void(0)" class="disable-filed"><i
+                                                data-feather="file-text" class="mr-50"></i>Export to PDF</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-datatable [rows]="kitchenSinkRows" [rowHeight]="60"
+                        class="bootstrap core-bootstrap custom_datatable img_datatable icon-width" [limit]="10"
+                        [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="60" [scrollbarH]="true"
+                        [limit]="basicSelectedOption">
+                        <ngx-datatable-column name="" [width]="50" [sortable]="false" class="">
+                            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                <div class="d-flex align-items-center"
+                                    *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant';else readOnly">
+                                    <a routerLink="/user/detail/{{ row.userId }}" class="c-margin"><img
+                                            style="height:12px" src="assets/images/icon/eye.png" alt=""></a> |
+                                    <a routerLink="/user/edit/{{ row.userId}}" class="c-margin"><img style="height:12px"
+                                            src="assets/images/icon/edit.png" alt=""></a> |
+                                    <a *ngIf="row.emailAddress===loggedInUser" href="javascript:void(0)"
+                                        (click)="modalOpenSM(modalSM,row)" class="c-margin"><img style="height:12px"
+                                            src="assets/images/icon/lock.png" alt=""></a>
+                                </div>
+                                <ng-template #readOnly>
+                                    <a routerLink="/user/detail/{{ row.userId }}" class="c-margin"><img
+                                            style="height:12px" src="assets/images/icon/eye.png" alt=""></a>
+                                </ng-template>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <!--  <ngx-datatable-column name="ID" prop="id" [width]="80"></ngx-datatable-column> -->
+                        <ngx-datatable-column name="First Name" prop="firstName" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Last Name" prop="lastName" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Email" prop="emailAddress" [width]="160"></ngx-datatable-column>
+                        <ngx-datatable-column name="Department" prop="department" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Role" prop="role" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="User Type" prop="userType" [width]="120"></ngx-datatable-column>
+                        <!-- <ngx-datatable-column name="Last Login" prop="lastLoginDate" [width]="120"></ngx-datatable-column> -->
+                        <ngx-datatable-column name="Status" prop="status" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Location" prop="location" [width]="120"></ngx-datatable-column>
+                        <!--  <ng-template let-status="value" ngx-datatable-cell-template>
+                                <div class="badge badge-pill" style="width: 90px;" [ngClass]="{
+                                'badge-success': status == '1',
+                                'badge-danger': status == '2'
+                            }">
+                                    {{ status == 1 ? 'Available' : 'Not Active' }}
+                                </div>
+                            </ng-template>
+                         -->
+                    </ngx-datatable>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <ng-template #modalxs let-modal>
+        <div class="modal-body  bg-transparent p-0" tabindex="0" ngbAutofocus>
+            <di class="row">
+                <div class="col-md-12">
+                    <img [src]="url" alt="" width="100%" style="border-radius: 10px;">
+                </div>
+            </di>
+        </div>
+    </ng-template>
+
+    <ng-template #modalSM let-modal>
+        <div class="modal-body p-0" tabindex="0" ngbAutofocus>
+            <div class="row px-3 pt-2 pb-0">
+                <div class="col-md-12 p-0">
+                    <h2 class="content-header-title font-weight-bolder float-left mb-0">
+                        Change Password
+                    </h2>
+                    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <hr>
+
+
+            <div class="row p-2 p-xl-3">
+                <form class="form" #r="ngForm" (ngSubmit)="Save(r)">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label custom-label" for="">Email Address</label>
+                            <div class="col-md-7">
+                                <h1 class="col-md-8 col-form-label" style="padding-left:0px;font-size:14px;" for="">
+                                    {{emailAddress}}</h1>
+                            </div>
+                        </div>                  
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label custom-label" for="">Old Password</label>
+                            <div class="col-md-7">
+                                <input type="password" required ngModel name="OldPassword" id="colFormLabel"
+                                    #pass="ngModel" placeholder="Enter New Password" class="form-control" minlength="3"
+                                    maxlength="12" #userPassword="ngModel">
+                                <span class="help-block text-danger"
+                                    *ngIf="pass.touched && pass.invalid && pass.errors.required">
+                                    Old Password is required
+                                </span>
+                                <div *ngIf="userPassword.errors">
+                                    <div class="text-danger" *ngIf="userPassword.errors.minlength">
+                                        Please enter 3 or more characters for password.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label custom-label" for="">New Password</label>
+                            <div class="col-md-7">
+                                <input type="password" required ngModel name="newPassword" id="colFormLabel"
+                                    #pass="ngModel" placeholder="Enter New Password" class="form-control" minlength="3"
+                                    maxlength="12" #userPassword="ngModel">
+                                <span class="help-block text-danger"
+                                    *ngIf="pass.touched && pass.invalid && pass.errors.required">
+                                    New Password is required
+                                </span>
+                                <div *ngIf="userPassword.errors">
+                                    <div class="text-danger" *ngIf="userPassword.errors.minlength">
+                                        Please enter 3 or more characters for password.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label custom-label" for="">Confirm Password</label>
+                            <div class="col-md-7">
+                                <input type="password" required ngModel name="confirmPassword" id="colFormLabel"
+                                    #pass="ngModel" placeholder="Enter Confirm Password" class="form-control"
+                                    minlength="3" maxlength="12" #userPassword="ngModel">
+                                <span class="help-block text-danger" id="confirmPasswordError"
+                                    *ngIf="pass.touched && pass.invalid && pass.errors.required">
+                                    Confirm Password is required
+                                </span>
+                                <div *ngIf="userPassword.errors">
+                                    <div class="text-danger" *ngIf="userPassword.errors.minlength">
+                                        Please enter 3 or more characters for password.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center mt-2">
+                        <button #closeButton type="button" rippleeffect="" style="width:100%;min-width: 100px;"
+                            (click)="modal.close('Accept click')"
+                            class="mr-1 btn btn-outline-danger round waves-effect">Close</button>
+                        <button type="submit" [disabled]="!r.valid || emailExists" rippleeffect=""
+                            class="btn btn-primary round waves-effect" style="width:100%;min-width: 100px;"
+                            id="btnSave">Change</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+</div>

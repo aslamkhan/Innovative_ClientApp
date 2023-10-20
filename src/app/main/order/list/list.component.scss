@@ -1,0 +1,38 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+
+.datatable-scroll {
+    width: auto !important;
+}
+
+#dropdownMenuButton {
+    width: 190px;
+    border-radius: 20px;
+    margin-right: 15px;
+}
+
+@import '@core/scss/angular/libs/flatpickr.component.scss';
+
+.dark-layout input.form-control,
+.dark-layout textarea.form-control {
+    background-color: #283046 !important;
+    color: #b4b7bd;
+}
+
+.form-control {
+    background-color: #fff !important;
+}
+
+.datatable-header-cell-label {
+    font-size: 0.9rem;
+}
+
+.req-red {
+    color: red;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.order-button {
+    //position: relative;
+    top: 60px;
+}

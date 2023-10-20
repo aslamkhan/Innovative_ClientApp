@@ -1,0 +1,78 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-6 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/out_of_stock/logs" class="mr-1"><i data-feather="arrow-left"
+                                    class="font-medium-5"></i></a>OUT OF STOCK DETAIL
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-6 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-xl-right text-md-right text-center">
+                        <div class="btn-group">
+                            <div ngbDropdown style="width:200px">
+                                <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                    id="dropdownMenuButton" rippleEffect>
+                                    Actions <i data-feather="chevron-down" class="ml-2"></i>
+                                </button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                    <a ngbDropdownItem onclick="js:window.print()"><i data-feather="printer"
+                                            class="mr-50"></i>Print Detail</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label" for="">Asset ID</label>
+                            <label class="col-md-7 col-form-label" for="">{{model.assetId}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label" for="">Asset Name</label>
+                            <label class="col-md-7 col-form-label" for="">{{model.assetName}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label" for="">Quantity</label>
+                            <label class="col-md-7 col-form-label" for="">{{model.quanity}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label" for="">Date Requested</label>
+                            <label class="col-md-7 col-form-label" for="">{{model.dateRequested |
+                                date:'yyyy-MM-dd'}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label" for="">Days Requested for</label>
+                            <label class="col-md-7 col-form-label" for="">{{model.daysRequested}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label" for="">Requested by</label>
+                            <label class="col-md-7 col-form-label" for="">{{model.requestedby}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label" for="">Category Name</label>
+                            <label class="col-md-7 col-form-label" for="">{{model.categoryName}}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-5 col-form-label" for="">Sub Category Name</label>
+                            <label class="col-md-7 col-form-label" for="">{{model.subCategoryName}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

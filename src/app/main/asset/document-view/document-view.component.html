@@ -1,0 +1,196 @@
+<div class="content-wrapper container-xxl p-0" id="printSection">
+    <div class="content-body">
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            <a routerLink="/asset/documents"><i data-feather="arrow-left"
+                                    class="mr-1 font-medium-5"></i></a> Document ABC
+                        </h1>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted disable-field">
+                                    <a routerLink="/order/edit/1" class="text-primary"><i data-feather="edit"
+                                            class="mr-50"></i>Edit</a>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted disable-field">
+                                    <a href="#" class="text-danger"><i data-feather="trash-2"
+                                            class="mr-50"></i>Delete</a>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <span class="text-primary font-weight-bolder">{{assetName}}
+                                        &nbsp;&nbsp;</span><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <span class="text-primary font-weight-bolder">
+                                        <span *ngIf="item_type =='asset'">Asset ID</span>
+                                        <span *ngIf="item_type =='inventory'">Inventory ID</span> {{barcodeId}}
+                                        &nbsp;&nbsp;</span><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{serialNumber}}
+                                            &nbsp;&nbsp;</span></a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barcodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{assetLocation}}
+                                            &nbsp;&nbsp;</span></a>
+                                </li>
+
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-4 col-12 mb-2 disable-field" id="printRemove">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <div class="btns">
+                            <div ngbDropdown style="width:200px" class="d-inline-block ml-50">
+                                <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                    id="dropdownMenuButton1" rippleEffect>
+                                    Actions<i data-feather="chevron-down" class="ml-2"></i>
+                                </button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                                    <a ngbDropdownItem onclick="js:window.print()"><i data-feather="printer"
+                                            class="mr-50"></i>Print Document</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-md-6 col-xl-3 text-center">
+                        <img src="assets/images/word.png" alt="" class="px-2 img-responsive order_img"
+                            (click)="downloadDocument(models.id)">
+
+                        <div class=" text-center mt-1">
+                            <div class="avatar bg-light-white p-50 m-0 disable-field">
+                                <a>
+                                    <div class="avatar-content">
+                                        <i data-feather="eye"></i>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="avatar bg-light-white p-50 m-0 ml-2 disable-field">
+                                <a>
+                                    <div class="avatar-content">
+                                        <i data-feather="download" class="text-success"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xl-9">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="card bg-secondary  bg-lighten-5">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar mr-1 bg-light-white p-50 m-0 ml-2 ">
+                                                <div class="avatar-content">
+                                                    <img src="assets/images/icon/file.png" height="20"
+                                                        class="border-radius-0" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="cell-line-height" (click)="downloadDocument(models.id)">
+                                                <span class="text-muted font-small-2">Document Name</span><br>
+                                                <span class="font-weight-bold">{{models.fileName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card bg-secondary  bg-lighten-5">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar mr-1 bg-light-white p-50 m-0 ml-2 ">
+                                                <div class="avatar-content">
+                                                    <img src="assets/images/icon/boxes.png" height="20"
+                                                        class="border-radius-0" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="cell-line-height">
+                                                <span class="text-muted font-small-2">Category</span><br>
+                                                <span class="font-weight-bold">{{categoryList.categoryName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card bg-secondary  bg-lighten-5">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar mr-1 bg-light-white p-50 m-0 ml-2 ">
+                                                <div class="avatar-content">
+                                                    <img src="assets/images/icon/file_open.png" height="20"
+                                                        class="border-radius-0" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="cell-line-height">
+                                                <span class="text-muted font-small-2">File Type</span><br>
+                                                <span class="font-weight-bold">{{models.fileType}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card bg-secondary  bg-lighten-5">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar mr-1 bg-light-white p-50 m-0 ml-2 ">
+                                                <div class="avatar-content">
+                                                    <img src="assets/images/icon/calendar_icon.png" height="20"
+                                                        class="border-radius-0" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="cell-line-height">
+                                                <span class="text-muted font-small-2">Date Uploaded</span><br>
+                                                <span class="font-weight-bold">{{models.dateAdded |
+                                                    date:'yyyy-MM-dd'}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card bg-secondary  bg-lighten-5">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar mr-1 bg-light-white p-50 m-0 ml-2 ">
+                                                <div class="avatar-content">
+                                                    <img src="assets/images/icon/user_icon.png" height="20"
+                                                        class="border-radius-0" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="cell-line-height">
+                                                <span class="text-muted font-small-2">Uploaded by</span><br>
+                                                <span class="font-weight-bold">{{models.addedby}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 mt-2">
+                                <span>{{models.description}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

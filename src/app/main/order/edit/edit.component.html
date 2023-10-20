@@ -1,0 +1,663 @@
+<div class="content-wrapper container-xxl p-0 pb-5">
+    <div class="content-body">
+        <form #r="ngForm">
+            <div class="content-header row">
+                <div class="content-header-left col-md-8 col-12 ">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-md-12 d-flex align-items-center">
+                            <h1 class="content-header-title float-left mb-0">
+                                <a routerLink="/order/list" class="mr-1"><i data-feather="arrow-left"
+                                        class=" font-medium-5"></i> </a>Edit Order Details
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row match-height align-items-center mt-1">
+                <div class="col-md-12 ">
+                    <h3 class="font-weight-bolder">Customer Detail</h3>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-2 col-form-label" for="">Customer<span
+                                class="req-red strong">*</span></label>
+                        <div class="col-sm-6">
+                            <select name="customer_id" id="customer_id" [(ngModel)]="modelForm.customerID"
+                                (change)="oncustomer_change($event.target.value)" class="form-control"
+                                [attr.disabled]="modelForm.orderStatus !== 'Open' ? true : null" #Customer="ngModel"
+                                required>
+                                <option value="">Select Customer</option>
+                                <option *ngFor="let web of customerList" [value]="web.value">{{web.text}}</option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="Customer.touched && Customer.invalid">
+                                Customer is required
+                            </span>
+                        </div>
+                        <div class="col-md-4 mt-50 disable-filed">
+                            <a href="javascript:void(0)" (click)="modalOpenLG(modalLG)" class=""><i
+                                    data-feather="plus-circle" class="mr-50 font-medium-5"></i>Add New Customer</a>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="card" style="border: 1px dashed #d8d6de; height:200px; width: 200px;">
+                                <img [src]="customerDetail.customerImage" alt="" class="image-responsive">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-12">
+                    <h3 class="text-danger font-weight-bolder">Order #{{modelForm.id}}</h3>
+                    <p>Please Enter the Detail of rental/Reservation below</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Order Type<span
+                                class="req-red stro-ng">*</span></label>
+                        <div class="col-sm-9">
+                            <select name="orderTypeID" id="orderTypeID" class="form-control"
+                                [(ngModel)]="modelForm.orderTypeID" #Order="ngModel" required
+                                [attr.disabled]="modelForm.orderStatus !== 'Open' ? true : null">
+                                <option value="">Select Order Type</option>
+                                <option *ngFor="let web of orderTypeList" [value]="web.id">{{web.status}}</option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="Order.touched && Order.invalid">
+                                Order Type is required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 second-checkout-date">
+                    <div class="row">
+                        <label class="col-md-3 col-form-label" for="">Check Out Date</label>
+                        <div class="col-sm-9">
+                            <button [class.disabled-input-return]="modelForm.orderStatus !== 'Open'">
+                                <input placeholder="Check Out Date" id="checkoutDate"
+                                    [(ngModel)]="modelForm.checkOutDate" name="CheckoutDate" #CheckoutDate="ngModel"
+                                    (change)="changeCheckOut($event)">
+                                <!-- <ng2-flatpickr [config]="birthDateOptions" [(ngModel)]="modelForm.checkOutDate"
+                                [setDate]="modelForm.checkOutDate" placeholder="Select Date"></ng2-flatpickr> -->
+                            </button>
+                            <button *ngIf="modelForm.orderStatus == 'Open'" class="btn btn-danger clear-checkout"
+                                (click)="clearCheckoutDate()">Clear Date</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Order Date<span
+                                class="req-red strong">*</span></label>
+                        <div class="col-sm-9 datepicker"
+                            [class.disabled-input-return]="modelForm.orderStatus !== 'Open'">
+                            <input required id="orderDate" [(ngModel)]="modelForm.orderDate" placeholder="Select Date"
+                                name="orderDate" #OrderDate="ngModel">
+                            <!-- <ng2-flatpickr [config]="birthDateOptions" [(ngModel)]="modelForm.orderDate"
+                            [setDate]="modelForm.orderDate" placeholder="Select Date"></ng2-flatpickr> -->
+                            <span class="help-block text-danger" id="error-message"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Collected By<span *ngIf="isSignPadRequired"
+                                class="req-red strong">*</span></label>
+                        <div class="col-sm-9">
+                            <select name="collectedby_id" id="collectedby_id" [(ngModel)]="modelForm.collectedbyID"
+                                class="form-control"
+                                [attr.disabled]="collectedDisable == 0 ? true : null || modelForm.orderStatus !== 'Open' ? true : null"
+                                [required]="checkoutDateReq==1" #CollectedBy="ngModel"
+                                (change)="changeCollectedBy($event)">
+                                <option value="">Select Customer</option>
+                                <option *ngFor="let web of customerList" [value]="web.value">{{web.text}}</option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="CollectedBy.touched && CollectedBy.invalid">
+                                Collected By is required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Status</label>
+                        <div class="col-sm-9">
+                            <input required name="statusId" [attr.disabled]="true" id="statusId"
+                                [(ngModel)]="modelForm.orderStatus" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Notes(If any)</label>
+                        <div class="col-sm-9">
+                            <textarea name="notes" id="" cols="30" rows="4" class="form-control"
+                                [(ngModel)]="modelForm.notes" placeholder="Add Notes"
+                                [attr.disabled]="modelForm.orderStatus !== 'Open' ? true : null"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Signature
+                            <span *ngIf="isSignPadRequired" class="req-red strong">*</span>
+                        </label>
+                        <div class="col-sm-6" [hidden]="modelForm.orderStatus != 'Open'"
+                            [class.disabled-input-return]="collectedDisable == 0">
+                            <canvas #signPadCanvas (touchstart)="startSignPadDrawing($event)"
+                                (touchmove)="movedFinger($event)" (click)="mySignPadDrawing()"></canvas>
+                            <div><span class="help-block text-danger" *ngIf="isSignPadRequired">
+                                    {{SignatureError}}
+                                </span></div>
+                            <button class="btn btn-success disable-field" color="secondary"
+                                (click)="saveSignPad()">Save</button>
+                            <button class="btn btn-danger clear-signature" (click)="clearSignPad()">Clear</button>
+                            <div class="disable-field">
+                                <div>
+                                    <img [src]="modelForm.signatureLocation" name="signatureLocation">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 signatiue-width">
+                            <img [src]="modelForm.signatureLocation">
+                        </div>
+                        <!-- <div class="col-sm-9">
+                        <img [src]="modelForm.signatureLocation">
+                    </div> -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-3 col-form-label" for="">Files</label>
+                        <div class="col-md-9 ">
+                            <a class="mr-1 files-count" *ngFor="let obj of documentFile" (click)="fileDownload(obj)">
+                                <span class="filename">{{obj.fileName}}</span>
+                            </a>
+                            <label for="change-orderFile" class="btn btn-outline-primary round mr-75 mb-0">
+                                <span class="d-sm-block"><i data-feather="plus" class="mr-2"></i>Add Files</span>
+
+                                <input type="file" id="change-orderFile" multiple name="change-orderFile"
+                                    (change)="FileUpload($event)"
+                                    accept="image/png, image/jpeg, image/jpg, .doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                    class="form-control"
+                                    [attr.disabled]="modelForm.orderStatus !== 'Open' ? true : null">
+                                <span class="req-red">{{fileUploadError}}</span>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-md-end mb-1">
+                                    <div
+                                        class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                        <label class="d-flex align-items-center col-form-label disable-field">Search
+                                            Asset
+                                            <select [(ngModel)]="asset_name" class="ml-1 form-control"
+                                                style="width:150px" name="asset_name">
+                                                <option value="">Select Asset</option>
+                                                <option value="{{ arr }}" *ngFor="let arr of assets">{{ arr }}</option>
+                                            </select>
+                                        </label>
+                                        <button type="button" (click)="onaddasset()" class="btn btn-primary round ml-1"
+                                            [attr.disabled]="modelForm.orderStatus !== 'Open' ? true : null"><i
+                                                data-feather="plus" class="mr-50"></i>Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table order_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center border-top-left-radius-10 border-bottom-left-radius-10">
+                                        </th>
+                                        <th class="text-center">Asset ID/Inventory ID</th>
+                                        <th class="text-center">Asset Name/Inventory Name</th>
+                                        <th class="text-center">Serial Number</th>
+                                        <th class="text-center">Location</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-center">Condition at check out</th>
+                                        <th class="text-center">Return Due Date</th>
+                                        <th class="text-center" *ngIf="modelForm.orderStatus!='Open'">Check in Date</th>
+                                        <th class="text-center border-top-right-radius-10 border-bottom-right-radius-10"
+                                            *ngIf="modelForm.orderStatus!='Open'">
+                                            Condition at Check in</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of orderDetail; let i = index;">
+                                        <td class="text-center edit-order-table">
+                                            <a href="javascript:void(0)" (click)="modalOpenview(modalDetail,item.id)"
+                                                class=""><img style="height:12px" src="assets/images/icon/eye.png"
+                                                    alt=""></a>|
+                                            <a href="javascript:void(0)" (click)="ondelete(i,item)" class=""
+                                                [class.disabled-input-return]="modelForm.orderStatus !== 'Open'"><i
+                                                    data-feather="trash-2" class="text-danger"></i></a>
+                                            <span>|</span>
+                                            <span [class.disabled-input-return]="modelForm.orderStatus !== 'Open'"
+                                                (click)="modalOpenLG(modalLGSearch)"><img class="search-icon"
+                                                    src="assets/images/icon/search-icon-transparent-images-vector-15.png"
+                                                    alt=""></span>
+                                        </td>
+                                        <td class="text-center">
+                                            <input type="text" [(ngModel)]="item.barCodeID" class="form-control"
+                                                (keyup)="GetAsset($event,item)" name="barCodeID{{i}}"
+                                                id="barCodeID{{i}}"
+                                                [attr.disabled]="modelForm.orderStatus !== 'Open' ? true : null">
+                                            <span class="req-red">{{item.error}}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <input type="text" [(ngModel)]="item.assetName" id="assetId{{i}}"
+                                                class="form-control" [attr.disabled]="true" name="assetName{{i}}" />
+                                        </td>
+
+                                        <td class="text-center">
+                                            <input type="text" [(ngModel)]="item.serialNumber" id="serialNumber{{i}}"
+                                                class="form-control" [attr.disabled]="true" name="serialNumber{{i}}" />
+                                        </td>
+                                        <td class="text-center">
+                                            <input type="text" [(ngModel)]="item.location" id="location{{i}}"
+                                                class="form-control" [attr.disabled]="true" name="location{{i}}" />
+                                        </td>
+
+                                        <td class="text-center">
+                                            <input type="text" [(ngModel)]="item.quantity" id="quantity{{i}}"
+                                                name="quantity{{i}}" [disabled]="item.isQtyEnable" class="form-control"
+                                                (keyup)="getInventoryQuantity($event,item)"
+                                                [attr.disabled]="modelForm.orderStatus !== 'Open' ? true : null" />
+                                            <input type="hidden" value="{{item.inventoryQuantity}}"
+                                                name="inventoryQuantity{{i}}" id="inventoryQuantity{{i}}">
+                                            <span class="req-red">{{item.errorQuantity}}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <select [(ngModel)]="item.conditionAtCheckOutID" class="form-control"
+                                                [disabled]="item.isCondition" name="conditionAtCheckOutID{{i}}"
+                                                [attr.disabled]="modelForm.orderStatus !== 'Open' ? true : null">
+                                                <option value="">Select</option>
+                                                <option value="{{ arr.value }}" *ngFor="let arr of conditionsList">
+                                                    {{ arr.text }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td class="text-center"
+                                            [class.disabled-input-return]="modelForm.orderStatus !== 'Open'">
+                                            <ng2-flatpickr *ngIf="!item.isCondition" [config]="ReturnDateOptions"
+                                                [setDate]="item.returnDueDate" [(ngModel)]="item.returnDueDate"
+                                                placeholder="Select Date" name="returnDueDate{{i}}"
+                                                (change)="onDateChange($event, row)"></ng2-flatpickr>
+                                            <input type="text" placeholder="Select Date" *ngIf="item.isCondition"
+                                                name="returnDueDate{{i}}" [(ngModel)]="item.returnDueDate"
+                                                [disabled]="item.isCondition" class="form-control" />
+                                        </td>
+                                        <td class="text-center" *ngIf="modelForm.orderStatus!='Open'"
+                                            [class.disabled-input-return]="modelForm.orderStatus !== 'Pending'">
+                                            <ng2-flatpickr *ngIf="!item.isCondition" [config]="birthDateOptions"
+                                                [setDate]="item.checkInDate" [(ngModel)]="item.checkInDate"
+                                                placeholder="Select Date" name="checkInDate{{i}}"></ng2-flatpickr>
+                                            <input type="text" placeholder="Select Date" *ngIf="item.isCondition"
+                                                name="checkInDate{{i}}" [(ngModel)]="item.checkInDate"
+                                                [disabled]="item.isCondition" class="form-control" />
+                                        </td>
+                                        <td class="text-center" *ngIf="modelForm.orderStatus!='Open'">
+                                            <select [(ngModel)]="item.conditionAtCheckInID" class="form-control"
+                                                [disabled]="item.isCondition" name="conditionAtCheckInID{{i}}"
+                                                [attr.disabled]="modelForm.orderStatus !== 'Pending' ? true : null">
+                                                <option value="">Select</option>
+                                                <option value="{{ arr.value }}" *ngFor="let arr of conditionsList">
+                                                    {{ arr.text }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-12">
+                    <a routerLink="/order/list" rippleeffect=""
+                        class="mr-1 btn btn-outline-secondary round waves-effect" style="width:130px">Cancel</a>
+                    <button type="button" type="button" rippleeffect="" (click)="Save()"
+                        class="btn btn-primary round waves-effect" style="width:180px" id="btnSave"
+                        [attr.disabled]="!isFileValid || !r.valid || checkoutDateReq == 1 || (modelForm.orderStatus !== 'Open'  && modelForm.orderStatus !== 'Pending' )? true : null|| isSignPadDraw ? null :true">Save
+                        Order</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <ng-template #modalDetail let-modal>
+        <div class="modal-body" tabindex="0" ngbAutofocus>
+            <div class="p-2">
+                <div class="content-header row">
+                    <div class="content-header-left col-md-8 col-12 mb-2">
+                        <div class="row breadcrumbs-top">
+                            <div class="col-md-12 d-flex align-items-center">
+                                <h2 class="content-header-title float-left mb-0 text-danger">
+                                    Order Asset Details
+                                </h2>
+                                <div class="breadcrumb-wrapper d-flex ">
+                                    <ol class="breadcrumb align-items-center">
+                                        <li class="breadcrumb-item ng-star-inserted">
+                                            <span class="ng-star-inserted">Asset ID</span>
+                                        </li>
+                                        <li class="breadcrumb-item ng-star-inserted">
+                                            <span class="ng-star-inserted">{{subOrderDetail.barCodeID}}</span>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-header-right col-md-4 col-12 mb-2 text-right">
+                        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 editImage img-height-min" *ngIf="subOrderDetail.assetImage==null">
+                        <img src="assets/images/no_img.png" alt="" class="img-responsive order_img assetpic">
+                        <p class="mt-50">{{subOrderDetail.description}}</p>
+                    </div>
+
+                    <div class="col-md-4 editImage img-height-min" *ngIf="subOrderDetail.assetImage!=null">
+                        <img src="{{subOrderDetail.assetImage}}" alt="" class="img-responsive order_img assetpic">
+                        <p class="mt-50">{{subOrderDetail.description}}</p>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img src="assets/images/icon/setting_icon.png"
+                                    width="20" alt="" class="mr-1">Asset
+                                Name</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.assetName}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img
+                                    src="assets/images/icon/calendar_icon.png" width="20" alt="" class="mr-1">Check
+                                Out
+                                Date</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.checkOutDate|
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img src="assets/images/icon/user_icon.png"
+                                    width="20" alt="" class="mr-1">Assigned
+                                to</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.assignedTo}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img src="assets/images/icon/terms_icon.png"
+                                    width="20" alt="" class="mr-1">Condition
+                                at check out</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.conditionAtCheckOut}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img
+                                    src="assets/images/icon/calendar_icon.png" width="20" alt="" class="mr-1">Return
+                                Due
+                                Date</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.returnDueDate|
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img
+                                    src="assets/images/icon/calendar_icon.png" width="20" alt="" class="mr-1">Check-in
+                                Date</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.checkInDate|
+                                date:'dd-MM-yyyy'}}</label>
+                        </div>
+                        <div class="row ml-2 my-1" style="border-bottom: 1px solid #ebe9f1;">
+                            <label class="col-md-6 col-form-label" for=""><img src="assets/images/icon/terms_icon.png"
+                                    width="20" alt="" class="mr-1">Condition
+                                at Check in</label>
+                            <label class="col-md-6 col-form-label" for="">{{subOrderDetail.conditionAtCheckIn}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #modalLG let-modal>
+        <div class="modal-body p-0" tabindex="0" ngbAutofocus>
+            <div class="row px-3 pt-2 pb-0">
+                <div class="col-md-12">
+                    <h2 class="content-header-title font-weight-bolder float-left mb-0">
+                        Create New Customer
+                    </h2>
+                    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <hr>
+            <div class="row px-3 pt-0 pb-3">
+                <div class="col-md-12 mb-1">
+                    <p>Enter Details to add customer to make order</p>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">First Name</label>
+                        <div class="col-md-8">
+                            <input type="text" id="first_name" placeholder="Enter First Name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Last Name</label>
+                        <div class="col-md-8">
+                            <input type="text" id="last_name" placeholder="Enter Last Name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Email Address</label>
+                        <div class="col-md-8">
+                            <input type="email" id="email" placeholder="Enter Email Address" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Phone Number</label>
+                        <div class="col-md-8">
+                            <input type="text" id="phone" placeholder="Enter Phone No." class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Department</label>
+                        <div class="col-md-8">
+                            <select name="department" id="department" class="form-control">
+                                <option value="">Select Department</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label class="col-md-4 col-form-label" for="">Item Location</label>
+                        <div class="col-md-8">
+                            <select name="location" id="location" class="form-control">
+                                <option value="">Select Location </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="drap-picture" class="" style="width:100%">
+                                <div class="card" style="border: 1px dashed #d8d6de;">
+                                    <div class="card-body text-center">
+                                        <img src="assets/images/icon/upload.png" alt="">
+                                        <p class="mt-50 mb-0">Drag or Upload Customer Image here</p>
+                                    </div>
+                                </div>
+                                <input type="file" id="drap-picture" hidden="" accept="image/png, image/jpeg, image/jpg"
+                                    class="form-control">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 text-center mt-2">
+                    <button type="button" rippleeffect="" (click)="modal.close('Accept click')"
+                        class="mr-1 btn btn-outline-secondary round waves-effect" style="width:120px">Cancel</button>
+                    <button type="button" rippleeffect="" class="btn btn-primary round waves-effect"
+                        style="width:180px">Create Customer</button>
+                </div>
+            </div>
+
+        </div>
+    </ng-template>
+    <ng-template #modalLGSearch let-modal>
+        <div class="modal-body p-0" tabindex="0" ngbAutofocus>
+            <div class="row px-3 pt-2 pb-0">
+                <div class="col-md-12 p-0">
+                    <h2 class="content-header-title font-weight-bolder float-left mb-0">
+                        Search for Items
+                    </h2>
+                    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row p-2 p-xl-3">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for=""> Tool Number</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">
+                            <input type="text" class="form-control" placeholder="Search by Tool Number"
+                                name="serialNumber" id="serialNumber" [(ngModel)]="modelDetail.serialNumber"
+                                #serialNumber="ngModel">
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Asset Name</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">
+                            <input type="text" class="form-control" placeholder="Search by Asset Name" name="assetName"
+                                id="assetName" [(ngModel)]="modelDetail.assetName" #assetName="ngModel">
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for=""> Location </label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="locationList"
+                                [(ngModel)]="modelDetail.location" #location="ngModel" name="location" id="location">
+                            </ng-multiselect-dropdown>
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Asset Number</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">
+                            <input type="text" class="form-control" placeholder="Search by Asset Number"
+                                name="assetNumber" id="assetNumber" [(ngModel)]="modelDetail.assetNumber"
+                                #assetNumber="ngModel" (keypress)="numericOnly($event)">
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="">Item Category</label>
+                        <label class="col-md-8 col-form-label font-weight-bolder" for="">
+                            <ng-multiselect-dropdown [settings]="dropdownSettings" [data]="categoryList"
+                                [(ngModel)]="modelDetail.itemCategory" #itemCategory="ngModel" name="itemCategory"
+                                id="itemCategory">
+                            </ng-multiselect-dropdown>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12 text-right mt-2">
+                    <button type="button" rippleeffect="" class="mr-1 btn btn-primary round 2waves-effect"
+                        style="width:130px" (click)="submitSubDetail()">Submit</button>
+                    <button type="button" rippleeffect="" class="mr-1 btn btn-secondary round 2waves-effect"
+                        style="width:130px" (click)="resetSubDetail()">Reset</button>
+                    <div class="col-md-12 text-right mt-2"> <button type="button" rippleeffect=""
+                            class="mr-1 btn btn-primary round 2waves-effect" (click)="populateTable()"
+                            style="width:130px">Add to
+                            Order Form</button></div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                    <h4>Search Result</h4>
+                    <div class="result-table">
+                        <table class="table order_table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center border-top-left-radius-10 border-bottom-left-radius-10"></th>
+                                    <th class="text-center">Asset ID </th>
+                                    <th class="text-center">Tool Number </th>
+                                    <th class="text-center">Location </th>
+                                    <th class="text-center">Assign To </th>
+                                    <th class="text-center">Check Out Date </th>
+                                    <th class="text-center disable-field">Condition </th>
+                                    <th class="text-center">Return Due Date </th>
+                                    <th class="text-center ">Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="orderSubGridDetail.length==0">
+                                    <td colspan="9">No data to display</td>
+                                </tr>
+                                <tr *ngFor="let item of orderSubGridDetail; let i = index;">
+                                    <td><input type="checkbox" value="{{item.assetID}}"
+                                            (change)="populateResult($event)">
+                                    </td>
+                                    <td>{{item.assetID}}</td>
+                                    <td>{{item.serialNumber}}</td>
+                                    <td>{{item.location}}</td>
+                                    <td>{{item.assignTo}}</td>
+                                    <td>{{item.checkOutDate | date:'dd/MM/yyyy'}}</td>
+                                    <td class="disable-field">{{item.condition}}</td>
+                                    <td>{{item.returnDueDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <div ngbDropdown class="badge badge-pill" style="width: 90px;"
+                                            [ngClass]="{
+                                                                                                                            'badge-success': item.status == 'Available',
+                                                                                                                            'badge-warning': item.status == 'Check Out',
+                                                                                                                            'badge-pink': item.status == 'Reserved',
+                                                                                                                            'badge-blue': item.status == 'Maintenance',
+                                                                                                                            'badge-green': item.status == 'Inspection',
+                                                                                                                            'badge-danger': item.status == 'Not Active' || item.status == 'Unavailable'
+                                                                                                                        }">
+
+                                            <div> {{ item.status ==
+                                                'Available' ? 'Available' : item.status == 'Check Out' ? 'Checked Out'
+                                                : item.status == 'Reserved' ?
+                                                'Reserved' : item.status == 'Maintenance' ? 'Maintenance'
+                                                : item.status == 'Inspection' ? 'Inspection' :
+                                                item.status == 'Unavailable' ? 'Unavailable':
+                                                item.status
+                                                == 'Not Active' ? 'Not
+                                                Active' : 'Not Active' }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="col-md-12 text-right mt-2"> <button type="button" rippleeffect=""
+                            class="mr-1 btn btn-primary round 2waves-effect" (click)="populateTable()"
+                            style="width:130px">Add to
+                            Order Form</button></div>
+
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

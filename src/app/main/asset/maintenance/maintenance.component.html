@@ -1,0 +1,165 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center">
+                        <h1 class="content-header-title float-left mb-0">
+                            Maintenance
+                        </h1>
+                        <div class="breadcrumb-wrapper d-flex ">
+                            <ol class="breadcrumb align-items-center">
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <a routerLink="/asset/detail/{{barCodeId}}">
+                                        <span class="text-primary font-weight-bolder">{{assetName}}
+                                            &nbsp;&nbsp;</span></a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ng-star-inserted">
+                                    <a routerLink="/asset/detail/{{barCodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            <span *ngIf="item_type =='asset'">Asset ID</span>
+                                            <span *ngIf="item_type =='inventory'">Inventory ID</span> {{barCodeId}}
+                                            &nbsp;&nbsp;</span>
+                                    </a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barCodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{serialNumber}}
+                                            &nbsp;&nbsp;</span></a><span>|</span>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a routerLink="/asset/detail/{{barCodeId}}">
+                                        <span class="text-primary font-weight-bolder">
+                                            {{assetLocation}}
+                                            &nbsp;&nbsp;</span></a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-4 col-12 mb-2">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button" data-toggle="modal" data-target="#maintenance-filter"
+                            (click)="toggleSidebar('maintenance-filter')" rippleeffect=""
+                            class="btn btn-outline-primary round waves-effect">Apply Filter <i
+                                data-feather="chevron-right" class="ml-2"></i></button>
+                        <a routerLink="/asset/add-maintenance" rippleeffect=""
+                            *ngIf="role=='admin'||role=='supervisor'||role=='shop attendant'"
+                            class="ml-50 btn btn-primary round waves-effect float-right"><i data-feather="plus"
+                                class="mr-2"></i>Add Item</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Sink Datatables -->
+        <section id="ngx-datatable-kitchen-sink">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <label class="d-flex align-items-center">Show
+                                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption"
+                                        style="width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    Entries</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <label class="d-flex align-items-center">Filters
+                                    <select class=" form-control ml-2 mr-25" style="width: 240px;"
+                                        (change)="filterByMaintenanceType($event.target.value)">
+                                        <option value="">Select Service Type</option>
+                                        <option value="1">Full Service</option>
+                                        <option value="2">Partial</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12 d-flex justify-content-md-end">
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                                <label class="d-flex align-items-center"><input type="search" placeholder="Search..."
+                                        class="form-control ml-25" (keyup)="filterUpdate($event)"
+                                        (search)="filterUpdate($event)" /></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-md-12 text-xl-right text-md-right text-center">
+                            <div class="btn-group">
+                                <div ngbDropdown style="width:200px">
+                                    <button ngbDropdownToggle class="btn btn-outline-primary" type="button"
+                                        id="dropdownMenuButton" rippleEffect>
+                                        Actions
+                                    </button>
+                                    <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                        <a ngbDropdownItem onclick="js:window.print()" class="disable-filed"><i
+                                                data-feather="printer" class="mr-50"></i>Print Document</a>
+                                        <a ngbDropdownItem (click)="exportCSVFile()"><i data-feather="file-text"
+                                                class="mr-50"></i>Export to
+                                            CSV</a>
+                                        <a ngbDropdownItem class="disable-filed"><i data-feather="file-text"
+                                                class="mr-50"></i>Export to PDF</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-datatable [rows]="kitchenSinkRows" [rowHeight]="50"
+                        class="bootstrap core-bootstrap custom_datatable img_datatable" [limit]="10"
+                        [columnMode]="ColumnMode.force" [headerHeight]="40" [footerHeight]="50" [scrollbarH]="true"
+                        [limit]="basicSelectedOption">
+                        <ngx-datatable-column name="" [width]="50" [sortable]="false">
+                            <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                <div class="d-flex align-items-center">
+                                    <a routerLink="/asset/maintenance/detail/{{ row.id }}" class=""><img
+                                            style="height:12px" src="assets/images/icon/eye.png" alt=""></a>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Asset ID" prop="assestsID" [width]="80"></ngx-datatable-column>
+                        <ngx-datatable-column name="Type of Maintenance" prop="maintenanceType"
+                            [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Priority" prop="priority" [width]="120"></ngx-datatable-column>
+                        <ngx-datatable-column name="Expected Start Date" prop="expectedStartDate" [width]="120">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.expectedStartDate | date:'dd-MM-yyyy'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Expected End Date" prop="expectedEndDate" [width]="120">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.expectedEndDate | date:'dd-MM-yyyy'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Status" prop="statusId" [width]="120">
+                            <ng-template let-row="row" let-status="value" ngx-datatable-cell-template>
+                                <div class="badge badge-pill" style="width: 90px;" (click)="UpdateStatus(row)"
+                                    [ngClass]="{
+                                'badge-success': status == '1',
+                                'badge-danger': status == '2'
+                            }">
+                                    {{ status == 1 ? 'Completed' : 'Scheduled' }}
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <core-sidebar class="modal modal-slide-in sidebar-todo-modal fade" name="maintenance-filter"
+        overlayClass="modal-backdrop" hideOnEsc="true">
+        <app-maintenance-filter></app-maintenance-filter>
+    </core-sidebar>
+</div>

@@ -1,0 +1,15 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+
+.datatable-scroll {
+    width: auto !important;
+}
+
+#dropdownMenuButton {
+    width: 190px;
+    border-radius: 20px;
+    margin-right: 15px;
+}
+
+.disable-filed {
+    display: none !important;
+}

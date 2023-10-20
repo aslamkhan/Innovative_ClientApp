@@ -1,0 +1,347 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <div class="content-header row">
+            <div class="content-header-left col-md-8 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-md-12 d-flex align-items-center mt-1">
+                        <h1 class="content-header-title float-left mb-0">
+                            Dashboard
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="content-header-right col-md-4 col-12 mb-2 ">
+                <div class="row">
+                    <div class="col-md-12  text-right">
+                        <div class="form-group">
+                            <label class="col-form-label col-form-label-lg d-flex align-items-center float-right"
+                                for=""> Department:
+                                <select (change)="locationChangeEvent($event.target.value)" name="location"
+                                    class="form-control ml-2" style="width:150px;border-radius: 5px;" id="location">
+                                    <option *ngFor="let web of locationList">{{web.text}}
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="a ">
+            <div class="d-flex justify-content-start flex-wrap dashboard">
+                <div class="card flex-grow-1">
+                    <div class="card-body text-center">
+                        <button type="button" class="btn btn-primary p-0"
+                            style="height: 50px;width: 50px;border-radius:1rem"><img height="22"
+                                src="assets/images/icon/user_white.png" alt=""></button>
+                        <h6 class="mt-1">Total Users</h6>
+                        <h1 class="font-weight-bolder mb-0">
+                            {{userCount}}
+                        </h1>
+                    </div>
+                </div>
+                <div class="card flex-grow-1">
+                    <div class="card-body text-center">
+                        <button type="button" class="btn btn-primary p-0"
+                            style="height: 50px;width: 50px;border-radius:1rem"><img height="30"
+                                src="assets/images/icon/reply-date-calendar-icon.png" alt=""></button>
+                        <h6 class="mt-1">Pass Return Date</h6>
+                        <h1 class="font-weight-bolder mb-0">
+                            {{passReturnDateCount}}
+                        </h1>
+                    </div>
+                </div>
+                <div class="card flex-grow-1">
+                    <div class="card-body text-center">
+                        <button type="button" class="btn btn-primary p-0"
+                            style="height: 50px;width: 50px;border-radius:1rem"><img height="30"
+                                src="assets/images/icon/remove-date-calendar-icon.png" alt=""></button>
+                        <h6 class="mt-1">Missed Inspection Date</h6>
+                        <h1 class="font-weight-bolder mb-0">
+                            {{missedInspectionDateCount}}
+                        </h1>
+                    </div>
+                </div>
+                <div class="card flex-grow-1">
+                    <div class="card-body text-center">
+                        <button type="button" class="btn btn-primary p-0"
+                            style="height: 50px;width: 50px;border-radius:1rem"><img height="30"
+                                src="assets/images/icon/repair-fix-repairing-icon.png" alt=""></button>
+                        <h6 class="mt-1">Out for Maintenance</h6>
+                        <h1 class="font-weight-bolder mb-0">
+                            {{outforMaintenanceCount}}
+                        </h1>
+                    </div>
+                </div>
+                <div class="card flex-grow-1">
+                    <div class="card-body text-center">
+                        <button type="button" class="btn btn-primary p-0"
+                            style="height: 50px;width: 50px;border-radius:1rem"><img height="30"
+                                src="assets/images/icon/manager-icon.png" alt=""></button>
+                        <h6 class="mt-1">Missed Maintenance Date</h6>
+                        <h1 class="font-weight-bolder mb-0">
+                            {{missedMaintenanceDateCount}}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row match-height">
+                <div class="col-md-6">
+                    <h4 class="my-1">No. of Assets Past Return Date</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <canvas baseChart class="horizontal-bar-chart-ex chartjs" height="400"
+                                [datasets]="horiBarChart.datasets" [labels]="horiBarChart.labels"
+                                [options]="horiBarChart.options" [legend]="horiBarChart.legend"
+                                [chartType]="horiBarChart.chartType"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="my-1">Asset Rented Last 12 (Months)</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <canvas class="line-area-chart-ex chartjs" baseChart height="450"
+                                [datasets]="lineAreaChart.datasets" [labels]="lineAreaChart.labels"
+                                [options]="lineAreaChart.options" [chartType]="lineAreaChart.chartType"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row match-height">
+                <div class="col-md-6">
+                    <h4 class="my-1">Top Five Assets Rented(Last Three Months)</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table custom_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center disable-filed"></th>
+                                        <th class="text-center">Image</th>
+                                        <th class="text-center">Asset Name</th>
+                                        <th class="text-center">Rentals</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngFor="let item of topFiveAssetsRented">
+                                        <td class="text-center disable-filed">
+                                            <a class="mr-1"><img style="height:12px" src="assets/images/icon/eye.png"
+                                                    alt=""></a> <!--|
+                                            <a href="#" class="ml-50"><img style="height:12px"
+                                                    src="assets/images/icon/plus.png" alt=""></a> -->
+                                        </td>
+                                        <td class="text-center"><img [src]="item.assetImage" alt=""
+                                                (click)="modalOpenXs(modalxs, item.assetImage)"
+                                                class="img-responsive cursor-pointer product_img"></td>
+                                        <td class="text-center"><a class="text-dark">{{item.assetName}}</a>
+                                        </td>
+                                        <td class="text-center">{{item.noOfItem}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="my-1">Top 5 Out of Stock Items(Last Three Months)</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table custom_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center disable-filed"></th>
+                                        <th class="text-center">Image</th>
+                                        <th class="text-center">Asset Name</th>
+                                        <th class="text-center">Rentals</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of topFiveOutofStockItems">
+                                        <td class="text-center disable-filed">
+                                            <a class="mr-1"><img style="height:12px" src="assets/images/icon/eye.png"
+                                                    alt=""></a> <!-- |
+                                            <a href="#" class="ml-50"><img style="height:12px"
+                                                    src="assets/images/icon/plus.png" alt=""></a> -->
+                                        </td>
+                                        <td class="text-center"><img [src]="item.assetImage" alt=""
+                                                (click)="modalOpenXs(modalxs,item.assetImage )"
+                                                class="img-responsive cursor-pointer product_img"></td>
+                                        <td class="text-center"><a class="text-dark">{{item.assetName}}</a>
+                                        </td>
+                                        <td class="text-center">{{item.noOfItem}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="my-1">Top 5 Assets Damaged(Last Three Months)</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table custom_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center disable-filed"></th>
+                                        <th class="text-center">Image</th>
+                                        <th class="text-center">Asset Name</th>
+                                        <th class="text-center">Rentals</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of topFiveDamagedAssets">
+                                        <td class="text-center disable-filed">
+                                            <a class="mr-1"><img style="height:12px" src="assets/images/icon/eye.png"
+                                                    alt=""></a><!--|
+                                                        <a href="#" class="ml-50"><img style="height:12px"
+                                                                src="assets/images/icon/plus.png" alt=""></a> -->
+                                        </td>
+                                        <td class="text-center"><img [src]="item.assetImage" alt=""
+                                                (click)="modalOpenXs(modalxs,item.assetImage )"
+                                                class="img-responsive cursor-pointer product_img"></td>
+                                        <td class="text-center"><a class="text-dark">{{item.assetName}}</a>
+                                        </td>
+                                        <td class="text-center">{{item.noOfItem}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="my-1">Oldest Five Assets (Pass Return Date)</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table custom_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center disable-filed"></th>
+                                        <th class="text-center">Image</th>
+                                        <th class="text-center">Asset Name</th>
+                                        <th class="text-center">Asset ID</th>
+                                        <th class="text-center">Assigned to</th>
+                                        <th class="text-center">Return Due Date</th>
+                                        <th class="text-center">No. of Days</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of oldestPassReturnDateAssets">
+                                        <td class="text-center disable-filed">
+                                            <a class="mr-1"><img style="height:12px" src="assets/images/icon/eye.png"
+                                                    alt=""></a><!--|
+                                                        <a href="#" class="ml-50"><img style="height:12px"
+                                                                src="assets/images/icon/plus.png" alt=""></a> -->
+                                        </td>
+                                        <td class="text-center"><img [src]="item.assetImage" alt=""
+                                                (click)="modalOpenXs(modalxs,item.assetImage )"
+                                                class="img-responsive cursor-pointer product_img"></td>
+                                        <td class="text-center"><a class="text-dark">{{item.assetName}}</a>
+                                        </td>
+                                        <td class="text-center">{{item.barCodeID}}</td>
+                                        <td class="text-center">{{item.assignedTO}}</td>
+                                        <td class="text-center">{{item.ReturnDueDate | date}}</td>
+                                        <td class="text-center">{{item.noOfDays}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="my-1">Oldest Five Assets (Missed Maintenance Date)</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table custom_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center disable-filed"></th>
+                                        <th class="text-center">Image</th>
+                                        <th class="text-center">Asset Name</th>
+                                        <th class="text-center">Asset ID</th>
+                                        <th class="text-center">Maintenance Date</th>
+                                        <th class="text-center">No. of Days</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of oldestMissedMaintenanceDateAssets">
+                                        <td class="text-center disable-filed">
+                                            <a class="mr-1"><img style="height:12px" src="assets/images/icon/eye.png"
+                                                    alt=""></a><!--|
+                                                        <a href="#" class="ml-50"><img style="height:12px"
+                                                                src="assets/images/icon/plus.png" alt=""></a> -->
+                                        </td>
+                                        <td class="text-center"><img src="{{item.assetImage}}" alt=""
+                                                (click)="modalOpenXs(modalxs, item.assetImage)"
+                                                class="img-responsive cursor-pointer product_img"></td>
+                                        <td class="text-center"><a class="text-dark">{{item.assetName}}</a>
+                                        </td>
+                                        <td class="text-center">{{item.barCodeID}}</td>
+                                        <td class="text-center">{{item.nextMaintenanceDate | date}}</td>
+                                        <td class="text-center">{{item.noOfDays}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="my-1">Oldest Five Assets (Missed Inspection Date)</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table custom_table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center disable-filed"></th>
+                                        <th class="text-center">Image</th>
+                                        <th class="text-center">Asset Name</th>
+                                        <th class="text-center">Asset ID</th>
+                                        <th class="text-center">Inspection Date</th>
+                                        <th class="text-center">No. of Days</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of oldestMissedInspectionDateAssets">
+                                        <td class="text-center disable-filed">
+                                            <a class="mr-1"><img style="height:12px" src="assets/images/icon/eye.png"
+                                                    alt=""></a><!--|
+                                                        <a href="#" class="ml-50"><img style="height:12px"
+                                                                src="assets/images/icon/plus.png" alt=""></a> -->
+                                        </td>
+                                        <td class="text-center"><img src="{{item.assetImage}}" alt=""
+                                                (click)="modalOpenXs(modalxs, item.assetImage)"
+                                                class="img-responsive cursor-pointer product_img"></td>
+                                        <td class="text-center"><a class="text-dark">{{item.assetName}}</a>
+                                        </td>
+                                        <td class="text-center">{{item.barCodeID}}</td>
+                                        <td class="text-center">{{item.nextInspectionDate| date }}</td>
+                                        <td class="text-center">{{item.noOfDays }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <ng-template #modalxs let-modal>
+        <div class="modal-body  bg-transparent p-0" tabindex="0" ngbAutofocus>
+            <di class="row">
+                <div class="col-md-12">
+                    <img [src]="url" alt="" width="100%" style="border-radius: 10px;">
+                </div>
+            </di>
+        </div>
+    </ng-template>
+</div>

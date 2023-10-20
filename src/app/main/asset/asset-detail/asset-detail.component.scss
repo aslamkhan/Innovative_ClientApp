@@ -1,0 +1,28 @@
+#dropdownMenuButton,
+#dropdownMenuButton1 {
+    width: 95%;
+    border-radius: 20px;
+    margin-right: 15px;
+}
+
+.order_img {
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgb(34 41 47 / 12%);
+}
+
+.order_size {
+    width: 100%;
+}
+
+.yellow_bage {
+    background: yellow;
+    border-radius: 50%;
+    padding: 0px 5px;
+    box-shadow: 0 4px 8px 0 rgb(34 41 47 / 12%);
+    border: 3px solid #f8f8f8;
+    font-size: 8px;
+}
+
+.disable-field {
+    display: none !important;
+}

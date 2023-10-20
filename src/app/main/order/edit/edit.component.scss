@@ -1,0 +1,160 @@
+@import '@core/scss/angular/libs/flatpickr.component.scss';
+
+.dark-layout input.form-control,
+.dark-layout textarea.form-control {
+    background-color: #283046 !important;
+    color: #b4b7bd;
+}
+
+.form-control {
+    background-color: #fff !important;
+}
+
+@media screen and (max-width: 600px) {
+
+
+    .card-body {
+        overflow-x: auto;
+    }
+
+}
+
+.req-red {
+    color: red;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.remove-files {
+    padding: 0px 5px;
+    border-radius: 50%;
+    height: 24px;
+    display: block;
+    width: 24px;
+    background: crimson;
+    float: right;
+    margin-right: 0px;
+    position: absolute;
+    right: 11px;
+    top: 10px;
+}
+
+.files-count {
+    margin-bottom: 15px;
+    display: block;
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 9px;
+    border-radius: 12px;
+    position: relative;
+    padding-right: 40px;
+}
+
+span.filename {
+    width: 100%;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.disable-field {
+    display: none !important;
+}
+
+button {
+    border: none;
+    background-color: #093b85;
+    border-radius: 20px;
+}
+
+button input.ng2-flatpickr-input.form-control.input::placeholder {
+    color: #fff;
+}
+
+.second-checkout-date input.ng2-flatpickr-input.form-control.input.active {
+    background-color: inherit !important;
+    border: none;
+    text-align: center;
+}
+
+.second-checkout-date input.ng2-flatpickr-input.form-control.input {
+    background-color: inherit !important;
+    border: none;
+    text-align: center;
+}
+
+.second-checkout-date input.ng2-flatpickr-input.form-control.input:hover {
+    cursor: context-menu;
+}
+
+.datepicker input {
+    width: 100%;
+    border-radius: 40px;
+    border: 1px solid #ddd;
+    height: 38px;
+    padding-left: 11px;
+    background: #fff;
+    text-align: left;
+}
+
+.second-checkout-date button input {
+    background-color: transparent !important;
+    border: none;
+    color: #fff !important;
+}
+
+.disabled-input-return {
+    pointer-events: none;
+}
+
+button.disabled-input-return {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+canvas {
+    display: block;
+    border: 1px solid #d8d6de;
+    background: #fff;
+    border-radius: 10px;
+}
+
+button {
+    margin: 10px;
+    margin-left: 10px;
+}
+
+.clear-signature {
+    margin-top: 15px !important;
+    border-radius: 60px;
+}
+
+.clear-checkout {
+    margin-left: 10px !important;
+    border-radius: 60px;
+}
+
+input.ng-untouched.ng-pristine.ng-valid.form-control.input.active,
+input.ng-untouched.ng-pristine.ng-valid.form-control.input,
+input.ng-untouched.ng-valid.ng-dirty.form-control.input {
+    text-align: center;
+}
+
+.result-table {
+    overflow-x: auto;
+}
+
+.edit-order-table {
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 4px !important;
+}
+
+.edit-order-table a {
+    margin: 0px 6px;
+}
+
+.search-icon {
+    margin-left: 6px;
+}
